@@ -1,9 +1,12 @@
 import React from 'react'
-import { Navigate, HashRouter, Outlet, Route, Routes } from 'react-router-dom'
+import { BrowserRouter as Router, Navigate, Outlet, Route, Routes } from 'react-router-dom'
+
+import App from '../view/App'
+import MusicList from '../view/MusicList'
 
 export default function MainRouter() {
     return (
-        <HashRouter>
+        <Router>
             <Routes>
                 <Route path="/*" element={<App><Outlet/></App>}>
                     <Route path="musiclist/*" element={<MusicList><Outlet/></MusicList>}>
@@ -18,6 +21,6 @@ export default function MainRouter() {
                     <Route path="*" element={<Navigate to="musiclist"/>}></Route>
                 </Route>
             </Routes>
-        </HashRouter>
+        </Router>
     )
 }
