@@ -14,7 +14,7 @@ export default function MainRouter() {
                 <Route path="/*" element={<App><Outlet/></App>}>
                     <Route path="musicList/*" element={<MusicList><Outlet/></MusicList>}>
                         <Route path='localList' element={<LocalList/>}></Route>
-                        <Route path='onlineList/:type' element={<OnlineList/>}></Route>
+                        <Route path='onlineList/:idIndex' element={<OnlineList/>}></Route>
                         <Route path='onlineList/*' element={<Navigate to="0"/>}></Route>
 
                         <Route path="*" element={<Navigate to="localList"/>}></Route>
