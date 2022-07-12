@@ -1,7 +1,10 @@
 import React from 'react'
 
-export default function App() {
+export default function App({children}) {
     return (
-        <div>App</div>
+        <div>
+            <p>App</p>
+            {children}
+        </div>
     )
 }

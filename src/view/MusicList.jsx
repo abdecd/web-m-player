@@ -1,7 +1,10 @@
 import React from 'react'
 
-export default function MusicList() {
+export default function MusicList({children}) {
   return (
-    <div>MusicList</div>
+    <div>
+        <p>MusicList</p>
+        {children}
+    </div>
   )
 }

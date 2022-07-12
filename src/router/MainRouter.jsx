@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Navigate, Outlet, Route, Routes } from 'react-
 
 import App from '../view/App'
 import MusicList from '../view/MusicList'
+import LocalList from '../view/musicList/LocalList'
+import OnlineList from '../view/musicList/OnlineList'
+import Lyric from '../view/Lyric'
 
 export default function MainRouter() {
     return (
