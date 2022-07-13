@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Navigate, Outlet, Route, Routes } from 'react-router-dom'
+import { HashRouter as Router, Navigate, Outlet, Route, Routes } from 'react-router-dom'
 
 import App from '../view/App'
 import MusicList from '../view/MusicList'
