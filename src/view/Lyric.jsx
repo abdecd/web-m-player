@@ -16,11 +16,8 @@ export default function Lyric() {
     },[]);
 
     return (
-        <div>
-            <p>Lyric</p>
-            <div style={{textAlign: "center"}}>
-                { lyric.replace(/\[[^\]]+\]/g,"").split("\n").map(elem => <p>{elem}</p>) }
-            </div>
+        <div style={{textAlign: "center"}}>
+            { lyric.replace(/\[[^\]]+\]/g,"").split("\n").map(elem => <p>{elem}</p>) }
         </div>
     )
 }

@@ -9,7 +9,6 @@ export default function MusicList({children}) {
 
     return (
         <div>
-            <p>MusicList</p>
             <div className={style.LinearBar}>
                 <Button onClick={() => navigate("localList")}>LocalList</Button>
                 <Button onClick={() => navigate("onlineList")}>OnlineList</Button>

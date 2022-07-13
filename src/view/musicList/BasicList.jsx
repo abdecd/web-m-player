@@ -6,13 +6,13 @@ import WebMusicManager from '../../js/WebMusicManager';
 import axios from 'axios';
 
 export default function BasicList({listData}) {
+    //listData <==> [{ id, name, author },...]
     var navigate = useNavigate();
 
     var fetchMusicSrc = useCallback(async musicId => (await axios(`/api/song/enhance/player/url?ids=[${musicId}]&br=999000`)).data.data[0].url,[]);
 
     return (
         <div>
-            <p>List</p>
             <List>
             {
                 listData

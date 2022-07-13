@@ -40,7 +40,6 @@ export default function OnlineList() {
 
     return (
         <div>
-            <p>OnlineList</p>
             <div className={style.LinearBar}>
                 <Button onClick={() => navigate("../onlineList/0")}>飙升</Button>
                 <Button onClick={() => navigate("../onlineList/1")}>新歌</Button>
