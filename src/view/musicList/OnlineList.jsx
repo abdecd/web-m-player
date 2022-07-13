@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
-import List from "./List"
+import BasicList from "./BasicList"
 
 import style from "../../css/OnlineList.module.css"
 
@@ -31,7 +31,7 @@ export default function OnlineList() {
     return (
         <div>
             <p>OnlineList</p>
-            <List listData={listData}/>
+            <BasicList listData={listData}/>
         </div>
     )
 }
