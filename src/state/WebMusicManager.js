@@ -5,11 +5,9 @@ var WebMusicManager = {
     title: "",
     handler: new Audio(),
     list: new WebMusicList(),
+
     timeUpdateSubscription: new Subscription(),
     loadStartSubscription: new Subscription(),
-
-    // setSrc(src) { this.handler.src = src; },
-    // getSrc() { return this.handler.src; },
 
     load(title,src) { this.title = title; this.handler.src = src; },
 

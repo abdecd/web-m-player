@@ -1,4 +1,6 @@
 .MusicBar {
+    background-color: rgba(218,232,232,0.7);
+
     position: fixed;
     left: 0px;
     bottom: 0px;
@@ -14,6 +16,7 @@
 .LinearFlex p {
     flex: 2;
     margin: 10px;
+    line-height: 50px;
 }
 
 .ButtonBar {

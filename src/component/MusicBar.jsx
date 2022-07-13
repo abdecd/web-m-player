@@ -9,14 +9,19 @@ export default function MusicBar() {
     const [title, setTitle] = useState("");
     const [progressValue, setProgressValue] = useState(0);
 
+    //订阅title
     useEffect(() => {
         var refreshTitle = () => setTitle(WebMusicManager.title);
         WebMusicManager.addLoadStartEventListener(refreshTitle);
         return () => WebMusicManager.removeLoadStartEventListener(refreshTitle);
     },[]);
 
+    //订阅秒数变化
     useEffect(() => {
-        var refreshProgress = () => setProgressValue(WebMusicManager.getCurrentTime()/WebMusicManager.getMaxTime());
+        var refreshProgress = () => {
+            setProgressValue(WebMusicManager.getCurrentTime()/WebMusicManager.getMaxTime()*100);
+            console.log(WebMusicManager.handler.currentTime);
+        };
         WebMusicManager.addTimeUpdateEventListener(refreshProgress);
         return () => WebMusicManager.removeTimeUpdateEventListener(refreshProgress);
     },[]);
