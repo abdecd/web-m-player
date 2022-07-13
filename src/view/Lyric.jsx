@@ -11,7 +11,7 @@ export default function Lyric() {
             var obj = (await axios(`/api/song/lyric?os=pc&id=${musicId}&lv=-1&tv=-1`)).data;
             var lrcGot = obj.lrc.lyric;
             // var lrcGot = obj.tlyric.lyric;
-            setLyric(lrcGot.replace(/\n/g,"kkkk"));
+            setLyric(lrcGot);
         })();
     },[]);
 
