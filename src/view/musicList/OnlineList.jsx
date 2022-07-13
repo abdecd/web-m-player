@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 
 import BasicList from "./BasicList"
 
-import style from "../../css/OnlineList.module.css"
+import style from "../../css/LinearBar.module.css"
 
 export default function OnlineList() {
     const listIds = [19723756, 3779629, 2884035];//飙升 新歌 原创
