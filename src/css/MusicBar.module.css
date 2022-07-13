@@ -1,0 +1,31 @@
+.MusicBar {
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+
+    width: 100%;
+    height: 100px;
+}
+
+.LinearFlex {
+    display: flex;
+}
+
+.LinearFlex p {
+    flex: 2;
+    margin: 10px;
+}
+
+.ButtonBar {
+    flex: 1;
+    
+    display: flex;
+    justify-content: flex-end;
+}
+
+.ButtonBar Button {
+    color: #EEEEEE;
+    background-color: #548CC8;
+
+    margin: 10px;
+}

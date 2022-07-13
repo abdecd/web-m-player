@@ -1,7 +1,20 @@
 import React from 'react'
+import { Button, LinearProgress } from '@mui/material'
 
-export default function MusicBar() {
+import style from '../css/MusicBar.module.css'
+
+export default function MusicBar({title,progressValue}) {
   return (
-    <div>MusicBar</div>
+    <div className={style.MusicBar}>
+        <div className={style.LinearFlex}>
+            <p>{title}</p>
+            <div className={style.ButtonBar}>
+                <Button variant="contained">L</Button>
+                <Button variant="contained">R</Button>
+                <Button variant="contained">^_^</Button>
+            </div>
+        </div>
+        <LinearProgress variant='determinate' value={progressValue}/>
+    </div>
   )
 }
