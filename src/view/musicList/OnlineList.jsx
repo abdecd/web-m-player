@@ -20,6 +20,7 @@ export default function OnlineList() {
 
     useEffect(() => {
         (async () => {
+            //todo: 加载
             var ans = (await axios("/discover/toplist?id="+listId)).data?.match(/<textarea id="song-list-pre-data" style="display:none;">(.+?)<\/textarea>/)?.[1];
             ans = JSON.parse(ans);
 

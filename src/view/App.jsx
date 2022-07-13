@@ -7,7 +7,7 @@ export default function App({children}) {
         <div>
             <p>App</p>
             {children}
-            <MusicBar title="MusicBar" progressValue={30}/>
+            <MusicBar/>
         </div>
     )
 }
