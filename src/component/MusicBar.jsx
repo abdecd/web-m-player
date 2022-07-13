@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Button, LinearProgress } from '@mui/material'
 
-import WebMusicManager from '../state/WebMusicManager'
+import WebMusicManager from '../js/WebMusicManager'
 
 import style from '../css/MusicBar.module.css'
 

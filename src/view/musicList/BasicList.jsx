@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { List, ListItemText, ListItemButton } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 
-import WebMusicManager from '../../state/WebMusicManager';
+import WebMusicManager from '../../js/WebMusicManager';
 import axios from 'axios';
 
 export default function BasicList({listData}) {
