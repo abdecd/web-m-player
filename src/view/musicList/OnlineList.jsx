@@ -9,14 +9,13 @@ import style from "../../css/LinearBar.module.css"
 import dataCache from "../../js/OnlineList";
 
 export default function OnlineList() {
+    //确定list参数
     const listIds = [19723756, 3779629, 2884035];//飙升 新歌 原创
-
     var { idIndex } = useParams();
     if (!idIndex || isNaN(idIndex) || idIndex<0 || idIndex>2) idIndex = 0;
     var listId = listIds[idIndex];
 
     const [listData, setListData] = useState([]);
-
     var navigate = useNavigate();
 
     useEffect(() => {
