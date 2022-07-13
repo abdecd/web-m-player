@@ -13,7 +13,15 @@ var WebMusicManager = {
 
     play() { this.handler.play(); },
     pause() { this.handler.pause(); },
-    playPause() { this.handler.paused ? this.handler.play() : this.handler.pause(); },
+    playPause() {
+        if (this.handler.paused) {
+            this.handler.play();
+            return true;
+        } else {
+            this.handler.pause();
+            return false;
+        }
+    },
 
     getMaxTime() { return this.handler.duration || 10000000; },
     getCurrentTime() { return this.handler.currentTime; },

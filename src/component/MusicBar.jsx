@@ -8,6 +8,7 @@ import style from '../css/MusicBar.module.css'
 export default function MusicBar() {
     const [title, setTitle] = useState("");
     const [progressValue, setProgressValue] = useState(0);
+    const [playBtnStr, setPlayBtnStr] = useState("x_x");
 
     //订阅title
     useEffect(() => {
@@ -25,7 +26,7 @@ export default function MusicBar() {
 
     var lFn = useCallback(() => WebMusicManager.setCurrentTime(WebMusicManager.getCurrentTime()-10));
     var rFn = useCallback(() => WebMusicManager.setCurrentTime(WebMusicManager.getCurrentTime()+10));
-    var playBtnFn = useCallback(() => WebMusicManager.playPause());
+    var playBtnFn = useCallback(() => WebMusicManager.playPause() ? setPlayBtnStr("^_^") : setPlayBtnStr("x_x"));
     
     return (
         <div className={style.MusicBar}>
@@ -34,7 +35,7 @@ export default function MusicBar() {
                 <div className={style.ButtonBar}>
                     <Button variant="contained" onClick={lFn}>L</Button>
                     <Button variant="contained" onClick={rFn}>R</Button>
-                    <Button variant="contained" onClick={playBtnFn}>^_^</Button>
+                    <Button variant="contained" onClick={playBtnFn}>{playBtnStr}</Button>
                 </div>
             </div>
             <LinearProgress variant='determinate' value={progressValue}/>
