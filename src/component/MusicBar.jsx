@@ -18,10 +18,7 @@ export default function MusicBar() {
 
     //订阅秒数变化
     useEffect(() => {
-        var refreshProgress = () => {
-            setProgressValue(WebMusicManager.getCurrentTime()/WebMusicManager.getMaxTime()*100);
-            console.log(WebMusicManager.handler.currentTime);
-        };
+        var refreshProgress = () => setProgressValue(WebMusicManager.getCurrentTime()/WebMusicManager.getMaxTime()*100);
         WebMusicManager.addTimeUpdateEventListener(refreshProgress);
         return () => WebMusicManager.removeTimeUpdateEventListener(refreshProgress);
     },[]);
