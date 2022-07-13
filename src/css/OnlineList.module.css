@@ -1,0 +1,7 @@
+.LinearBar {
+    display: flex;
+}
+
+.LinearBar Button {
+    flex: 1;
+}
