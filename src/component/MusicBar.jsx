@@ -21,18 +21,18 @@ export default function MusicBar() {
         return () => WebMusicManager.removeTimeUpdateEventListener(refreshProgress);
     },[]);
 
-    // var lFn = useCallback(() => );
-    // var rFn = useCallback(() => );
-    // var playBtnFn = useCallback(() => );
+    var lFn = useCallback(() => WebMusicManager.setCurrentTime(WebMusicManager.getCurrentTime()-10));
+    var rFn = useCallback(() => WebMusicManager.setCurrentTime(WebMusicManager.getCurrentTime()+10));
+    var playBtnFn = useCallback(() => WebMusicManager.playPause());
     
     return (
         <div className={style.MusicBar}>
             <div className={style.LinearFlex}>
                 <p>{title}</p>
                 <div className={style.ButtonBar}>
-                    <Button variant="contained">L</Button>
-                    <Button variant="contained">R</Button>
-                    <Button variant="contained">^_^</Button>
+                    <Button variant="contained" onClick={lFn}>L</Button>
+                    <Button variant="contained" onClick={rFn}>R</Button>
+                    <Button variant="contained" onClick={playBtnFn}>^_^</Button>
                 </div>
             </div>
             <LinearProgress variant='determinate' value={progressValue}/>

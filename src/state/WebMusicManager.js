@@ -13,12 +13,14 @@ var WebMusicManager = {
 
     load(title,src) { this.title = title; this.handler.src = src; },
 
-    getMaxTime() { return this.handler.duration || 10000000; },
-    getCurrentTime() { return this.handler.currentTime; },
-
     play() { this.handler.play(); },
     pause() { this.handler.pause(); },
+    playPause() { this.handler.paused ? this.handler.play() : this.handler.pause(); },
 
+    getMaxTime() { return this.handler.duration || 10000000; },
+    getCurrentTime() { return this.handler.currentTime; },
+    setCurrentTime(time) { this.handler.currentTime = time },
+    
     push(title,src) { this.list.push({title,src}); },
     pop() { return this.list.pop(); },
     getList() { return this.list; },
