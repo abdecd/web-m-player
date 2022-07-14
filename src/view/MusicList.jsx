@@ -9,12 +9,14 @@ export default function MusicList({children}) {
 
     return (
         <div>
-            <div className={style.LinearBar}>
+            <div className={style.LinearBar} style={{height: "4vh"}}>
                 <Button onClick={() => navigate("localList")}>LocalList</Button>
                 <Button onClick={() => navigate("onlineList")}>OnlineList</Button>
                 <Button onClick={() => navigate("search")}>Search</Button>
             </div>
-            {children}
+            <div style={{height: "calc(96vh - 60px)", overflow: "auto"}}>
+                {children}
+            </div>
         </div>
     )
 }

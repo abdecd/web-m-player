@@ -5,7 +5,9 @@ import MusicBar from '../component/MusicBar'
 export default function App({children}) {
     return (
         <div>
-            {children}
+            <div style={{height: "calc(100vh - 60px)", overflow: "auto"}}>
+                {children}
+            </div>
             <MusicBar/>
         </div>
     )
