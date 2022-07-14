@@ -15,13 +15,15 @@ export default function OnlineList() {
     if (!idIndex || isNaN(idIndex) || idIndex<0 || idIndex>2) idIndex = 0;
     var listId = listIds[idIndex];
 
-    const [listData, setListData] = useState([]);
     var navigate = useNavigate();
+    const [listData, setListData] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         (async () => {
-            //todo: 加载
             if (dataCache.id!=listId) {
+                //设置加载效果
+                setLoading(true);
                 var ans = (await axios("/discover/toplist?id="+listId)).data?.match(/<textarea id="song-list-pre-data" style="display:none;">(.+?)<\/textarea>/)?.[1];
                 ans = JSON.parse(ans).map(elem => { return {
                     id: elem.id,
@@ -32,6 +34,7 @@ export default function OnlineList() {
                 setListData(ans);
                 dataCache.id = listId;
                 dataCache.data = ans;
+                setLoading(false);
             } else {
                 setListData(dataCache.data);
             }
@@ -45,7 +48,9 @@ export default function OnlineList() {
                 <Button onClick={() => navigate("../onlineList/1")}>新歌</Button>
                 <Button onClick={() => navigate("../onlineList/2")}>原创</Button>
             </div>
-            <BasicList listData={listData}/>
+            <div style={{transition: "0.2s", opacity: (loading ? 0.4 : 1)}}>
+                <BasicList listData={listData}/>
+            </div>
         </div>
     )
 }
