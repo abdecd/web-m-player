@@ -6,6 +6,7 @@ export default function Lyric() {
     var {musicId} = useParams();
     const [lyric, setLyric] = useState("");
 
+    //fetch lyric
     useEffect(() => {
         (async () => {
             var obj = (await axios(`/api/song/lyric?os=pc&id=${musicId}&lv=-1&tv=-1`)).data;
