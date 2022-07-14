@@ -28,7 +28,7 @@ export default function SearchList() {
     useEffect(() => { searchParams.get("word") ? searchFn(searchParams.get("word")) : 1 },[]);
 
     return (
-        <Box sx={{'& .MuiInput-root': { width: '100%' }}}>
+        <Box sx={{'& .MuiInput-root': { marginLeft: "2vw", width: '92vw' }}}>
             <Input
                 value={searchParams.get("word")}
                 onChange={ev => setSearchParams({ word: ev.target.value }) }
