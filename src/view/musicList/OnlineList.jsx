@@ -24,6 +24,7 @@ export default function OnlineList() {
             if (dataCache.id!=listId) {
                 //设置加载效果
                 setLoading(true);
+
                 var ans = (await axios("/discover/toplist?id="+listId)).data?.match(/<textarea id="song-list-pre-data" style="display:none;">(.+?)<\/textarea>/)?.[1];
                 ans = JSON.parse(ans).map(elem => { return {
                     id: elem.id,
@@ -34,6 +35,7 @@ export default function OnlineList() {
                 setListData(ans);
                 dataCache.id = listId;
                 dataCache.data = ans;
+
                 setLoading(false);
             } else {
                 setListData(dataCache.data);
@@ -48,7 +50,7 @@ export default function OnlineList() {
                 <Button onClick={() => navigate("../onlineList/1")}>新歌</Button>
                 <Button onClick={() => navigate("../onlineList/2")}>原创</Button>
             </div>
-            <div style={{transition: "0.2s", opacity: (loading ? 0.4 : 1)}}>
+            <div style={{transition: "0.2s", opacity: (loading ? 0.35 : 1)}}>
                 <BasicList listData={listData}/>
             </div>
         </div>
