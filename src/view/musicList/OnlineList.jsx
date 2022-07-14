@@ -17,7 +17,7 @@ export default function OnlineList() {
 
     var navigate = useNavigate();
     const [listData, setListData] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         (async () => {
@@ -35,11 +35,12 @@ export default function OnlineList() {
                 setListData(ans);
                 dataCache.id = listId;
                 dataCache.data = ans;
-
-                setLoading(false);
             } else {
                 setListData(dataCache.data);
             }
+
+            //无论是否需要fetch都关闭效果
+            setLoading(false);
         })();
     },[listId]);
 
