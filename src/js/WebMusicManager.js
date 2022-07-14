@@ -3,13 +3,18 @@ import Subscription from "./Subscription";
 
 var WebMusicManager = {
     title: "",
+    id: "",
     handler: new Audio(),
     list: new WebMusicList(),
 
     timeUpdateSubscription: new Subscription(),
     loadStartSubscription: new Subscription(),
 
-    load(title,src) { this.title = title; this.handler.src = src; },
+    load(title,id,src) {
+        this.title = title;
+        this.id = id;
+        this.handler.src = src;
+    },
 
     play() { this.handler.play(); },
     pause() { this.handler.pause(); },
@@ -27,24 +32,21 @@ var WebMusicManager = {
     getCurrentTime() { return this.handler.currentTime; },
     setCurrentTime(time) { this.handler.currentTime = time },
     
-    push(title,src) { this.list.push({title,src}); },
+    push(title,id,src) { this.list.push({title,id,src}); },
     pop() { return this.list.pop(); },
     getList() { return this.list; },
 
     next() {
         var obj = this.list.next();
-        this.title = obj.title;
-        this.handler.src = obj.src;
+        this.load(...obj);
     },
     before() {
         var obj = this.list.before();
-        this.title = obj.title;
-        this.handler.src = obj.src;
+        this.load(...obj);
     },
     nextRandom() {
         var obj = this.list.nextRandom();
-        this.title = obj.title;
-        this.handler.src = obj.src;
+        this.load(...obj);
     },
 
     addTimeUpdateEventListener(fn) { this.timeUpdateSubscription.add(fn); },

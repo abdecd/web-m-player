@@ -20,7 +20,7 @@ export default function BasicList({listData}) {
                     <ListItemButton key={elem.id} onClick={async () => {
                         navigate("/lyric/"+elem.id);
                         var url = await fetchMusicSrc(elem.id);
-                        WebMusicManager.load(elem.name,url);
+                        WebMusicManager.load(elem.name,elem.id,url);
                     }}>
                         <ListItemText primary={elem.name} secondary={elem.author}/>
                     </ListItemButton>
