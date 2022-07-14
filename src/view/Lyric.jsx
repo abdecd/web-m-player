@@ -17,7 +17,7 @@ export default function Lyric() {
 
     return (
         <div style={{textAlign: "center"}}>
-            { lyric.replace(/\[[^\]]+\]/g,"").split("\n").map(elem => <p>{elem}</p>) }
+            { lyric.replace(/\[[^\]]+\]/g,"|&|&|").split("|&|&|").map(elem => <p>{elem}</p>) }
         </div>
     )
 }
