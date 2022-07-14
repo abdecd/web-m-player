@@ -32,7 +32,7 @@ export default function MusicBar() {
         <div className={style.MusicBar}>
             <div className={style.LinearFlex}>
                 <p>{title}</p>
-                <Box className={style.ButtonBar} sx={{'& .MuiButton-root': { width: '10vw' }}}>
+                <Box className={style.ButtonBar} sx={{'& .MuiButton-root': { width: '10vw', minWidth: '0px' }}}>
                     <Button variant="contained" onClick={lFn}>L</Button>
                     <Button variant="contained" onClick={rFn}>R</Button>
                     <Button variant="contained" onClick={playBtnFn}>{playBtnStr}</Button>
