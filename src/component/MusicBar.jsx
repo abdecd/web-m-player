@@ -8,7 +8,7 @@ import style from '../css/MusicBar.module.css'
 export default function MusicBar() {
     const [title, setTitle] = useState("");
     const [progressValue, setProgressValue] = useState(0);
-    const [playBtnStr, setPlayBtnStr] = useState("x_x");
+    const [playBtnStr, setPlayBtnStr] = useState("×_×");
 
     //订阅title
     useEffect(() => {
@@ -26,7 +26,7 @@ export default function MusicBar() {
 
     var lFn = useCallback(() => WebMusicManager.setCurrentTime(WebMusicManager.getCurrentTime()-10));
     var rFn = useCallback(() => WebMusicManager.setCurrentTime(WebMusicManager.getCurrentTime()+10));
-    var playBtnFn = useCallback(() => WebMusicManager.playPause() ? setPlayBtnStr("^_^") : setPlayBtnStr("x_x"));
+    var playBtnFn = useCallback(() => WebMusicManager.playPause() ? setPlayBtnStr("^_^") : setPlayBtnStr("×_×"));
     
     return (
         <div className={style.MusicBar}>
