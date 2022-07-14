@@ -6,6 +6,7 @@ import MusicList from '../view/MusicList'
 import LocalList from '../view/musicList/LocalList'
 import OnlineList from '../view/musicList/OnlineList'
 import Lyric from '../view/Lyric'
+import SearchList from '../view/musicList/SearchList'
 
 export default function MainRouter() {
     return (
@@ -16,6 +17,7 @@ export default function MainRouter() {
                         <Route path='localList' element={<LocalList/>}></Route>
                         <Route path='onlineList/:idIndex' element={<OnlineList/>}></Route>
                         <Route path='onlineList/*' element={<Navigate to="0"/>}></Route>
+                        <Route path='search' element={<SearchList/>}></Route>
 
                         <Route path="*" element={<Navigate to="localList"/>}></Route>
                     </Route>

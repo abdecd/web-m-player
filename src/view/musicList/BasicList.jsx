@@ -15,8 +15,7 @@ export default function BasicList({listData}) {
         <div>
             <List>
             {
-                listData
-                .map(elem => (
+                listData?.map(elem => (
                     //todo: 添加到歌单等
                     <ListItemButton key={elem.id} onClick={async () => {
                         navigate("/lyric/"+elem.id);

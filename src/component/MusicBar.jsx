@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { Button, LinearProgress } from '@mui/material'
+import { Box, Button, LinearProgress } from '@mui/material'
 
 import WebMusicManager from '../js/WebMusicManager'
 
@@ -32,11 +32,11 @@ export default function MusicBar() {
         <div className={style.MusicBar}>
             <div className={style.LinearFlex}>
                 <p>{title}</p>
-                <div className={style.ButtonBar}>
+                <Box className={style.ButtonBar} sx={{'& .MuiButton-root': { width: '10vw' }}}>
                     <Button variant="contained" onClick={lFn}>L</Button>
                     <Button variant="contained" onClick={rFn}>R</Button>
                     <Button variant="contained" onClick={playBtnFn}>{playBtnStr}</Button>
-                </div>
+                </Box>
             </div>
             <LinearProgress variant='determinate' value={progressValue}/>
         </div>
