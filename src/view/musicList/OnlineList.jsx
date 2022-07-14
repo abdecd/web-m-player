@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import BasicList from "./BasicList"
 import style from "../../css/LinearBar.module.css"
 
-import dataCache from "../../js/OnlineList";
+import dataCache from "../../js/OnlineListCache";
 
 export default function OnlineList() {
     //确定list参数
