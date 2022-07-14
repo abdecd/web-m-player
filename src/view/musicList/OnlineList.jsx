@@ -48,7 +48,7 @@ export default function OnlineList() {
                 <Button onClick={() => navigate("../onlineList/1")}>新歌</Button>
                 <Button onClick={() => navigate("../onlineList/2")}>原创</Button>
             </div>
-            <div style={{transition: "0.2s", opacity: (loading ? 0.4 : 1)}}>
+            <div style={{transition: "0.2s", opacity: (loading ? 0.3 : 1)}}>
                 <BasicList listData={listData}/>
             </div>
         </div>
