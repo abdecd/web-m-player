@@ -38,15 +38,15 @@ var WebMusicManager = {
 
     next() {
         var obj = this.list.next();
-        this.load(...obj);
+        this.load(obj.title, obj.id, obj.src);
     },
     before() {
         var obj = this.list.before();
-        this.load(...obj);
+        this.load(obj.title, obj.id, obj.src);
     },
     nextRandom() {
         var obj = this.list.nextRandom();
-        this.load(...obj);
+        this.load(obj.title, obj.id, obj.src);
     },
 
     addTimeUpdateEventListener(fn) { this.timeUpdateSubscription.add(fn); },
