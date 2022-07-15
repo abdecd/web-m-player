@@ -17,7 +17,7 @@ export default function MusicBar() {
 
     //订阅title
     useEffect(() => {
-        var refreshTitle = () => setTitle(WebMusicManager.title);
+        var refreshTitle = () => setTitle(WebMusicManager.name);
         WebMusicManager.addLoadStartEventListener(refreshTitle);
         return () => WebMusicManager.removeLoadStartEventListener(refreshTitle);
     },[]);
@@ -35,7 +35,7 @@ export default function MusicBar() {
 
     var getMusicId = useCallback(async musicName => (await musicAjax.fetchSearch(musicName))?.[0].id,[]);
     var turnToLyric = useCallback(async () => {
-        if (!WebMusicManager.id) WebMusicManager.id = await getMusicId(WebMusicManager.title);
+        if (!WebMusicManager.id) WebMusicManager.id = await getMusicId(WebMusicManager.name);
         var newPath = "/lyric/"+WebMusicManager.id;
         if (location.pathname!=newPath) navigate(newPath);
     },[location]);
