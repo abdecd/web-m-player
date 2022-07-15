@@ -11,7 +11,7 @@ export default function Lyric() {
     useEffect(() => {
         (async () => {
             setLoading(true);//设置加载效果
-            var lrcGot = await musicAjax.lyric(musicId);
+            var lrcGot = await musicAjax.fetchLyric(musicId);
             setLyric(lrcGot);
             setLoading(false);
         })();
@@ -19,7 +19,7 @@ export default function Lyric() {
 
     return (
         <div style={{textAlign: "center", transition: "0.2s", opacity: (loading ? 0.35 : 1)}}>
-            { lyric.replace(/\[[^\]]+\]/g,"|&|&|").split("|&|&|").map(elem => <p>{elem}</p>) }
+            { lyric?.replace(/\[[^\]]+\]/g,"|&|&|").split("|&|&|").map(elem => <p>{elem}</p>) }
         </div>
     )
 }

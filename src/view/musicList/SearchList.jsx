@@ -10,8 +10,8 @@ export default function SearchList() {
     const [loading, setLoading] = useState(true);
 
     var searchFn = useCallback(async word => {
-        setLoading(true);//设置加载效果
-        var ans = await musicAjax.search(word);
+        setLoading(true);
+        var ans = await musicAjax.fetchSearch(word);
         setSearchData(ans);
         setLoading(false);
     },[]);

@@ -33,7 +33,7 @@ export default function MusicBar() {
     var rFn = useCallback(() => WebMusicManager.setCurrentTime(WebMusicManager.getCurrentTime()+10));
     var playBtnFn = useCallback(() => WebMusicManager.playPause() ? setPlayBtnStr("^_^") : setPlayBtnStr("×_×"));
 
-    var getMusicId = useCallback(async musicName => (await musicAjax.search(musicName))?.[0].id,[]);
+    var getMusicId = useCallback(async musicName => (await musicAjax.fetchSearch(musicName))?.[0].id,[]);
     var turnToLyric = useCallback(async () => {
         if (!WebMusicManager.id) WebMusicManager.id = await getMusicId(WebMusicManager.title);
         var newPath = "/lyric/"+WebMusicManager.id;

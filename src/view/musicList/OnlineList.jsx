@@ -23,7 +23,7 @@ export default function OnlineList() {
         (async () => {
             if (dataCache.id!=listId) {
                 setLoading(true);//设置加载效果
-                var ans = await musicAjax.discover(listId);
+                var ans = await musicAjax.fetchDiscover(listId);
                 setListData(ans);
                 dataCache.id = listId;
                 dataCache.data = ans;
