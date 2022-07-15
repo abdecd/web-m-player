@@ -80,4 +80,6 @@ var WebMusicManager = {
     },
 };
 
+WebMusicManager.handler.addEventListener("ended",WebMusicManager._loopFn);
+
 export default WebMusicManager;
