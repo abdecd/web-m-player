@@ -6,29 +6,6 @@ var WebMusicManager = {
     handler: new Audio(),
     list: new WebMusicList(),
 
-    //循环播放
-    _loopMode: "next",
-    _loopFn: null,
-    get loopMode() { return this._loopMode },
-    set loopMode(newLoopMode) {
-        this.handler.removeEventListener("ended",this._loopFn);
-        switch(newLoopMode) {
-            case "next":
-                this._loopMode = "next";
-                this._loopFn = (async function() { if (await this.next()) this.play() }).bind(this);
-                break;
-            case "repeat":
-                this._loopMode = "repeat";
-                this._loopFn = (function() { this.play() }).bind(this);
-                break;
-            case "random":
-                this._loopMode = "random";
-                this._loopFn = (async function() { if (await this.nextRandom()) this.play() }).bind(this);
-                break;
-        }
-        this.handler.addEventListener("ended",this._loopFn);
-    },
-
     async load(name,id,src) {
         this.name = name;
         this.id = id;
@@ -60,6 +37,29 @@ var WebMusicManager = {
     getMaxTime() { return this.handler.duration || 10000000; },
     getCurrentTime() { return this.handler.currentTime; },
     setCurrentTime(time) { this.handler.currentTime = time },
+
+    //循环播放
+    _loopMode: "next",
+    _loopFn: null,
+    get loopMode() { return this._loopMode },
+    set loopMode(newLoopMode) {
+        this.handler.removeEventListener("ended",this._loopFn);
+        switch(newLoopMode) {
+            case "next":
+                this._loopMode = "next";
+                this._loopFn = (async function() { if (await this.next()) this.play() }).bind(this);
+                break;
+            case "repeat":
+                this._loopMode = "repeat";
+                this._loopFn = (function() { this.play() }).bind(this);
+                break;
+            case "random":
+                this._loopMode = "random";
+                this._loopFn = (async function() { if (await this.nextRandom()) this.play() }).bind(this);
+                break;
+        }
+        this.handler.addEventListener("ended",this._loopFn);
+    },
     
     push(name,id,src) { this.list.push({name,id,src}); },
     pop() { return this.list.pop(); },
