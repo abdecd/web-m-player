@@ -35,6 +35,7 @@ export default function MusicBar() {
 
     var getMusicId = useCallback(async musicName => (await musicAjax.fetchSearch(musicName))?.[0].id,[]);
     var turnToLyric = useCallback(async () => {
+        if (!title) return;
         if (!WebMusicManager.id) WebMusicManager.id = await getMusicId(WebMusicManager.name);
         var newPath = "/lyric/"+WebMusicManager.id;
         if (location.pathname!=newPath) navigate(newPath);
@@ -43,7 +44,7 @@ export default function MusicBar() {
     return (
         <div className={style.MusicBar}>
             <div className={style.LinearFlex}>
-                <p onClick={() => title ? turnToLyric() : 1}>{title}</p>
+                <p onClick={turnToLyric}>{title}</p>
                 <Box className={style.ButtonBar} sx={{'& .MuiButton-root': { width: '10vw', minWidth: '0px' }}}>
                     <Button variant="contained" disableElevation onClick={lFn}>L</Button>
                     <Button variant="contained" disableElevation onClick={rFn}>R</Button>
