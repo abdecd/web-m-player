@@ -1,14 +1,11 @@
 import React from 'react'
 import { List, ListItemText, ListItemButton } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
 
 import WebMusicManager from '../../js/WebMusicManager';
 import musicAjax from '../../js/musicAjax';
 
 export default function BasicList({listData}) {
     //listData <==> [{ id or url, name, author },...]
-    var navigate = useNavigate();
-
     return (
         <div>
             <List>
