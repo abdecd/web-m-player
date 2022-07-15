@@ -39,7 +39,7 @@ export default function MusicBar() {
         if (!WebMusicManager.id) WebMusicManager.id = await getMusicId(WebMusicManager.name);
         var newPath = "/lyric/"+WebMusicManager.id;
         if (location.pathname!=newPath) navigate(newPath);
-    },[location]);
+    },[title,location]);
     
     return (
         <div className={style.MusicBar}>

@@ -19,7 +19,7 @@ export default function Lyric() {
 
     return (
         <div style={{textAlign: "center", transition: "0.2s", opacity: (loading ? 0.35 : 1)}}>
-            { lyric?.replace(/\[[^\]]+\]/g,"|&|&|").split("|&|&|").map(elem => <p>{elem}</p>) }
+            { lyric?.replace(/\[[^\]]+\]/g,"|&|&|").split("|&|&|").map((elem,index) => <p key={index+elem}>{elem}</p>) }
         </div>
     )
 }
