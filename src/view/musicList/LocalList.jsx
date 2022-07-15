@@ -1,5 +1,6 @@
 import { Button } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react'
+import BasicList from './BasicList'
 import musicAjax from '../../js/musicAjax'
 
 export default function LocalList() {
@@ -18,14 +19,14 @@ export default function LocalList() {
     return (
         <div>
             {
-                (listData.length>0) ? (
-                    <div style={{transition: "0.2s", opacity: (loading ? 0.35 : 1)}}>
-                        <BasicList listData={listData}/>
-                    </div>
-                ) : (
+                (listData.length==0) ? (
                     <div style={{textAlign: "center"}}>
                         <p>Nothing.</p>
                         <Button variant='outlined' onClick={fetchLocalList}>refresh</Button>
+                    </div>
+                ) : (
+                    <div style={{transition: "0.2s", opacity: (loading ? 0.35 : 1)}}>
+                        <BasicList listData={listData}/>
                     </div>
                 )
             }
