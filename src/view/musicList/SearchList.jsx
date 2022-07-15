@@ -1,7 +1,7 @@
 import { Box, Input } from '@mui/material';
-import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import musicAjax from '../../js/musicAjax';
 import BasicList from './BasicList';
 
 export default function SearchList() {
@@ -10,17 +10,9 @@ export default function SearchList() {
     const [loading, setLoading] = useState(true);
 
     var searchFn = useCallback(async word => {
-        //设置加载效果
-        setLoading(true);
-
-        var ans = (await axios(`/api/search/get?s=${word}&type=1&limit=30`)).data;
-        ans = ans.result.songs.map(elem => { return {
-            id: elem.id,
-            name: elem.name,
-            author: elem.artists.map(artist => artist.name).join("、")
-        } });
+        setLoading(true);//设置加载效果
+        var ans = await musicAjax.search(word);
         setSearchData(ans);
-
         setLoading(false);
     },[]);
 

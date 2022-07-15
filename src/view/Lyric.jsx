@@ -1,6 +1,6 @@
-import axios from 'axios';
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import musicAjax from '../js/musicAjax';
 
 export default function Lyric() {
     var {musicId} = useParams();
@@ -10,14 +10,9 @@ export default function Lyric() {
     //fetch lyric
     useEffect(() => {
         (async () => {
-            //设置加载效果
-            setLoading(true);
-
-            var obj = (await axios(`/api/song/lyric?os=pc&id=${musicId}&lv=-1&tv=-1`)).data;
-            var lrcGot = obj.lrc.lyric;
-            // var lrcGot = obj.tlyric.lyric;
+            setLoading(true);//设置加载效果
+            var lrcGot = await musicAjax.lyric(musicId);
             setLyric(lrcGot);
-
             setLoading(false);
         })();
     },[]);

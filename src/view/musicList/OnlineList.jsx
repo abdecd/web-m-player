@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Button from '@mui/material/Button';
@@ -7,6 +6,7 @@ import BasicList from "./BasicList"
 import style from "../../css/LinearBar.module.css"
 
 import dataCache from "../../js/OnlineListCache";
+import musicAjax from '../../js/musicAjax';
 
 export default function OnlineList() {
     //确定list参数
@@ -22,16 +22,8 @@ export default function OnlineList() {
     useEffect(() => {
         (async () => {
             if (dataCache.id!=listId) {
-                //设置加载效果
-                setLoading(true);
-
-                var ans = (await axios("/discover/toplist?id="+listId)).data?.match(/<textarea id="song-list-pre-data" style="display:none;">(.+?)<\/textarea>/)?.[1];
-                ans = JSON.parse(ans).map(elem => { return {
-                    id: elem.id,
-                    name: elem.name,
-                    author: elem.artists.map(artist => artist.name).join("、")
-                } });
-    
+                setLoading(true);//设置加载效果
+                var ans = await musicAjax.discover(listId);
                 setListData(ans);
                 dataCache.id = listId;
                 dataCache.data = ans;
