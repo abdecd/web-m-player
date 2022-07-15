@@ -6,6 +6,7 @@ var WebMusicManager = {
     handler: new Audio(),
     list: new WebMusicList(),
 
+    //循环播放
     _loopMode: "next",
     _loopFn: null,
     get loopMode() { return this._loopMode },
