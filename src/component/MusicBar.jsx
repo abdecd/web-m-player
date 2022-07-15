@@ -11,6 +11,7 @@ export default function MusicBar() {
     const [title, setTitle] = useState("");
     const [progressValue, setProgressValue] = useState(0);
     const [playBtnStr, setPlayBtnStr] = useState("×_×");
+    const [loopBtnStr, setLoopBtnStr] = useState("⇌");
 
     var navigate = useNavigate();
     var location = useLocation();
@@ -44,6 +45,18 @@ export default function MusicBar() {
     var lFn = useCallback(() => WebMusicManager.setCurrentTime(WebMusicManager.getCurrentTime()-10),[]);
     var rFn = useCallback(() => WebMusicManager.setCurrentTime(WebMusicManager.getCurrentTime()+10),[]);
     var playBtnFn = useCallback(() => WebMusicManager.playPause(),[]);
+    var loopBtnFn = useCallback(() => {
+        if (loopBtnStr=="⇌") {
+            WebMusicManager.loopMode = "repeat";
+            setLoopBtnStr("↺");
+        } else if (loopBtnStr=="↺") {
+            WebMusicManager.loopMode = "random";
+            setLoopBtnStr("↝");
+        } else if (loopBtnStr=="↝") {
+            WebMusicManager.loopMode = "next";
+            setLoopBtnStr("⇌");
+        }
+    },[loopBtnStr]);
 
     var getMusicId = useCallback(async musicName => (await musicAjax.fetchSearch(musicName))?.[0].id,[]);
     var turnToLyric = useCallback(async () => {
@@ -58,6 +71,7 @@ export default function MusicBar() {
             <div className={style.LinearFlex}>
                 <p onClick={turnToLyric}>{title}</p>
                 <Box className={style.ButtonBar} sx={{'& .MuiButton-root': { width: '10vw', minWidth: '0px' }}}>
+                    <Button variant="contained" disableElevation onClick={loopBtnFn}>{loopBtnStr}</Button>
                     <Button variant="contained" disableElevation onClick={lFn}>L</Button>
                     <Button variant="contained" disableElevation onClick={rFn}>R</Button>
                     <Button variant="contained" disableElevation onClick={playBtnFn}>{playBtnStr}</Button>
