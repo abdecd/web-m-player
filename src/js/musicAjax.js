@@ -33,7 +33,7 @@ export default {
     },
 
     loadLocalListSync() {
-        return window.PhoneMusicManager?.loadFullList().map(elem => { return {
+        return window.PhoneMusicManager?.loadFullList()?.map(elem => { return {
             id: null,
             url: elem.path,
             name: elem.name.match(/(.+?)\.[^\.]+$/)?.[1],
