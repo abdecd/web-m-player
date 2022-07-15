@@ -1,5 +1,4 @@
 import WebMusicList from "./WebMusicList";
-import Subscription from "./Subscription";
 
 var WebMusicManager = {
     name: "",
@@ -7,13 +6,20 @@ var WebMusicManager = {
     handler: new Audio(),
     list: new WebMusicList(),
 
-    timeUpdateSubscription: new Subscription(),
-    loadStartSubscription: new Subscription(),
-
-    load(name,id,src) {
+    async load(name,id,src) {
         this.name = name;
         this.id = id;
         this.handler.src = src;
+
+        return new Promise(resolve => {
+            var fn = (function() {
+                this.handler.removeEventListener("canplay",fn);
+                resolve();
+            }).bind(this);
+
+            //设置监听
+            this.handler.addEventListener("canplay",fn);
+        });
     },
 
     play() { this.handler.play(); },
@@ -48,14 +54,6 @@ var WebMusicManager = {
         var obj = this.list.nextRandom();
         this.load(obj.name, obj.id, obj.src);
     },
-
-    addTimeUpdateEventListener(fn) { this.timeUpdateSubscription.add(fn); },
-    removeTimeUpdateEventListener(fn) { this.timeUpdateSubscription.remove(fn); },
-    addLoadStartEventListener(fn) { this.loadStartSubscription.add(fn); },
-    removeLoadStartEventListener(fn) { this.loadStartSubscription.remove(fn); },
 };
-
-WebMusicManager.handler.ontimeupdate = ev => WebMusicManager.timeUpdateSubscription.publish(ev);
-WebMusicManager.handler.onloadstart = ev => WebMusicManager.loadStartSubscription.publish(ev);
 
 export default WebMusicManager;
