@@ -6,7 +6,7 @@ var WebMusicManager = {
     handler: new Audio(),
     list: new WebMusicList(),
 
-    async load(name,id,src) {
+    async load(name,id,src) {//id非必须
         this.name = name;
         this.id = id;
         this.handler.src = src;
