@@ -38,6 +38,10 @@ var WebMusicManager = {
     getCurrentTime() { return this.handler.currentTime; },
     setCurrentTime(time) { this.handler.currentTime = time },
 
+    push(name,id,src) { this.list.push({name,id,src}); },
+    pop() { return this.list.pop(); },
+    getList() { return this.list; },
+
     //循环播放
     _loopMode: "next",
     _loopFn: null,
@@ -51,7 +55,7 @@ var WebMusicManager = {
                 break;
             case "repeat":
                 this._loopMode = "repeat";
-                this._loopFn = (function() { this.play() }).bind(this);
+                this._loopFn = (function() { this.setCurrentTime(0); this.play() }).bind(this);
                 break;
             case "random":
                 this._loopMode = "random";
@@ -60,10 +64,6 @@ var WebMusicManager = {
         }
         this.handler.addEventListener("ended",this._loopFn);
     },
-    
-    push(name,id,src) { this.list.push({name,id,src}); },
-    pop() { return this.list.pop(); },
-    getList() { return this.list; },
 
     async next() {
         var obj = this.list.next();
@@ -79,6 +79,17 @@ var WebMusicManager = {
         var obj = this.list.nextRandom();
         if (!obj) return false;
         return await this.load(obj.name, obj.id, obj.src);
+    },
+
+    async nextByLoopOrder() {
+        switch(this._loopMode) {
+            case "next":
+                return await this.next();
+            case "repeat":
+                return (this.setCurrentTime(0),this.play());
+            case "random":
+                return await this.nextRandom();
+        }
     },
 };
 

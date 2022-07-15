@@ -1,0 +1,10 @@
+.LoopBlock {
+    background-color: rgb(218,232,232);
+
+    position: fixed;
+    left: 0px;
+    bottom: 60px;
+
+    width: 100%;
+    height: 70vh;
+}
