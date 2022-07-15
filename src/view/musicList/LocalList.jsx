@@ -17,19 +17,19 @@ export default function LocalList() {
     useEffect(fetchLocalList,[]);
 
     return (
-        <div>
-            {
-                (listData.length==0) ? (
-                    <div style={{textAlign: "center"}}>
-                        <p>Nothing.</p>
-                        <Button variant='outlined' onClick={fetchLocalList}>refresh</Button>
-                    </div>
+        <div style={{transition: "0.2s", opacity: (loading ? 0.35 : 1), textAlign: "center"}}>
+            { (listData.length==0) ? (
+                (loading) ? (
+                    <p>Refreshing...</p>
                 ) : (
-                    <div style={{transition: "0.2s", opacity: (loading ? 0.35 : 1)}}>
-                        <BasicList listData={listData}/>
-                    </div>
+                    <>
+                    <p>Nothing.</p>
+                    <Button variant='outlined' onClick={fetchLocalList}>refresh</Button>
+                    </>
                 )
-            }
+            ) : (
+                <BasicList listData={listData}/>
+            ) }
         </div>
     )
 }
