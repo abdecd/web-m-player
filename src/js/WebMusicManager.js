@@ -6,6 +6,27 @@ var WebMusicManager = {
     handler: new Audio(),
     list: new WebMusicList(),
 
+    _loopMode: "next",
+    _loopFn: async () => (await this.next()) ? this.play() : 1,
+    loopMode: {
+        get: function() { return _loopMode },
+        set: async function(newLoopMode) {
+            this.handler.removeEventListener("ended",_loopFn);
+            switch(newLoopMode) {
+                case "next":
+                    _loopFn = async () => (await this.next()) ? this.play() : 1;
+                    break;
+                case "repeat":
+                    _loopFn = () => this.play();
+                    break;
+                case "random":
+                    _loopFn = async () => (await this.nextRandom()) ? this.play() : 1;
+                    break;
+            }
+            this.handler.addEventListener("ended",_loopFn);
+        }
+    },
+
     async load(name,id,src) {
         this.name = name;
         this.id = id;
@@ -14,7 +35,7 @@ var WebMusicManager = {
         return new Promise(resolve => {
             var fn = (function() {
                 this.handler.removeEventListener("canplay",fn);
-                resolve();
+                resolve(true);
             }).bind(this);
 
             //设置监听
@@ -42,17 +63,20 @@ var WebMusicManager = {
     pop() { return this.list.pop(); },
     getList() { return this.list; },
 
-    next() {
+    async next() {
         var obj = this.list.next();
-        this.load(obj.name, obj.id, obj.src);
+        if (!obj) return false;
+        return await this.load(obj.name, obj.id, obj.src);
     },
-    before() {
+    async before() {
         var obj = this.list.before();
-        this.load(obj.name, obj.id, obj.src);
+        if (!obj) return false;
+        return await this.load(obj.name, obj.id, obj.src);
     },
-    nextRandom() {
+    async nextRandom() {
         var obj = this.list.nextRandom();
-        this.load(obj.name, obj.id, obj.src);
+        if (!obj) return false;
+        return await this.load(obj.name, obj.id, obj.src);
     },
 };
 

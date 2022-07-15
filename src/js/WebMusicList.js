@@ -1,9 +1,10 @@
 class WebMusicList extends Array {
     index = -1;
     
-    next() { return this[this.index = (this.index==this.length-1 ? 0 : this.index+1)]; }
-    before() { return this[this.index = (this.index<=0 ? (this.length-1) : this.index-1)]; }
+    next() { return this.index==-1 ? null : this[this.index = (this.index==this.length-1 ? 0 : this.index+1)]; }
+    before() { return this.index==-1 ? null : this[this.index = (this.index<=0 ? (this.length-1) : this.index-1)]; }
     nextRandom() {
+        if (this.index==-1) return null;
         //create new list
         if (!this.randomList || this.randomList.length==0) {
             this.randomList = new Array(this.length);
