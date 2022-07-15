@@ -24,7 +24,7 @@ export default function LocalList() {
                     </div>
                 ) : (
                     <div style={{textAlign: "center"}}>
-                        <p>nothing.</p>
+                        <p>Nothing.</p>
                         <Button variant='outlined' onClick={fetchLocalList}>refresh</Button>
                     </div>
                 )
