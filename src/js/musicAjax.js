@@ -33,6 +33,11 @@ export default {
     },
 
     loadLocalListSync() {
-        return window.PhoneMusicManager?.loadFullList();
+        return window.PhoneMusicManager?.loadFullList().map(elem => { return {
+            id: null,
+            url: elem.path,
+            name: elem.name,
+            author: "",
+        } });
     },
 };
