@@ -18,7 +18,7 @@ var WebMusicManager = {
                 break;
             case "repeat":
                 this._loopMode = "repeat";
-                this._loopFn = (function() { this.play(); console.log("ha") }).bind(this);
+                this._loopFn = (function() { this.play() }).bind(this);
                 break;
             case "random":
                 this._loopMode = "random";
