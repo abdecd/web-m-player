@@ -13,8 +13,8 @@ export default function BasicList({listData}) {
                 listData?.map(elem => (
                     //todo: 添加到歌单等
                     <ListItemButton key={elem.id || elem.url} onClick={async () => {
-                        await WebMusicManager.load(elem.name, elem.id || null, elem.url || await musicAjax.fetchSrc(elem.id));
-                        WebMusicManager.playPause();
+                        if (await WebMusicManager.load(elem.name, elem.id || null, elem.url || await musicAjax.fetchSrc(elem.id)))
+                            WebMusicManager.play();
                     }}>
                         <ListItemText primary={elem.name} secondary={elem.author}/>
                     </ListItemButton>
