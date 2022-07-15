@@ -7,24 +7,25 @@ var WebMusicManager = {
     list: new WebMusicList(),
 
     _loopMode: "next",
-    _loopFn: async () => (await this.next()) ? this.play() : 1,
-    loopMode: {
-        get: function() { return _loopMode },
-        set: async function(newLoopMode) {
-            this.handler.removeEventListener("ended",_loopFn);
-            switch(newLoopMode) {
-                case "next":
-                    _loopFn = async () => (await this.next()) ? this.play() : 1;
-                    break;
-                case "repeat":
-                    _loopFn = () => this.play();
-                    break;
-                case "random":
-                    _loopFn = async () => (await this.nextRandom()) ? this.play() : 1;
-                    break;
-            }
-            this.handler.addEventListener("ended",_loopFn);
+    _loopFn: null,
+    get loopMode() { return this._loopMode },
+    set loopMode(newLoopMode) {
+        this.handler.removeEventListener("ended",this._loopFn);
+        switch(newLoopMode) {
+            case "next":
+                this._loopMode = "next";
+                this._loopFn = (async function() { if (await this.next()) this.play() }).bind(this);
+                break;
+            case "repeat":
+                this._loopMode = "repeat";
+                this._loopFn = (function() { this.play(); console.log("ha") }).bind(this);
+                break;
+            case "random":
+                this._loopMode = "random";
+                this._loopFn = (async function() { if (await this.nextRandom()) this.play() }).bind(this);
+                break;
         }
+        this.handler.addEventListener("ended",this._loopFn);
     },
 
     async load(name,id,src) {
@@ -80,6 +81,7 @@ var WebMusicManager = {
     },
 };
 
+WebMusicManager._loopFn = (async function() { if (await this.next()) this.play() }).bind(WebMusicManager);
 WebMusicManager.handler.addEventListener("ended",WebMusicManager._loopFn);
 
 export default WebMusicManager;
