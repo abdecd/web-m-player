@@ -21,35 +21,32 @@ class WebMusicList extends Array {
 
     search(idOrSrc) {
         for (let i=0,L=this.length;i<L;i++) {
-            if (this[i].id==idOrSrc || this[i].src==idOrSrc) return i;
+            if (WebMusicList.getIdOrSrc(this[i])==idOrSrc) return i;
         }
         return -1;
     }
+    static getIdOrSrc(elem) {
+        return elem.id || elem.src;
+    }
 
-    push(...sth) {
-        super.push(...sth);
-        this.randomList = null;
-        this.changeSub.publish(this);
+    push(obj) {
+        if (!this.find(elem => WebMusicList.getIdOrSrc(elem)==WebMusicList.getIdOrSrc(obj))) {
+            super.push(obj);
+            this.randomList = null;
+            this.changeSub.publish(this.slice(0));
+        }
     }
-    pop(...sth) {
-        super.pop(...sth);
+    pop() {
+        super.pop();
         this.randomList = null;
-        this.changeSub.publish(this);
+        this.changeSub.publish(this.slice(0));
     }
-    shift(...sth) {
-        super.shift(...sth);
-        this.randomList = null;
-        this.changeSub.publish(this);
-    }
-    unshift(...sth) {
-        super.unshift(...sth);
-        this.randomList = null;
-        this.changeSub.publish(this);
-    }
+    shift(...sth) { return; }
+    unshift(...sth) { return; }
     splice(...sth) {
         super.splice(...sth);
         this.randomList = null;
-        this.changeSub.publish(this);
+        this.changeSub.publish(this.slice(0));
     }
 
     subscribe(fn) { this.changeSub.add(fn); }
