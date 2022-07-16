@@ -13,7 +13,6 @@ class WebMusicList extends Array {
         this.name = name;
         this.storage = storage;
         if (arr) for (let i=0,L=arr.length;i<L;i++) this[i]=arr[i];
-        console.log(this.name,arr,storage);
         if (this.storage) WebMusicListStorage.set(this.name,this);
     }
     
