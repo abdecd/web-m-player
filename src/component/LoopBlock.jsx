@@ -15,7 +15,7 @@ export default function LoopBlock() {
     //订阅specificList
     useEffect(() => {
         setSpecificList(WebMusicManager.list);
-
+        //对后续变化
         var refreshFn = list => {
             setSpecificList(list);
             WebMusicListStorage.set(list.name,list);
@@ -27,6 +27,7 @@ export default function LoopBlock() {
     //订阅nameList
     useEffect(() => {
         setNameList(WebMusicListStorage.names);
+        //对后续变化
         var refreshFn = names => setNameList(names);
         WebMusicListStorage.subscribe(refreshFn);
         return () => WebMusicListStorage.unSubscribe(refreshFn);
