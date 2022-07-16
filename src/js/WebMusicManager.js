@@ -22,14 +22,16 @@ var WebMusicManager = {
         });
     },
 
-    play() { this.handler.play(); },
+    async play() {
+        if (this.name || await this.nextByLoopOrder()) this.handler.play();
+    },
     pause() { this.handler.pause(); },
     playPause() {
         if (this.handler.paused) {
-            this.handler.play();
+            this.play();
             return true;
         } else {
-            this.handler.pause();
+            this.pause();
             return false;
         }
     },
