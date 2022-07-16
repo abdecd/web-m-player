@@ -4,7 +4,7 @@ import { List, ListItemText, ListItemButton, ListItem } from '@mui/material'
 import style from '../css/LoopBlock.module.css'
 import WebMusicManager from '../js/WebMusicManager'
 
-export default function LoopBlock({shown}) {
+export default function LoopBlock() {
     const [listData, setListData] = useState([]);
 
     //订阅LoopList
@@ -26,11 +26,7 @@ export default function LoopBlock({shown}) {
     },[]);
 
     return (
-        <div className={style.LoopBlock} style={{
-            transition: "0.2s",
-            opacity: shown ? "1" : "0",
-            pointerEvents: shown ? "auto" : "none",
-        }}>
+        <div className={style.LoopBlock}>
         {
             (!listData || listData.length==0) ? (
                 <p>null</p>
