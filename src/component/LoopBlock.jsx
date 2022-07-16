@@ -71,7 +71,7 @@ export default function LoopBlock() {
         WebMusicListStorage.remove(elem.name);
         if (specificList.name==elem.name) {
             if (WebMusicListStorage.names.length==0) {
-                var newList = new WebMusicList("defaultList");
+                var newList = new WebMusicList();
                 WebMusicManager.list = newList;
                 WebMusicListStorage.set(newList.name,newList);
             } else  {

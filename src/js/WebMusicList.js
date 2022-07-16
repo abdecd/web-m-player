@@ -6,7 +6,7 @@ class WebMusicList extends Array {
     name = null;
     changeSub = new Subscription();
 
-    constructor(name=null,arr=null) {
+    constructor(name="defaultList",arr=null) {
         super();
         this.name = name;
         if (arr) for (let i=0,L=arr.length;i<L;i++) this[i]=arr[i];
