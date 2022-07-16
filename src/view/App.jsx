@@ -11,11 +11,11 @@ export default function App({children}) {
                 {children}
             </div>
             <div style={{
-                transition: "0.5s",
+                transition: "0.3s",
                 opacity: (loopBlockShown ? 1 : 0),
                 position: 'fixed',
                 right: "3vw",
-                bottom: (loopBlockShown ? "60px" : "0px"),
+                bottom: (loopBlockShown ? "60px" : "20px"),
                 pointerEvents: (loopBlockShown ? "auto" : "none")
             }}>
                 <LoopBlock/>
