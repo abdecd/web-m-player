@@ -51,7 +51,7 @@ export default function LoopBlock() {
         var name = prompt("name");
         if (!name) return;
         if (WebMusicListStorage.names.includes(name)) {
-            alert("已有该名称。");
+            console.info("已有该名称。");
             return;
         }
         var newList = new WebMusicList(name);
