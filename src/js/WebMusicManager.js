@@ -7,6 +7,8 @@ var WebMusicManager = {
     list: new WebMusicList(),
 
     async load(name,id,src) {//id非必须
+        if (!src) return false;
+
         this.name = name;
         this.id = id;
         this.handler.src = src;
@@ -40,7 +42,7 @@ var WebMusicManager = {
     getCurrentTime() { return this.handler.currentTime; },
     setCurrentTime(time) { this.handler.currentTime = time },
 
-    push(name,id,src) { this.list.push({name,id,src}); },
+    push(name,id,src) { return this.list.push({name,id,src}); },
     pop() { return this.list.pop(); },
     getList() { return this.list; },
 

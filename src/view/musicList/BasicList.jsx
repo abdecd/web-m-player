@@ -8,12 +8,16 @@ export default function BasicList({listData}) {
     //listData <==> [{ id or url, name, author },...]
 
     var playMusic = useCallback(async elem => {
-        if (await WebMusicManager.load(elem.name, elem.id || null, elem.url || await musicAjax.fetchSrc(elem.id)))
+        if (await WebMusicManager.load(elem.name, elem.id || null, elem.url || await musicAjax.fetchSrc(elem.id))) {
             WebMusicManager.play();
+        } else {
+            console.info("载入失败，可能为付费歌曲。");
+        }
     },[]);
 
     var addMusic = useCallback(async elem => {
-        WebMusicManager.push(elem.name, elem.id || null, elem.url || await musicAjax.fetchSrc(elem.id));
+        if (!WebMusicManager.push(elem.name, elem.id || null, elem.url || await musicAjax.fetchSrc(elem.id)))
+            console.info("添加至播放列表失败，可能为付费歌曲。");
     },[]);
 
     return (

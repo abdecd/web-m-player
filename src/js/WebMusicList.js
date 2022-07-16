@@ -30,19 +30,21 @@ class WebMusicList extends Array {
     }
 
     push(obj) {
-        if (!this.find(elem => WebMusicList.getIdOrSrc(elem)==WebMusicList.getIdOrSrc(obj))) {
+        if (obj.src && !this.find(elem => WebMusicList.getIdOrSrc(elem)==WebMusicList.getIdOrSrc(obj))) {
             super.push(obj);
             this.randomList = null;
             this.changeSub.publish(this.slice(0));
+            return true;
         }
+        return false;
     }
     pop() {
-        super.pop();
         this.randomList = null;
         this.changeSub.publish(this.slice(0));
+        return super.pop();
     }
-    shift(...sth) { return; }
-    unshift(...sth) { return; }
+    shift(...sth) { throw Error("should not use it."); }
+    unshift(...sth) { throw Error("should not use it."); }
     splice(...sth) {
         super.splice(...sth);
         this.randomList = null;

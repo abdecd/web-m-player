@@ -15,8 +15,11 @@ export default function LoopBlock() {
     },[]);
 
     var playMusic = useCallback(async elem => {
-        if (await WebMusicManager.load(elem.name, elem.id, elem.src))
+        if (await WebMusicManager.load(elem.name,elem.id,elem.src)) {
             WebMusicManager.play();
+        } else {
+            console.info("载入失败，可能为付费歌曲。");
+        }
     },[]);
 
     var removeMusic = useCallback(elem => {
