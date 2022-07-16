@@ -1,4 +1,5 @@
 import WebMusicList from "./WebMusicList";
+import WebMusicListStorage from "./WebMusicListStorage";
 
 var WebMusicManager = {
     name: "",
@@ -97,6 +98,15 @@ var WebMusicManager = {
         return false;
     },
 };
+
+if (WebMusicListStorage.names.length==0) {
+    var newList = new WebMusicList("defaultList");
+    WebMusicManager.list = newList;
+    WebMusicListStorage.set(newList.name,newList);
+} else  {
+    var name = WebMusicListStorage.names[0];
+    WebMusicManager.list = new WebMusicList(name,WebMusicListStorage.get(name));
+}
 
 WebMusicManager._loopFn = (async function() { if (await this.next()) this.play() }).bind(WebMusicManager);
 WebMusicManager.handler.addEventListener("ended",WebMusicManager._loopFn);

@@ -1,17 +1,35 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { List, ListItemText, ListItemButton, ListItem } from '@mui/material'
+import { Box, Button } from '@mui/material'
 
+import BasicList from './LoopBlock/BasicList'
 import style from '../css/LoopBlock.module.css'
 import WebMusicManager from '../js/WebMusicManager'
+import WebMusicListStorage from '../js/WebMusicListStorage'
+import WebMusicList from '../js/WebMusicList'
 
 export default function LoopBlock() {
-    const [listData, setListData] = useState([]);
+    const [specificList, setSpecificList] = useState(new WebMusicList());
+    const [nameList, setNameList] = useState([]);
+    const [manageList, setManageList] = useState(false);
 
-    //订阅LoopList
+    //订阅specificList
     useEffect(() => {
-        var refreshFn = list => setListData(list);
+        setSpecificList(WebMusicManager.list);
+
+        var refreshFn = list => {
+            setSpecificList(list);
+            WebMusicListStorage.set(list.name,list);
+        };
         WebMusicManager.list.subscribe(refreshFn);
-        return () => WebMusicManager.list.unSubscribe(refreshFn);
+        // return () => WebMusicManager.list.unSubscribe(refreshFn);
+    },[WebMusicManager.list]);
+
+    //订阅nameList
+    useEffect(() => {
+        setNameList(WebMusicListStorage.names.map(elem => {return {name: elem, id: elem}}));
+        var refreshFn = names => setNameList(names.map(elem => {return {name: elem, id: elem}}));
+        WebMusicListStorage.subscribe(refreshFn);
+        return () => WebMusicListStorage.unSubscribe(refreshFn);
     },[]);
 
     var playMusic = useCallback(async elem => {
@@ -28,31 +46,48 @@ export default function LoopBlock() {
         WebMusicManager.list.splice(index,1);
     },[]);
 
+    var createList = useCallback(() => {
+        var name = prompt("name");
+        if (!name) return;
+        if (WebMusicListStorage.names.includes(name)) {
+            alert("已有该名称。");
+            return;
+        }
+        var newList = new WebMusicList(name);
+        WebMusicListStorage.set(name,newList);
+    },[]);
+
+    var selectList = useCallback(elem => {
+        var newList = new WebMusicList(elem.name,WebMusicListStorage.get(elem.name));
+        WebMusicManager.list = newList;
+    },[]);
+
+    var deleteList = useCallback(elem => {
+        WebMusicListStorage.remove(elem.name);
+        if (specificList.name==elem.name) {
+            if (WebMusicListStorage.names.length==0) {
+                var newList = new WebMusicList("defaultList");
+                WebMusicManager.list = newList;
+                WebMusicListStorage.set(newList.name,newList);
+            } else  {
+                var name = WebMusicListStorage.names[0];
+                WebMusicManager.list = new WebMusicList(name,WebMusicListStorage.get(name));
+            }
+        }
+    },[]);
+
     return (
         <div className={style.LoopBlock}>
-        {
-            (!listData || listData.length==0) ? (
-                <p>null</p>
-            ) : (
-                <List>
-                {
-                    listData?.map(elem => (
-                        <ListItem key={elem.id || elem.src}>
-                            <ListItemButton style={{flex: 9}} onClick={() => playMusic(elem)}>
-                                <ListItemText primary={elem.name}/>
-                            </ListItemButton>
-
-                            <ListItemButton
-                                style={{textAlign: "center", fontSize: "20px", flex: 1, color: "gray"}}
-                                onClick={() => removeMusic(elem)}>
-                                <ListItemText>del</ListItemText>
-                            </ListItemButton>
-                        </ListItem>
-                    ))
-                }
-                </List>
-            )
-        }
+            <Box style={{textAlign: "start"}}>
+                <Button variant='outlined' onClick={() => setManageList(!manageList)}>列表管理</Button>
+                {manageList && <Button variant='outlined' onClick={createList}>new</Button>}
+            </Box>
+            
+            <BasicList
+                listData={manageList ? nameList : specificList}
+                btnText="del"
+                itemClickFn={manageList ? selectList : playMusic}
+                btnClickFn={manageList ? deleteList : removeMusic}/>
         </div>
     )
 }

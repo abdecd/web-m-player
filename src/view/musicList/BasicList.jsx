@@ -25,7 +25,6 @@ export default function BasicList({listData}) {
             <List>
             {
                 listData?.map(elem => (
-                    //todo: 添加到歌单等
                     <ListItem key={elem.id || elem.url}>
                         <ListItemButton style={{flex: 9}} onClick={() => playMusic(elem)}>
                             <ListItemText primary={elem.name} secondary={elem.author}/>
