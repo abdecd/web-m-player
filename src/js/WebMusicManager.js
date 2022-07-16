@@ -59,7 +59,7 @@ var WebMusicManager = {
                 break;
             case "repeat":
                 this._loopMode = "repeat";
-                this._loopFn = (function() { this.setCurrentTime(0); this.play() }).bind(this);
+                this._loopFn = (function() { this.play() }).bind(this);
                 break;
             case "random":
                 this._loopMode = "random";
@@ -90,10 +90,11 @@ var WebMusicManager = {
             case "next":
                 return await this.next();
             case "repeat":
-                return (this.setCurrentTime(0),this.play());
+                return this.name ? (this.setCurrentTime(0),true) : false;
             case "random":
                 return await this.nextRandom();
         }
+        return false;
     },
 };
 
