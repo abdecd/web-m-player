@@ -1,7 +1,7 @@
 import Subscription from './Subscription'
 
 class WebMusicList extends Array {
-    //[{name,id,src},...]
+    //[{name,id?,src},...]
     index = -1;
     name = null;
     changeSub = new Subscription();

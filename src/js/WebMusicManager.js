@@ -43,7 +43,7 @@ var WebMusicManager = {
     getCurrentTime() { return this.handler.currentTime; },
     setCurrentTime(time) { this.handler.currentTime = time },
 
-    push(name,id,src) { return this.list.push({name,id,src}); },
+    push(name,id,src) { return name && src && this.list.push({name,id,src}); },
     pop() { return this.list.pop(); },
     getList() { return this.list; },
 

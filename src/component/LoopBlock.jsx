@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Box, Button } from '@mui/material'
+import { Button } from '@mui/material'
 
-import BasicList from './LoopBlock/BasicList'
+import BasicList from './BasicList'
 import style from '../css/LoopBlock.module.css'
 import WebMusicManager from '../js/WebMusicManager'
 import WebMusicListStorage from '../js/WebMusicListStorage'
@@ -26,8 +26,8 @@ export default function LoopBlock() {
 
     //订阅nameList
     useEffect(() => {
-        setNameList(WebMusicListStorage.names.map(elem => {return {name: elem, id: elem}}));
-        var refreshFn = names => setNameList(names.map(elem => {return {name: elem, id: elem}}));
+        setNameList(WebMusicListStorage.names);
+        var refreshFn = names => setNameList(names);
         WebMusicListStorage.subscribe(refreshFn);
         return () => WebMusicListStorage.unSubscribe(refreshFn);
     },[]);
@@ -79,18 +79,23 @@ export default function LoopBlock() {
 
     return (
         <div className={style.LoopBlock}>
-            <Box style={{textAlign: "start"}} sx={{'& .MuiButton-root': {margin: "10px", marginRight: "0px"}}}>
+            <div style={{display: "flex", justifyContent: "space-between", margin: "10px"}}>
                 <Button
                     variant={manageList ? 'contained' : 'outlined'}
                     disableElevation disableRipple
                     onClick={() => setManageList(!manageList)}>
                     列表管理
                 </Button>
-                {manageList && <Button variant='outlined' onClick={createList}>new</Button>}
-            </Box>
+
+                {manageList ? (
+                    <Button variant='outlined' onClick={createList}>new</Button>
+                ) : (
+                    <p style={{margin: "0px",lineHeight: 2}}>{specificList.name}</p>
+                )}
+            </div>
             
             <BasicList
-                listData={manageList ? nameList : specificList}
+                listData={manageList ? nameList.map(elem => {return {name: elem, id: elem}}) : specificList.map(elem => {return {name: elem.name, id: elem.id||elem.src}})}
                 btnText="del"
                 itemClickFn={manageList ? selectList : playMusic}
                 btnClickFn={manageList ? deleteList : removeMusic}/>

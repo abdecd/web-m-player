@@ -2,7 +2,7 @@ import React from 'react'
 import { List, ListItemText, ListItemButton, ListItem } from '@mui/material'
 
 export default function BasicList({listData,btnText,itemClickFn,btnClickFn}) {
-    //listData <==> [{name,id,src},...]
+    //listData <==> [{name,subName?,id},...]
     return <>
     {
         (!listData || listData.length==0) ? (
@@ -11,9 +11,9 @@ export default function BasicList({listData,btnText,itemClickFn,btnClickFn}) {
             <List>
             {
                 listData?.map(elem => (
-                    <ListItem key={elem.id || elem.src}>
+                    <ListItem key={elem.id}>
                         <ListItemButton style={{flex: 9}} onClick={() => itemClickFn(elem)}>
-                            <ListItemText primary={elem.name}/>
+                            <ListItemText primary={elem.name} secondary={elem.subName}/>
                         </ListItemButton>
 
                         <ListItemButton
