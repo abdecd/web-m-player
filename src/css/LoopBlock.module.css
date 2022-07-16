@@ -1,11 +1,7 @@
 .LoopBlock {
     background-color: rgb(218,232,232);
 
-    position: fixed;
-    left: 0px;
-    bottom: 60px;
-
-    width: 100%;
+    width: 60vw;
     height: 70vh;
     overflow: auto;
 

@@ -10,7 +10,14 @@ export default function App({children}) {
             <div style={{height: "calc(100vh - 60px)", overflow: "auto"}}>
                 {children}
             </div>
-            <div style={{transition: "0.2s", opacity: (loopBlockShown ? 1 : 0), pointerEvents: (loopBlockShown ? "auto" : "none")}}>
+            <div style={{
+                transition: "0.5s",
+                opacity: (loopBlockShown ? 1 : 0),
+                position: 'fixed',
+                right: "3vw",
+                bottom: (loopBlockShown ? "60px" : "0px"),
+                pointerEvents: (loopBlockShown ? "auto" : "none")
+            }}>
                 <LoopBlock/>
             </div>
             <MusicBar toggleLoopBlockShown={() => setLoopBlockShown(!loopBlockShown)}/>
