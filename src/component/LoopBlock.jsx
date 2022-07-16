@@ -100,9 +100,13 @@ export default function LoopBlock() {
                         onChange={ev => setSpecificListTempName(ev.target.value)}
                         onKeyUp={ev => {
                             if (ev.key=="Enter") {
-                                WebMusicListStorage.remove(specificList.name);
-                                WebMusicManager.list.name = ev.target.value;
-                                WebMusicListStorage.set(ev.target.value,specificList);
+                                if (ev.target.value) {
+                                    WebMusicListStorage.remove(specificList.name);
+                                    WebMusicManager.list.name = ev.target.value;
+                                    WebMusicListStorage.set(ev.target.value,specificList);
+                                } else {
+                                    setSpecificListTempName(specificList.name);
+                                }
                             }
                         }}/>
                 )}
