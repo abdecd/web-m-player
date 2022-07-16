@@ -16,7 +16,7 @@ class WebMusicList extends Array {
         }
         
         //get an element from randomList, delete and return it
-        return this[this.index = this.randomList.splice(Math.random()*this.randomList.length,1)];
+        return this[this.index = this.randomList.splice(Math.floor(Math.random()*this.randomList.length),1)];
     }
 
     search(idOrSrc) {
