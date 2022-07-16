@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Button } from '@mui/material'
+import { Button, Input } from '@mui/material'
 
 import BasicList from './BasicList'
 import style from '../css/LoopBlock.module.css'
@@ -11,13 +11,16 @@ export default function LoopBlock() {
     const [specificList, setSpecificList] = useState(new WebMusicList());
     const [nameList, setNameList] = useState([]);
     const [manageList, setManageList] = useState(false);
+    const [specificListTempName, setSpecificListTempName] = useState("");
 
     //订阅specificList
     useEffect(() => {
         setSpecificList(WebMusicManager.list);
+        setSpecificListTempName(WebMusicManager.list.name);
         //对后续变化
         var refreshFn = list => {
             setSpecificList(list);
+            setSpecificListTempName(WebMusicManager.list.name);
             WebMusicListStorage.set(list.name,list);
         };
         WebMusicManager.list.subscribe(refreshFn);
@@ -91,7 +94,17 @@ export default function LoopBlock() {
                 {manageList ? (
                     <Button variant='outlined' onClick={createList}>new</Button>
                 ) : (
-                    <p style={{margin: "0px",lineHeight: 2}}>{specificList.name}</p>
+                    <Input
+                        sx={{width: "20vw"}}
+                        value={specificListTempName}
+                        onChange={ev => setSpecificListTempName(ev.target.value)}
+                        onKeyUp={ev => {
+                            if (ev.key=="Enter") {
+                                WebMusicListStorage.remove(specificList.name);
+                                WebMusicManager.list.name = ev.target.value;
+                                WebMusicListStorage.set(ev.target.value,specificList);
+                            }
+                        }}/>
                 )}
             </div>
             
