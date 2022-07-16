@@ -60,6 +60,7 @@ export default function LoopBlock() {
     var selectList = useCallback(elem => {
         var newList = new WebMusicList(elem.name,WebMusicListStorage.get(elem.name));
         WebMusicManager.list = newList;
+        setManageList(false);
     },[]);
 
     var deleteList = useCallback(elem => {
@@ -78,8 +79,13 @@ export default function LoopBlock() {
 
     return (
         <div className={style.LoopBlock}>
-            <Box style={{textAlign: "start"}}>
-                <Button variant='outlined' onClick={() => setManageList(!manageList)}>列表管理</Button>
+            <Box style={{textAlign: "start"}} sx={{'& .MuiButton-root': {margin: "10px", marginRight: "0px"}}}>
+                <Button
+                    variant={manageList ? 'contained' : 'outlined'}
+                    disableElevation disableRipple
+                    onClick={() => setManageList(!manageList)}>
+                    列表管理
+                </Button>
                 {manageList && <Button variant='outlined' onClick={createList}>new</Button>}
             </Box>
             
