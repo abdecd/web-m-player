@@ -36,7 +36,7 @@ export default function LoopBlock() {
         if (await WebMusicManager.load(elem.name,elem.id,elem.src)) {
             WebMusicManager.play();
         } else {
-            console.info("载入失败，可能为付费歌曲。");
+            console.info("载入失败");
         }
     },[]);
 

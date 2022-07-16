@@ -11,13 +11,13 @@ export default function BasicList({listData}) {
         if (await WebMusicManager.load(elem.name, elem.id || null, elem.url || await musicAjax.fetchSrc(elem.id))) {
             WebMusicManager.play();
         } else {
-            console.info("载入失败，可能为付费歌曲。");
+            console.info("载入失败");
         }
     },[]);
 
     var addMusic = useCallback(async elem => {
         if (!WebMusicManager.push(elem.name, elem.id || null, elem.url || await musicAjax.fetchSrc(elem.id)))
-            console.info("添加至播放列表失败，可能为付费歌曲。");
+            console.info("添加至播放列表失败");
     },[]);
 
     return (
