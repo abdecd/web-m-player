@@ -5,7 +5,7 @@ var WebMusicManager = {
     name: "",
     id: "",
     handler: new Audio(),
-    list: new WebMusicList(),
+    list: null,
 
     async load(name,id,src) {//id非必须
         if (!src) return false;
@@ -100,12 +100,11 @@ var WebMusicManager = {
 };
 
 if (WebMusicListStorage.names.length==0) {
-    var newList = new WebMusicList();
-    WebMusicManager.list = newList;
-    WebMusicListStorage.set(newList.name,newList);
+    WebMusicManager.list = new WebMusicList("defaultList",null,true);
 } else  {
     var name = WebMusicListStorage.names[0];
-    WebMusicManager.list = new WebMusicList(name,WebMusicListStorage.get(name));
+    console.log(name);
+    WebMusicManager.list = new WebMusicList(name,WebMusicListStorage.get(name),true);
 }
 
 WebMusicManager._loopFn = (async function() { if (await this.next()) this.play() }).bind(WebMusicManager);

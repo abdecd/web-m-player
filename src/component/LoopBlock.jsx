@@ -15,23 +15,21 @@ export default function LoopBlock() {
 
     //订阅specificList
     useEffect(() => {
-        setSpecificList(WebMusicManager.list);
-        setSpecificListTempName(WebMusicManager.list.name);
-        //对后续变化
         var refreshFn = list => {
             setSpecificList(list);
-            setSpecificListTempName(WebMusicManager.list.name);
-            WebMusicListStorage.set(list.name,list);
+            setSpecificListTempName(list.name);
         };
+        refreshFn(WebMusicManager.list);
+        //对后续变化
         WebMusicManager.list.subscribe(refreshFn);
         return () => WebMusicManager.list.unSubscribe(refreshFn);
     },[WebMusicManager.list]);
 
     //订阅nameList
     useEffect(() => {
-        setNameList(WebMusicListStorage.names);
-        //对后续变化
         var refreshFn = names => setNameList(names);
+        refreshFn(WebMusicListStorage.names);
+        //对后续变化
         WebMusicListStorage.subscribe(refreshFn);
         return () => WebMusicListStorage.unSubscribe(refreshFn);
     },[]);
@@ -57,13 +55,11 @@ export default function LoopBlock() {
             console.info("已有该名称。");
             return;
         }
-        var newList = new WebMusicList(name);
-        WebMusicListStorage.set(name,newList);
+        new WebMusicList(name,null,true);
     },[]);
 
     var selectList = useCallback(elem => {
-        var newList = new WebMusicList(elem.name,WebMusicListStorage.get(elem.name));
-        WebMusicManager.list = newList;
+        WebMusicManager.list = new WebMusicList(elem.name,WebMusicListStorage.get(elem.name),true);
         setManageList(false);
     },[]);
 
@@ -71,12 +67,10 @@ export default function LoopBlock() {
         WebMusicListStorage.remove(elem.name);
         if (specificList.name==elem.name) {
             if (WebMusicListStorage.names.length==0) {
-                var newList = new WebMusicList();
-                WebMusicManager.list = newList;
-                WebMusicListStorage.set(newList.name,newList);
+                WebMusicManager.list = new WebMusicList("defaultList",null,true);
             } else  {
                 var name = WebMusicListStorage.names[0];
-                WebMusicManager.list = new WebMusicList(name,WebMusicListStorage.get(name));
+                WebMusicManager.list = new WebMusicList(name,WebMusicListStorage.get(name),true);
             }
         }
     },[specificList]);
