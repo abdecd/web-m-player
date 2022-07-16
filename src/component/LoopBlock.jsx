@@ -65,7 +65,7 @@ export default function LoopBlock() {
 
     var deleteList = useCallback(elem => {
         WebMusicListStorage.remove(elem.name);
-        if (specificList.name==elem.name) {
+        if (WebMusicManager.list.name==elem.name) {
             if (WebMusicListStorage.names.length==0) {
                 WebMusicManager.list = new WebMusicList("defaultList",null,true);
             } else  {
@@ -73,7 +73,7 @@ export default function LoopBlock() {
                 WebMusicManager.list = new WebMusicList(name,WebMusicListStorage.get(name),true);
             }
         }
-    },[specificList]);
+    },[]);
 
     return (
         <div className={style.LoopBlock}>
@@ -95,11 +95,11 @@ export default function LoopBlock() {
                         onKeyUp={ev => {
                             if (ev.key=="Enter") {
                                 if (ev.target.value) {
-                                    WebMusicListStorage.remove(specificList.name);
+                                    WebMusicListStorage.remove(WebMusicManager.list.name);
                                     WebMusicManager.list.name = ev.target.value;
-                                    WebMusicListStorage.set(ev.target.value,specificList);
+                                    WebMusicListStorage.set(ev.target.value,WebMusicManager.list);
                                 } else {
-                                    setSpecificListTempName(specificList.name);
+                                    setSpecificListTempName(WebMusicManager.list.name);
                                 }
                             }
                         }}/>
