@@ -52,8 +52,8 @@ export default function MusicBar({toggleLoopBlockShown}) {
         () => {
             if (loopBtnStr=="⇌") {
                 WebMusicManager.loopMode = "repeat";
-                setLoopBtnStr("↺");
-            } else if (loopBtnStr=="↺") {
+                setLoopBtnStr("↸");
+            } else if (loopBtnStr=="↸") {
                 WebMusicManager.loopMode = "random";
                 setLoopBtnStr("↝");
             } else if (loopBtnStr=="↝") {
