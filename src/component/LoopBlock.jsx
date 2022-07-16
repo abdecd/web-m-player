@@ -21,7 +21,7 @@ export default function LoopBlock() {
             WebMusicListStorage.set(list.name,list);
         };
         WebMusicManager.list.subscribe(refreshFn);
-        // return () => WebMusicManager.list.unSubscribe(refreshFn);
+        return () => WebMusicManager.list.unSubscribe(refreshFn);
     },[WebMusicManager.list]);
 
     //订阅nameList
@@ -75,7 +75,7 @@ export default function LoopBlock() {
                 WebMusicManager.list = new WebMusicList(name,WebMusicListStorage.get(name));
             }
         }
-    },[]);
+    },[specificList]);
 
     return (
         <div className={style.LoopBlock}>
