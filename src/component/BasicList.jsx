@@ -8,11 +8,13 @@ function RightBtn({btnText,clickFn,longClickFn}) {
         bindLongClick(btn.current,clickFn,longClickFn);
     },[btn]);
 
-    return <ListItemButton
-        ref={btn}
-        style={{textAlign: "center", fontSize: "20px", flex: 1, color: "gray"}}>
-        <ListItemText>{btnText}</ListItemText>
-    </ListItemButton>
+    return (
+        <ListItemButton
+            ref={btn}
+            style={{textAlign: "center", fontSize: "20px", flex: 1, color: "gray"}}>
+            <ListItemText>{btnText}</ListItemText>
+        </ListItemButton>
+    )
 }
 
 export default function BasicList({listData,btnText,itemClickFn,btnClickFn,btnLongClickFn}) {
