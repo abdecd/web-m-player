@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { List, ListItemText, ListItemButton, ListItem } from '@mui/material'
-import bindLongClick from '../js/bindLongClick'
+import bindLongClick from '../js/click/bindLongClick'
 
 function RightBtn({btnText,clickFn,longClickFn}) {
     var btn = useRef();
