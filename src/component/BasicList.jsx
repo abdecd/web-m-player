@@ -17,7 +17,7 @@ function RightBtn({btnText,clickFn,longClickFn}) {
 
 export default function BasicList({listData,btnText,itemClickFn,btnClickFn,btnLongClickFn}) {
     //listData <==> [{name,subName?,id},...]
-    return <>
+    return <div style={{textAlign: "center"}}>
     {
         (!listData || listData.length==0) ? (
             <p>当前列表为空。</p>
@@ -37,5 +37,5 @@ export default function BasicList({listData,btnText,itemClickFn,btnClickFn,btnLo
             </List>
         )
     }
-    </>
+    </div>
 }
