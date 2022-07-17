@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react'
 
-import BBasicList from '../../component/BasicList';
+import BasicList from '../../component/BasicList';
 import WebMusicManager from '../../js/WebMusicManager';
 import musicAjax from '../../js/musicAjax';
 import showTips from '../../js/showTips';
 
-export default function BasicList({listData}) {
+export default function BBasicList({listData}) {
     //listData <==> [{ id or url, name, author },...]
 
     var playMusic = useCallback(async (ev,elem) => {
@@ -26,7 +26,7 @@ export default function BasicList({listData}) {
         showTips.info("已全部添加至播放列表。");
     },[listData]);
 
-    return <BBasicList
+    return <BasicList
         listData={listData.map(elem => {return {name: elem.name, subName: elem.author, key: elem.id||elem.url, /*私货*/id: elem.id, url: elem.url}})}
         btnText="+"
         itemClickFn={playMusic}

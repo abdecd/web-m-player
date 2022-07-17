@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Button from '@mui/material/Button';
 
-import BasicList from "./BasicList"
+import BBasicList from "./BasicList"
 import style from "../../css/LinearBar.module.css"
 
 import dataCache from "../../js/OnlineListCache";
@@ -44,7 +44,7 @@ export default function OnlineList() {
                 <Button onClick={() => navigate("../onlineList/2")}>原创</Button>
             </div>
             <div style={{transition: "0.2s", opacity: (loading ? 0.35 : 1)}}>
-                <BasicList listData={listData}/>
+                <BBasicList listData={listData}/>
             </div>
         </div>
     )

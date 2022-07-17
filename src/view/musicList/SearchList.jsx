@@ -2,7 +2,7 @@ import { Box, Input } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import musicAjax from '../../js/musicAjax';
-import BasicList from './BasicList';
+import BBasicList from './BBasicList';
 
 export default function SearchList() {
     var [searchParams,setSearchParams] = useSearchParams({ word: "" });
@@ -27,7 +27,7 @@ export default function SearchList() {
                 onKeyDown={ev => ev.key=="Enter" ? searchFn(searchParams.get("word")) : 1}>
             </Input>
             <div style={{transition: "0.2s", opacity: (loading ? 0.35 : 1), height: "calc(96vh - 60px - 2em)", overflow: "auto"}}>
-                <BasicList listData={searchData}/>
+                <BBasicList listData={searchData}/>
             </div>
         </Box>
     )

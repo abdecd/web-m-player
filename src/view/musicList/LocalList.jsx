@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react'
-import BasicList from './BasicList'
+import BBasicList from './BBasicList'
 import musicAjax from '../../js/musicAjax'
 
 export default function LocalList() {
@@ -28,7 +28,7 @@ export default function LocalList() {
                     </>
                 )
             ) : (
-                <BasicList listData={listData}/>
+                <BBasicList listData={listData}/>
             ) }
         </div>
     )
