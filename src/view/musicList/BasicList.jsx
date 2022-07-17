@@ -7,7 +7,7 @@ import musicAjax from '../../js/musicAjax';
 export default function BasicList({listData}) {
     //listData <==> [{ id or url, name, author },...]
 
-    var playMusic = useCallback(async elem => {
+    var playMusic = useCallback(async (ev,elem) => {
         if (await WebMusicManager.load(elem.name, elem.id || null, elem.url || await musicAjax.fetchSrc(elem.id))) {
             WebMusicManager.play();
         } else {
@@ -15,7 +15,7 @@ export default function BasicList({listData}) {
         }
     },[]);
 
-    var addMusic = useCallback(async elem => {
+    var addMusic = useCallback(async (ev,elem) => {
         if (!WebMusicManager.push(elem.name, elem.id || null, elem.url || await musicAjax.fetchSrc(elem.id)))
             console.info("添加至播放列表失败");
     },[]);
@@ -26,7 +26,7 @@ export default function BasicList({listData}) {
     },[listData]);
 
     return <BBasicList
-        listData={listData.map(elem => {return {name: elem.name, subName: elem.author, id: elem.id||elem.url, url: elem.url}})}
+        listData={listData.map(elem => {return {name: elem.name, subName: elem.author, id: elem.id||elem.url, /*私货*/url: elem.url}})}
         btnText="+"
         itemClickFn={playMusic}
         btnClickFn={addMusic}

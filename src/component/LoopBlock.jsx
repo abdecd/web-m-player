@@ -7,18 +7,43 @@ import WebMusicManager from '../js/WebMusicManager'
 import WebMusicListStorage from '../js/WebMusicListStorage'
 import WebMusicList from '../js/WebMusicList'
 
-export default function LoopBlock() {
-    const [specificList, setSpecificList] = useState(new WebMusicList());
-    const [nameList, setNameList] = useState([]);
-    const [manageList, setManageList] = useState(false);
+function RenameSpecificListBar() {
     const [specificListTempName, setSpecificListTempName] = useState("");
 
     //订阅specificList
     useEffect(() => {
-        var refreshFn = list => {
-            setSpecificList(list);
-            setSpecificListTempName(list.name);
-        };
+        var refreshFn = list => setSpecificListTempName(list);
+        refreshFn(WebMusicManager.list);
+        //对后续变化
+        WebMusicManager.list.subscribe(refreshFn);
+        return () => WebMusicManager.list.unSubscribe(refreshFn);
+    },[WebMusicManager.list]);
+
+    return <Input
+        sx={{width: "22vw"}}
+        value={specificListTempName}
+        onChange={ev => setSpecificListTempName(ev.target.value)}
+        onKeyUp={ev => {
+            if (ev.key=="Enter") {
+                if (ev.target.value) {
+                    WebMusicListStorage.remove(WebMusicManager.list.name);
+                    WebMusicManager.list.name = ev.target.value;
+                    WebMusicListStorage.set(ev.target.value,WebMusicManager.list);
+                } else {
+                    setSpecificListTempName(WebMusicManager.list.name);
+                }
+            }
+        }}/>
+}
+
+export default function LoopBlock() {
+    const [specificList, setSpecificList] = useState(new WebMusicList());
+    const [nameList, setNameList] = useState([]);
+    const [manageList, setManageList] = useState(false);
+
+    //订阅specificList
+    useEffect(() => {
+        var refreshFn = list => setSpecificList(list);
         refreshFn(WebMusicManager.list);
         //对后续变化
         WebMusicManager.list.subscribe(refreshFn);
@@ -34,15 +59,16 @@ export default function LoopBlock() {
         return () => WebMusicListStorage.unSubscribe(refreshFn);
     },[]);
 
-    var playMusic = useCallback(async elem => {
-        if (await WebMusicManager.load(elem.name,elem.id,elem.src)) {
-            WebMusicManager.play();
-        } else {
-            console.info("载入失败");
-        }
+    var playMusic = useCallback(async (ev,elem) => {
+        var index = WebMusicManager.list.search(elem.id || elem.src);
+        if (index==-1) return console.info("载入失败");
+        WebMusicManager.list.index = index;
+        WebMusicManager.list.before();
+        if (!await WebMusicManager.next()) return console.info("载入失败");
+        WebMusicManager.play();
     },[]);
 
-    var removeMusic = useCallback(elem => {
+    var removeMusic = useCallback((ev,elem) => {
         var index = WebMusicManager.list.search(elem.id || elem.src);
         if (index==-1) return;
         WebMusicManager.list.splice(index,1);
@@ -55,19 +81,16 @@ export default function LoopBlock() {
     var createList = useCallback(() => {
         var name = prompt("name");
         if (!name) return;
-        if (WebMusicListStorage.names.includes(name)) {
-            console.info("已有该名称。");
-            return;
-        }
+        if (WebMusicListStorage.names.includes(name)) return console.info("已有该名称。");
         new WebMusicList(name,null,true);
     },[]);
 
-    var selectList = useCallback(elem => {
+    var selectList = useCallback((ev,elem) => {
         WebMusicManager.list = new WebMusicList(elem.name,WebMusicListStorage.get(elem.name),true);
         setManageList(false);
     },[]);
 
-    var deleteList = useCallback(elem => {
+    var deleteList = useCallback((ev,elem) => {
         WebMusicListStorage.remove(elem.name);
         if (WebMusicManager.list.name==elem.name) {
             if (WebMusicListStorage.names.length==0) {
@@ -98,26 +121,14 @@ export default function LoopBlock() {
                 {manageList ? (
                     <Button variant='outlined' onClick={createList}>new</Button>
                 ) : (
-                    <Input
-                        sx={{width: "22vw"}}
-                        value={specificListTempName}
-                        onChange={ev => setSpecificListTempName(ev.target.value)}
-                        onKeyUp={ev => {
-                            if (ev.key=="Enter") {
-                                if (ev.target.value) {
-                                    WebMusicListStorage.remove(WebMusicManager.list.name);
-                                    WebMusicManager.list.name = ev.target.value;
-                                    WebMusicListStorage.set(ev.target.value,WebMusicManager.list);
-                                } else {
-                                    setSpecificListTempName(WebMusicManager.list.name);
-                                }
-                            }
-                        }}/>
+                    <RenameSpecificListBar/>
                 )}
             </div>
             
             <BasicList
-                listData={manageList ? nameList.map(elem => {return {name: elem, id: elem}}) : specificList.map(elem => {return {name: elem.name, id: elem.id||elem.src}})}
+                listData={manageList ? 
+                    nameList.map(elem => {return {name: elem, id: elem}})
+                    : specificList.map(elem => {return {name: elem.name, id: elem.id||elem.src, /*私货*/src: elem.src}})}
                 btnText="del"
                 itemClickFn={manageList ? selectList : playMusic}
                 btnClickFn={manageList ? deleteList : removeMusic}

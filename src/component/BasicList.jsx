@@ -26,11 +26,11 @@ export default function BasicList({listData,btnText,itemClickFn,btnClickFn,btnLo
             {
                 listData?.map(elem => (
                     <ListItem key={elem.id} style={{padding: "0px",alignItems: "stretch"}}>
-                        <ListItemButton style={{flex: 9}} onClick={() => itemClickFn(elem)}>
+                        <ListItemButton style={{flex: 9}} onClick={ev => itemClickFn(ev,elem)}>
                             <ListItemText primary={elem.name} secondary={elem.subName}/>
                         </ListItemButton>
 
-                        <RightBtn btnText={btnText} clickFn={() => btnClickFn(elem)} longClickFn={() => btnLongClickFn(elem)}/>
+                        <RightBtn btnText={btnText} clickFn={ev => btnClickFn(ev,elem)} longClickFn={ev => btnLongClickFn(ev,elem)}/>
                     </ListItem>
                 ))
             }
