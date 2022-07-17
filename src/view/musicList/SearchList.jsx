@@ -20,13 +20,14 @@ export default function SearchList() {
     useEffect(() => { searchParams.get("word") ? searchFn(searchParams.get("word")) : 1 },[]);
 
     return (
-        <Box style={{textAlign: "center"}} sx={{'& .MuiInput-root': { width: '92vw' }}}>
+        <Box style={{textAlign: "center", height: "100%"}}>
             <Input
+                style={{width:"92vw", height: "2em"}}
                 value={searchParams.get("word")}
                 onChange={ev => setSearchParams({ word: ev.target.value }) }
                 onKeyDown={ev => ev.key=="Enter" ? searchFn(searchParams.get("word")) : 1}>
             </Input>
-            <div style={{transition: "0.2s", opacity: (loading ? 0.35 : 1), height: "calc(96vh - 60px - 2em)", overflow: "auto"}}>
+            <div style={{transition: "0.2s", opacity: (loading ? 0.35 : 1), height: "calc(100% - 2em)", overflow: "auto"}}>
                 <BBasicList listData={searchData}/>
             </div>
         </Box>

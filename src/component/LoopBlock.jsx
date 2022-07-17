@@ -21,7 +21,7 @@ function RenameSpecificListBar() {
     },[WebMusicManager.list]);
 
     return <Input
-        sx={{width: "22vw"}}
+        style={{width: "5em"}}
         value={specificListTempName}
         onChange={ev => setSpecificListTempName(ev.target.value)}
         onKeyUp={ev => {
