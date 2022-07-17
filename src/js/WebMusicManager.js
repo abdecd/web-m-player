@@ -26,7 +26,7 @@ var WebMusicManager = {
     },
 
     async play() {
-        if (this.name || await this.nextByLoopOrder()) this.handler.play();
+        if (this.src || await this.nextByLoopOrder()) this.handler.play();
     },
     pause() { this.handler.pause(); },
     playPause() {
@@ -91,7 +91,7 @@ var WebMusicManager = {
             case "next":
                 return await this.next();
             case "repeat":
-                return this.name ? (this.setCurrentTime(0),true) : false;
+                return this.src ? (this.setCurrentTime(0),true) : false;
             case "random":
                 return await this.nextRandom();
         }
