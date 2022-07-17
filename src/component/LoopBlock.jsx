@@ -110,7 +110,7 @@ function BasicLoopBlock() {
     },[]);
 
     return (
-        <div className={style.LoopBlock}>
+        <div className={style.BasicLoopBlock}>
             <div style={{display: "flex", justifyContent: "space-between", margin: "10px", height: "40px"}}>
                 <Button
                     variant={manageList ? 'contained' : 'outlined'}
@@ -152,9 +152,8 @@ export default function LoopBlock({shown,setShown}) {
                 bottom: (shown ? "60px" : "20px"),
                 pointerEvents: (shown ? "auto" : "none")
             }}>
-                <LoopBlock/>
+                <BasicLoopBlock/>
             </div>
         </>
     )
-    
 }
