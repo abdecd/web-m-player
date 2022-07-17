@@ -12,7 +12,7 @@ function RenameSpecificListBar() {
 
     //订阅specificList
     useEffect(() => {
-        var refreshFn = list => setSpecificListTempName(list);
+        var refreshFn = list => setSpecificListTempName(list.name);
         refreshFn(WebMusicManager.list);
         //对后续变化
         WebMusicManager.list.subscribe(refreshFn);
