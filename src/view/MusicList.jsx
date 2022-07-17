@@ -8,13 +8,13 @@ export default function MusicList({children}) {
     var navigate = useNavigate();
 
     return (
-        <div>
-            <div className={style.LinearBar} style={{height: "4vh"}}>
+        <div style={{height: "100%"}}>
+            <div className={style.LinearBar} style={{height: "5vh"}}>
                 <Button onClick={() => navigate("localList")}>LocalList</Button>
                 <Button onClick={() => navigate("onlineList")}>OnlineList</Button>
                 <Button onClick={() => navigate("search")}>Search</Button>
             </div>
-            <div style={{height: "calc(96vh - 60px)", overflow: "auto"}}>
+            <div style={{height: "calc(100% - 5vh)", overflow: "auto"}}>
                 {children}
             </div>
         </div>

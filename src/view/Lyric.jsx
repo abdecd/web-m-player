@@ -18,7 +18,7 @@ export default function Lyric() {
     },[]);
 
     return (
-        <div style={{textAlign: "center", transition: "0.2s", opacity: (loading ? 0.35 : 1)}}>
+        <div style={{textAlign: "center", transition: "0.2s", opacity: (loading ? 0.35 : 1), height: "100%", overflow: "auto"}}>
         {
             lyric
                 ?.replace(/\[[^\]]+\]/g,"|&|&|")

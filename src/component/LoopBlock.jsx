@@ -111,7 +111,7 @@ export default function LoopBlock() {
 
     return (
         <div className={style.LoopBlock}>
-            <div style={{display: "flex", justifyContent: "space-between", margin: "10px"}}>
+            <div style={{display: "flex", justifyContent: "space-between", margin: "10px", height: "40px"}}>
                 <Button
                     variant={manageList ? 'contained' : 'outlined'}
                     disableElevation disableRipple
@@ -126,6 +126,7 @@ export default function LoopBlock() {
                 )}
             </div>
             
+            <div style={{height: "calc(100% - 60px)"}}>
             <BasicList
                 listData={manageList ? 
                     nameList.map(elem => {return {name: elem, key: elem}})
@@ -134,6 +135,7 @@ export default function LoopBlock() {
                 itemClickFn={manageList ? selectList : playMusic}
                 btnClickFn={manageList ? deleteList : removeMusic}
                 btnLongClickFn={manageList ? deleteAllList : removeAllMusic}/>
+            </div>
         </div>
     )
 }

@@ -37,13 +37,13 @@ export default function OnlineList() {
     },[listId]);
 
     return (
-        <div>
-            <div className={style.LinearBar}>
+        <div style={{height: "100%"}}>
+            <div className={style.LinearBar} style={{height: "4vh"}}>
                 <Button onClick={() => navigate("../onlineList/0")}>飙升</Button>
                 <Button onClick={() => navigate("../onlineList/1")}>新歌</Button>
                 <Button onClick={() => navigate("../onlineList/2")}>原创</Button>
             </div>
-            <div style={{transition: "0.2s", opacity: (loading ? 0.35 : 1)}}>
+            <div style={{transition: "0.2s", opacity: (loading ? 0.35 : 1), height: "calc(100% - 4vh)", overflow: "auto"}}>
                 <BBasicList listData={listData}/>
             </div>
         </div>
