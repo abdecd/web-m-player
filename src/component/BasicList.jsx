@@ -1,7 +1,21 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { List, ListItemText, ListItemButton, ListItem } from '@mui/material'
+import bindLongClick from '../js/bindLongClick'
 
-export default function BasicList({listData,btnText,itemClickFn,btnClickFn}) {
+function RightBtn({btnText,clickFn,longClickFn}) {
+    var btn = useRef();
+    useEffect(() => {
+        bindLongClick(btn.current,clickFn,longClickFn);
+    },[btn]);
+
+    return <ListItemButton
+        ref={btn}
+        style={{textAlign: "center", fontSize: "20px", flex: 1, color: "gray"}}>
+        <ListItemText>{btnText}</ListItemText>
+    </ListItemButton>
+}
+
+export default function BasicList({listData,btnText,itemClickFn,btnClickFn,btnLongClickFn}) {
     //listData <==> [{name,subName?,id},...]
     return <>
     {
@@ -16,11 +30,7 @@ export default function BasicList({listData,btnText,itemClickFn,btnClickFn}) {
                             <ListItemText primary={elem.name} secondary={elem.subName}/>
                         </ListItemButton>
 
-                        <ListItemButton
-                            style={{textAlign: "center", fontSize: "20px", flex: 1, color: "gray"}}
-                            onClick={() => btnClickFn(elem)}>
-                            <ListItemText>{btnText}</ListItemText>
-                        </ListItemButton>
+                        <RightBtn btnText={btnText} clickFn={() => btnClickFn(elem)} longClickFn={() => btnLongClickFn(elem)}/>
                     </ListItem>
                 ))
             }

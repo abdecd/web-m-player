@@ -48,6 +48,10 @@ export default function LoopBlock() {
         WebMusicManager.list.splice(index,1);
     },[]);
 
+    var removeAllMusic = useCallback(() => {
+        WebMusicManager.list.splice(0,WebMusicManager.list.length);
+    },[]);
+
     var createList = useCallback(() => {
         var name = prompt("name");
         if (!name) return;
@@ -67,12 +71,18 @@ export default function LoopBlock() {
         WebMusicListStorage.remove(elem.name);
         if (WebMusicManager.list.name==elem.name) {
             if (WebMusicListStorage.names.length==0) {
-                WebMusicManager.list = new WebMusicList("defaultList",null,true);
+                WebMusicManager.list = new WebMusicList(null,null,true);
             } else  {
                 var name = WebMusicListStorage.names[0];
                 WebMusicManager.list = new WebMusicList(name,WebMusicListStorage.get(name),true);
             }
         }
+    },[]);
+
+    var deleteAllList = useCallback(() => {
+        for (var n of WebMusicListStorage.names) WebMusicListStorage.remove(n);
+        WebMusicManager.list = new WebMusicList(null,null,true);
+        console.info("播放列表已清空。");
     },[]);
 
     return (
@@ -89,7 +99,7 @@ export default function LoopBlock() {
                     <Button variant='outlined' onClick={createList}>new</Button>
                 ) : (
                     <Input
-                        sx={{width: "20vw"}}
+                        sx={{width: "22vw"}}
                         value={specificListTempName}
                         onChange={ev => setSpecificListTempName(ev.target.value)}
                         onKeyUp={ev => {
@@ -110,7 +120,8 @@ export default function LoopBlock() {
                 listData={manageList ? nameList.map(elem => {return {name: elem, id: elem}}) : specificList.map(elem => {return {name: elem.name, id: elem.id||elem.src}})}
                 btnText="del"
                 itemClickFn={manageList ? selectList : playMusic}
-                btnClickFn={manageList ? deleteList : removeMusic}/>
+                btnClickFn={manageList ? deleteList : removeMusic}
+                btnLongClickFn={manageList ? deleteAllList : removeAllMusic}/>
         </div>
     )
 }

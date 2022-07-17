@@ -10,7 +10,7 @@ class WebMusicList extends Array {
 
     constructor(name="defaultList",arr=null,storage=false) {
         super();
-        this.name = name;
+        this.name = name || "defaultList";
         this.storage = storage;
         if (arr) for (let i=0,L=arr.length;i<L;i++) this[i]=arr[i];
         if (this.storage) WebMusicListStorage.set(this.name,this);

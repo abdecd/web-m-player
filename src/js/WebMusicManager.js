@@ -100,7 +100,7 @@ var WebMusicManager = {
 };
 
 if (WebMusicListStorage.names.length==0) {
-    WebMusicManager.list = new WebMusicList("defaultList",null,true);
+    WebMusicManager.list = new WebMusicList(null,null,true);
 } else  {
     var name = WebMusicListStorage.names[0];
     WebMusicManager.list = new WebMusicList(name,WebMusicListStorage.get(name),true);

@@ -21,12 +21,14 @@ export default function BasicList({listData}) {
     },[]);
 
     var addAllMusic = useCallback(async () => {
-        for (var n of listData) await WebMusicManager.push(elem.name, elem.id || null, elem.url || await musicAjax.fetchSrc(elem.id));
+        for (var elem of listData) await WebMusicManager.push(elem.name, elem.id || null, elem.url || await musicAjax.fetchSrc(elem.id));
+        console.info("已全部添加至播放列表。");
     },[listData]);
 
     return <BBasicList
-        listData={listData.map(elem => {return {name: elem.name, subName: elem.author, id: elem.id||elem.url}})}
+        listData={listData.map(elem => {return {name: elem.name, subName: elem.author, id: elem.id||elem.url, url: elem.url}})}
         btnText="+"
         itemClickFn={playMusic}
-        btnClickFn={addMusic}/>
+        btnClickFn={addMusic}
+        btnLongClickFn={addAllMusic}/>
 }
