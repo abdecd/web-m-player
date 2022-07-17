@@ -24,7 +24,7 @@ export default function BasicList({listData,btnText,itemClickFn,btnClickFn,btnLo
         ) : (
             <List>
             {
-                listData?.map(elem => <>
+                listData?.map(elem => (
                     <ListItem key={elem.id} style={{padding: "0px",alignItems: "stretch"}}>
                         <ListItemButton style={{flex: 9}} onClick={ev => itemClickFn(ev,elem)}>
                             <ListItemText primary={elem.name} secondary={elem.subName}/>
@@ -32,9 +32,7 @@ export default function BasicList({listData,btnText,itemClickFn,btnClickFn,btnLo
 
                         <RightBtn btnText={btnText} clickFn={ev => btnClickFn(ev,elem)} longClickFn={ev => btnLongClickFn(ev,elem)}/>
                     </ListItem>
-                    <Divider/>
-                </>
-                )
+                ))
             }
             </List>
         )
