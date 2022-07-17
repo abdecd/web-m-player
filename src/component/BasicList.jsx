@@ -25,7 +25,7 @@ export default function BasicList({listData,btnText,itemClickFn,btnClickFn,btnLo
             <List>
             {
                 listData?.map(elem => (
-                    <ListItem key={elem.id}>
+                    <ListItem key={elem.id} style={{padding: "0px",alignItems: "stretch"}}>
                         <ListItemButton style={{flex: 9}} onClick={() => itemClickFn(elem)}>
                             <ListItemText primary={elem.name} secondary={elem.subName}/>
                         </ListItemButton>
