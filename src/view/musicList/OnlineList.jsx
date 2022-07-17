@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Button from '@mui/material/Button';
 
-import BBasicList from "./BasicList"
+import BBasicList from "./BBasicList"
 import style from "../../css/LinearBar.module.css"
 
 import dataCache from "../../js/OnlineListCache";
