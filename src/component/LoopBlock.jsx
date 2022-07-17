@@ -80,7 +80,7 @@ export default function LoopBlock() {
     },[]);
 
     var createList = useCallback(() => {
-        var name = showTips.prompt("name");
+        var name = showTips.prompt("name: ");
         if (!name) return;
         if (WebMusicListStorage.names.includes(name)) return showTips.info("已有该名称。");
         new WebMusicList(name,null,true);
