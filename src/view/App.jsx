@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import LoopBlock from '../component/LoopBlock';
 
+import LoopBlock from '../component/LoopBlock';
 import MusicBar from '../component/MusicBar'
 
 export default function App({children}) {
