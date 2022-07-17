@@ -11,17 +11,7 @@ export default function App({children}) {
                 {children}
             </div>
 
-            {loopBlockShown && <div style={{position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh"}} onClick={() => setLoopBlockShown(false)}></div>}
-            <div style={{
-                transition: "0.3s",
-                opacity: (loopBlockShown ? 1 : 0),
-                position: 'fixed',
-                right: "3vw",
-                bottom: (loopBlockShown ? "60px" : "20px"),
-                pointerEvents: (loopBlockShown ? "auto" : "none")
-            }}>
-                <LoopBlock/>
-            </div>
+            <LoopBlock shown={loopBlockShown} setShown={setLoopBlockShown}/>
             
             {/* height: 60px */}
             <MusicBar toggleLoopBlockShown={() => setLoopBlockShown(!loopBlockShown)}/>

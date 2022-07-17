@@ -37,7 +37,7 @@ function RenameSpecificListBar() {
         }}/>
 }
 
-export default function LoopBlock() {
+function BasicLoopBlock() {
     const [specificList, setSpecificList] = useState(new WebMusicList());
     const [nameList, setNameList] = useState([]);
     const [manageList, setManageList] = useState(false);
@@ -138,4 +138,23 @@ export default function LoopBlock() {
             </div>
         </div>
     )
+}
+
+export default function LoopBlock({shown,setShown}) {
+    return (
+        <>
+            {shown && <div style={{position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh"}} onClick={() => setShown(false)}></div>}
+            <div style={{
+                transition: "0.3s",
+                opacity: (shown ? 1 : 0),
+                position: 'fixed',
+                right: "3vw",
+                bottom: (shown ? "60px" : "20px"),
+                pointerEvents: (shown ? "auto" : "none")
+            }}>
+                <LoopBlock/>
+            </div>
+        </>
+    )
+    
 }
