@@ -20,6 +20,10 @@ export default function BasicList({listData}) {
             console.info("添加至播放列表失败");
     },[]);
 
+    var addAllMusic = useCallback(async () => {
+        for (var n of listData) await WebMusicManager.push(elem.name, elem.id || null, elem.url || await musicAjax.fetchSrc(elem.id));
+    },[listData]);
+
     return <BBasicList
         listData={listData.map(elem => {return {name: elem.name, subName: elem.author, id: elem.id||elem.url}})}
         btnText="+"
