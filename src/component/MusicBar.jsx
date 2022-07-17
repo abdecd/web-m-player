@@ -7,6 +7,7 @@ import WebMusicManager from '../js/WebMusicManager'
 import style from '../css/MusicBar.module.css'
 import musicAjax from '../js/musicAjax'
 import betterDblClick from '../js/click/BetterDblClick'
+import showTips from '../js/ShowTips'
 
 export default function MusicBar({toggleLoopBlockShown}) {
     const [title, setTitle] = useState("");
@@ -53,12 +54,15 @@ export default function MusicBar({toggleLoopBlockShown}) {
             if (loopBtnStr=="⇌") {
                 WebMusicManager.loopMode = "repeat";
                 setLoopBtnStr("↸");
+                showTips.info("单曲循环");
             } else if (loopBtnStr=="↸") {
                 WebMusicManager.loopMode = "random";
                 setLoopBtnStr("↝");
+                showTips.info("随机播放");
             } else if (loopBtnStr=="↝") {
                 WebMusicManager.loopMode = "next";
                 setLoopBtnStr("⇌");
+                showTips.info("列表循环");
             }
         },
         () => toggleLoopBlockShown()
