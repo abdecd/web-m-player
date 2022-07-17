@@ -17,25 +17,27 @@ function RightBtn({btnText,clickFn,longClickFn}) {
 
 export default function BasicList({listData,btnText,itemClickFn,btnClickFn,btnLongClickFn}) {
     //listData <==> [{name,subName?,key},...]
-    return <div style={{textAlign: "center"}}>
-    {
-        (!listData || listData.length==0) ? (
-            <p>当前列表为空。</p>
-        ) : (
-            <List>
-            {
-                listData?.map(elem => (
-                    <ListItem key={elem.key} style={{padding: "0px",alignItems: "stretch"}}>
-                        <ListItemButton style={{flex: 9}} onClick={ev => itemClickFn(ev,elem)}>
-                            <ListItemText primary={elem.name} secondary={elem.subName}/>
-                        </ListItemButton>
+    return (
+        <div style={{textAlign: "center"}}>
+        {
+            (!listData || listData.length==0) ? (
+                <p>当前列表为空。</p>
+            ) : (
+                <List>
+                {
+                    listData?.map(elem => (
+                        <ListItem key={elem.key} style={{padding: "0px",alignItems: "stretch"}}>
+                            <ListItemButton style={{flex: 9}} onClick={ev => itemClickFn(ev,elem)}>
+                                <ListItemText primary={elem.name} secondary={elem.subName}/>
+                            </ListItemButton>
 
-                        <RightBtn btnText={btnText} clickFn={ev => btnClickFn(ev,elem)} longClickFn={ev => btnLongClickFn(ev,elem)}/>
-                    </ListItem>
-                ))
-            }
-            </List>
-        )
-    }
-    </div>
+                            <RightBtn btnText={btnText} clickFn={ev => btnClickFn(ev,elem)} longClickFn={ev => btnLongClickFn(ev,elem)}/>
+                        </ListItem>
+                    ))
+                }
+                </List>
+            )
+        }
+        </div>
+    )
 }
