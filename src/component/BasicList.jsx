@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { List, ListItemText, ListItemButton, ListItem, Divider } from '@mui/material'
+import { List, ListItemText, ListItemButton, ListItem } from '@mui/material'
 import bindLongClick from '../js/click/bindLongClick'
 
 function RightBtn({btnText,clickFn,longClickFn}) {
@@ -16,7 +16,7 @@ function RightBtn({btnText,clickFn,longClickFn}) {
 }
 
 export default function BasicList({listData,btnText,itemClickFn,btnClickFn,btnLongClickFn}) {
-    //listData <==> [{name,subName?,id},...]
+    //listData <==> [{name,subName?,key},...]
     return <div style={{textAlign: "center"}}>
     {
         (!listData || listData.length==0) ? (
@@ -25,7 +25,7 @@ export default function BasicList({listData,btnText,itemClickFn,btnClickFn,btnLo
             <List>
             {
                 listData?.map(elem => (
-                    <ListItem key={elem.id} style={{padding: "0px",alignItems: "stretch"}}>
+                    <ListItem key={elem.key} style={{padding: "0px",alignItems: "stretch"}}>
                         <ListItemButton style={{flex: 9}} onClick={ev => itemClickFn(ev,elem)}>
                             <ListItemText primary={elem.name} secondary={elem.subName}/>
                         </ListItemButton>

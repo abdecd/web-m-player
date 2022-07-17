@@ -128,8 +128,8 @@ export default function LoopBlock() {
             
             <BasicList
                 listData={manageList ? 
-                    nameList.map(elem => {return {name: elem, id: elem}})
-                    : specificList.map(elem => {return {name: elem.name, id: elem.id||elem.src, /*私货*/src: elem.src}})}
+                    nameList.map(elem => {return {name: elem, key: elem}})
+                    : specificList.map(elem => {return {name: elem.name, key: elem.id||elem.src, /*私货*/id: elem.id, src: elem.src}})}
                 btnText="del"
                 itemClickFn={manageList ? selectList : playMusic}
                 btnClickFn={manageList ? deleteList : removeMusic}

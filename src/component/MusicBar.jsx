@@ -73,6 +73,7 @@ export default function MusicBar({toggleLoopBlockShown}) {
         if (!title) return;
         if (!WebMusicManager.id) WebMusicManager.id = await getMusicId(WebMusicManager.name);
         var newPath = "/lyric/"+WebMusicManager.id;
+        console.log(newPath);
         if (location.pathname!=newPath) navigate(newPath);
     },[title,location]);
     

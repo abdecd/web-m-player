@@ -27,7 +27,7 @@ export default function BasicList({listData}) {
     },[listData]);
 
     return <BBasicList
-        listData={listData.map(elem => {return {name: elem.name, subName: elem.author, id: elem.id||elem.url, /*私货*/url: elem.url}})}
+        listData={listData.map(elem => {return {name: elem.name, subName: elem.author, key: elem.id||elem.url, /*私货*/id: elem.id, url: elem.url}})}
         btnText="+"
         itemClickFn={playMusic}
         btnClickFn={addMusic}
