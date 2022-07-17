@@ -6,6 +6,7 @@ import style from '../css/LoopBlock.module.css'
 import WebMusicManager from '../js/WebMusicManager'
 import WebMusicListStorage from '../js/WebMusicListStorage'
 import WebMusicList from '../js/WebMusicList'
+import showTips from '../js/showTips'
 
 function RenameSpecificListBar() {
     const [specificListTempName, setSpecificListTempName] = useState("");
@@ -61,10 +62,10 @@ export default function LoopBlock() {
 
     var playMusic = useCallback(async (ev,elem) => {
         var index = WebMusicManager.list.search(elem.id || elem.src);
-        if (index==-1) return console.info("载入失败");
+        if (index==-1) return showTips.info("载入失败");
         WebMusicManager.list.index = index;
         WebMusicManager.list.before();
-        if (!await WebMusicManager.next()) return console.info("载入失败");
+        if (!await WebMusicManager.next()) return showTips.info("载入失败");
         WebMusicManager.play();
     },[]);
 
@@ -79,9 +80,9 @@ export default function LoopBlock() {
     },[]);
 
     var createList = useCallback(() => {
-        var name = prompt("name");
+        var name = showTips.prompt("name");
         if (!name) return;
-        if (WebMusicListStorage.names.includes(name)) return console.info("已有该名称。");
+        if (WebMusicListStorage.names.includes(name)) return showTips.info("已有该名称。");
         new WebMusicList(name,null,true);
     },[]);
 
@@ -105,7 +106,7 @@ export default function LoopBlock() {
     var deleteAllList = useCallback(() => {
         for (var n of WebMusicListStorage.names) WebMusicListStorage.remove(n);
         WebMusicManager.list = new WebMusicList(null,null,true);
-        console.info("播放列表已清空。");
+        showTips.info("播放列表已清空。");
     },[]);
 
     return (

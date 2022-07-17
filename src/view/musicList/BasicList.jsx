@@ -3,6 +3,7 @@ import React, { useCallback } from 'react'
 import BBasicList from '../../component/BasicList';
 import WebMusicManager from '../../js/WebMusicManager';
 import musicAjax from '../../js/musicAjax';
+import showTips from '../../js/showTips';
 
 export default function BasicList({listData}) {
     //listData <==> [{ id or url, name, author },...]
@@ -11,18 +12,18 @@ export default function BasicList({listData}) {
         if (await WebMusicManager.load(elem.name, elem.id || null, elem.url || await musicAjax.fetchSrc(elem.id))) {
             WebMusicManager.play();
         } else {
-            console.info("载入失败");
+            showTips.info("载入失败");
         }
     },[]);
 
     var addMusic = useCallback(async (ev,elem) => {
         if (!WebMusicManager.push(elem.name, elem.id || null, elem.url || await musicAjax.fetchSrc(elem.id)))
-            console.info("添加至播放列表失败");
+            showTips.info("添加至播放列表失败");
     },[]);
 
     var addAllMusic = useCallback(async () => {
         for (var elem of listData) await WebMusicManager.push(elem.name, elem.id || null, elem.url || await musicAjax.fetchSrc(elem.id));
-        console.info("已全部添加至播放列表。");
+        showTips.info("已全部添加至播放列表。");
     },[listData]);
 
     return <BBasicList
