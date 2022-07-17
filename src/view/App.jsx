@@ -23,6 +23,7 @@ export default function App({children}) {
                 <LoopBlock/>
             </div>
             
+            {/* height: 60px */}
             <MusicBar toggleLoopBlockShown={() => setLoopBlockShown(!loopBlockShown)}/>
         </div>
     )
