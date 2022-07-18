@@ -72,22 +72,28 @@ export default function MusicBar({toggleLoopBlockShown}) {
         );
     },[loopBtn,loopBtnStr,toggleLoopBlockShown]);
 
+    var noLyricLocation = useRef({L: "/"});
     var getMusicId = useCallback(async musicName => (await musicAjax.fetchSearch(musicName))?.[0].id,[]);
-    var turnToLyric = useCallback(async () => {
-        if (!title) return;
-        if (!WebMusicManager.id) {
-            var name = WebMusicManager.name;
-            if (name.match(/ - /).length) name = name.replace(/^[^-]+- /,"");
-            WebMusicManager.id = await getMusicId(name);
+    var toggleLyric = useCallback(async () => {
+        if (location.pathname.startsWith("/lyric")) {
+            navigate(noLyricLocation.current.L);
+        } else {
+            if (!title) return;
+            noLyricLocation.current.L = location.pathname;
+
+            if (!WebMusicManager.id) {
+                var name = WebMusicManager.name;
+                if (name.match(/ - /).length) name = name.replace(/^[^-]+- /,"");
+                WebMusicManager.id = await getMusicId(name);
+            }
+            navigate("/lyric/"+WebMusicManager.id);
         }
-        var newPath = "/lyric/"+WebMusicManager.id;
-        if (location.pathname!=newPath) navigate(newPath);
     },[title,location]);
     
     return (
         <div className={style.MusicBar}>
             <div className={style.LinearFlex}>
-                <p onClick={turnToLyric}>{title}</p>
+                <p onClick={toggleLyric}>{title}</p>
                 <div className={style.ButtonBar}>
                     <Button variant="contained" disableElevation ref={loopBtn}>{loopBtnStr}</Button>
                     <Button variant="contained" disableElevation onClick={lFn} onDoubleClick={lDblFn}>L</Button>
