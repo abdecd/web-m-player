@@ -24,7 +24,6 @@ export default function Lyric() {
     var getMusicId = useCallback(async musicName => (await musicAjax.fetchSearch(musicName))?.[0].id,[]);
     useEffect(() => {
         var refreshId = async () => {
-            console.log("really?!");
             if (!WebMusicManager.name) return;
             if (!WebMusicManager.id) {
                 var name = WebMusicManager.name;
