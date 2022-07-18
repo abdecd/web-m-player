@@ -20,21 +20,25 @@ function RenameSpecificListBar() {
         return () => WebMusicManager.list.unSubscribe(refreshFn);
     },[WebMusicManager.list]);
 
-    return <Input
-        style={{width: "5em"}}
-        value={specificListTempName}
-        onChange={ev => setSpecificListTempName(ev.target.value)}
-        onKeyUp={ev => {
-            if (ev.key=="Enter") {
-                if (ev.target.value) {
+    return (
+        <form
+            onSubmit={ev => {
+                ev.preventDefault();
+                if (specificListTempName) {
                     WebMusicListStorage.remove(WebMusicManager.list.name);
-                    WebMusicManager.list.name = ev.target.value;
-                    WebMusicListStorage.set(ev.target.value,WebMusicManager.list);
+                    WebMusicManager.list.name = specificListTempName;
+                    WebMusicListStorage.set(specificListTempName,WebMusicManager.list);
                 } else {
                     setSpecificListTempName(WebMusicManager.list.name);
                 }
-            }
-        }}/>
+                ev.target.blur();
+            }}>
+            <Input
+                style={{width: "5em"}}
+                value={specificListTempName}
+                onChange={ev => setSpecificListTempName(ev.target.value)}/>
+        </form>
+    )
 }
 
 function BasicLoopBlock() {

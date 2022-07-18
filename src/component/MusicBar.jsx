@@ -88,7 +88,7 @@ export default function MusicBar({toggleLoopBlockShown}) {
             navigate(noLyricLocation.current.L);
         } else {
             if (!title) return;
-            noLyricLocation.current.L = location.pathname;
+            noLyricLocation.current.L = location.pathname+location.search;
 
             if (!WebMusicManager.id) {
                 var name = WebMusicManager.name;
