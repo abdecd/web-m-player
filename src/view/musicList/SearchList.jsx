@@ -34,6 +34,7 @@ export default function SearchList() {
                     if (!searchWord) return;
                     setSearchParams({word: searchWord});
                     searchFn(searchWord);
+                    ev.target.blur();
                 }}>
                 <Input
                     style={{width:"92vw", height: "2em"}}
