@@ -29,8 +29,10 @@ export default function SearchList() {
     return (
         <div style={{textAlign: "center", height: "100%"}}>
             <form onSubmit={ev => {
-                setSearchParams({word: searchWord});
-                searchFn(searchWord);
+                    ev.preventDefault();
+                    if (!searchWord) return;
+                    setSearchParams({word: searchWord});
+                    searchFn(searchWord);
                 }}>
                 <Input
                     style={{width:"92vw", height: "2em"}}
