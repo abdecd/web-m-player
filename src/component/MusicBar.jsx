@@ -48,7 +48,16 @@ export default function MusicBar({toggleLoopBlockShown}) {
     var lDblFn = useCallback(async () => (await WebMusicManager.before()) ? WebMusicManager.play() : 1,[]);
     var rFn = useCallback(() => WebMusicManager.setCurrentTime(WebMusicManager.getCurrentTime()+10),[]);
     var rDblFn = useCallback(async () => (await WebMusicManager.nextByLoopOrder()) ? WebMusicManager.play() : 1,[]);
-    var playBtnFn = useCallback(() => WebMusicManager.playPause(),[]);
+
+    var playBtn = useRef();
+    useEffect(() => {
+        bindLongClick(
+            playBtn.current,
+            () => WebMusicManager.playPause(),
+            () => showTips.prompt("path: ",WebMusicManager.handler.src)
+        );
+    },[]);
+
     var loopBtn = useRef();
     useEffect(() => {
         bindLongClick(
@@ -98,7 +107,7 @@ export default function MusicBar({toggleLoopBlockShown}) {
                     <Button variant="contained" disableElevation ref={loopBtn}>{loopBtnStr}</Button>
                     <Button variant="contained" disableElevation onClick={lFn} onDoubleClick={lDblFn}>L</Button>
                     <Button variant="contained" disableElevation onClick={rFn} onDoubleClick={rDblFn}>R</Button>
-                    <Button variant="contained" disableElevation onClick={playBtnFn}>{playBtnStr}</Button>
+                    <Button variant="contained" disableElevation ref={playBtn}>{playBtnStr}</Button>
                 </div>
             </div>
             <LinearProgress variant='determinate' value={progressValue}/>
