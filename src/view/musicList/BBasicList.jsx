@@ -26,7 +26,7 @@ export default function BBasicList({listData,loading=false}) {
         showTips.info("已全部添加至播放列表。");
     },[listData]);
 
-    return <div style={{height: "100%", overflow: "auto"}}>
+    return <>
         {(listData.length==0 && loading) ? (
             <p style={{textAlign: "center"}}>refreshing...</p>
         ) : (
@@ -37,5 +37,5 @@ export default function BBasicList({listData,loading=false}) {
                 btnClickFn={addMusic}
                 btnLongClickFn={addAllMusic}/>
         )}
-    </div>
+    </>
 }
