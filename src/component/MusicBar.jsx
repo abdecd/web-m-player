@@ -83,7 +83,7 @@ export default function MusicBar({toggleLoopBlockShown}) {
 
             if (!WebMusicManager.id) {
                 var name = WebMusicManager.name;
-                if (name.match(/ - /).length) name = name.replace(/^[^-]+- /,"");
+                if (name.match(/ - /)) name = name.replace(/^[^-]+- /,"");
                 WebMusicManager.id = await getMusicId(name);
             }
             navigate("/lyric/"+WebMusicManager.id);

@@ -27,7 +27,7 @@ export default function Lyric() {
             if (!WebMusicManager.name) return;
             if (!WebMusicManager.id) {
                 var name = WebMusicManager.name;
-                if (name.match(/ - /).length) name = name.replace(/^[^-]+- /,"");
+                if (name.match(/ - /)) name = name.replace(/^[^-]+- /,"");
                 WebMusicManager.id = await getMusicId(name);
             }
             navigate("../lyric/"+WebMusicManager.id);
