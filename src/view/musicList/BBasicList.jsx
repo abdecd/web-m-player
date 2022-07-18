@@ -26,18 +26,16 @@ export default function BBasicList({listData,loading=false}) {
         showTips.info("已全部添加至播放列表。");
     },[listData]);
 
-    return (
-        <div style={{height: "100%", textAlign: "center"}}>
-            {(listData.length==0 && loading) ? 
-                <p>refreshing...</p>
-                : <BasicList
-                    listData={listData.map(elem => {return {name: elem.name, subName: elem.author, key: elem.id||elem.url, /*私货*/id: elem.id, url: elem.url}})}
-                    btnText="+"
-                    itemClickFn={playMusic}
-                    btnClickFn={addMusic}
-                    btnLongClickFn={addAllMusic}/>
-            }
-        </div>
-    )
-    
+    return <div style={{height: "100%", overflow: "auto"}}>
+        {(listData.length==0 && loading) ? (
+            <p style={{textAlign: "center"}}>refreshing...</p>
+        ) : (
+            <BasicList
+                listData={listData.map(elem => {return {name: elem.name, subName: elem.author, key: elem.id||elem.url, /*私货*/id: elem.id, url: elem.url}})}
+                btnText="+"
+                itemClickFn={playMusic}
+                btnClickFn={addMusic}
+                btnLongClickFn={addAllMusic}/>
+        )}
+    </div>
 }
