@@ -80,7 +80,7 @@ export default function MusicBar({toggleLoopBlockShown}) {
         <div className={style.MusicBar}>
             <div className={style.LinearFlex}>
                 <p onClick={turnToLyric}>{title}</p>
-                <Box className={style.ButtonBar} sx={{'& .MuiButton-root': { width: '3em', minWidth: '0px' }}}>
+                <Box className={style.ButtonBar} sx={{'& .MuiButton-root': { width: '2.6em', minWidth: '0px' }}}>
                     <Button variant="contained" disableElevation onClick={loopBtnFn}>{loopBtnStr}</Button>
                     <Button variant="contained" disableElevation onClick={lFn} onDoubleClick={lDblFn}>L</Button>
                     <Button variant="contained" disableElevation onClick={rFn} onDoubleClick={rDblFn}>R</Button>
