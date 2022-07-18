@@ -21,8 +21,7 @@ export default function Lyric() {
         <div style={{textAlign: "center", transition: "0.2s", opacity: (loading ? 0.35 : 1), height: "100%", overflow: "auto"}}>
         {
             lyric
-                ?.replace(/\[[^\]]+\]/g,"|&|&|")
-                .split("|&|&|")
+                ?.split("\n")
                 .map((elem,index) => (
                     elem=="__the_end_of_origional_lyric__" ? 
                         <div key={index+elem} style={{width: "100%", height: "0px", border: "1px solid gray"}}/>
