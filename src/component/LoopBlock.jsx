@@ -31,7 +31,7 @@ function RenameSpecificListBar() {
                 } else {
                     setSpecificListTempName(WebMusicManager.list.name);
                 }
-                ev.target.blur();
+                ev.target.childNodes[0].querySelector("input").blur();
             }}>
             <Input
                 style={{width: "5em"}}
