@@ -3,7 +3,7 @@ import axios from "axios";
 export default {
     async fetchLyric(musicId) {
         var obj = (await axios(`/api/song/lyric?os=pc&id=${musicId}&lv=-1&tv=-1`)).data;
-        var lrcGot = obj.lrc.lyric;
+        var lrcGot = obj?.lrc?.lyric;
         if (obj?.tlyric?.lyric) lrcGot += "[0]__the_end_of_origional_lyric__[0]"+obj.tlyric.lyric;
         return lrcGot;
     },
