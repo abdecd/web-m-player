@@ -75,7 +75,11 @@ export default function MusicBar({toggleLoopBlockShown}) {
     var getMusicId = useCallback(async musicName => (await musicAjax.fetchSearch(musicName))?.[0].id,[]);
     var turnToLyric = useCallback(async () => {
         if (!title) return;
-        if (!WebMusicManager.id) WebMusicManager.id = await getMusicId(WebMusicManager.name);
+        if (!WebMusicManager.id) {
+            var name = WebMusicManager.name;
+            if (name.match(/ - /).length) name = name.replace(/^[^-]+- /,"");
+            WebMusicManager.id = await getMusicId(name);
+        }
         var newPath = "/lyric/"+WebMusicManager.id;
         if (location.pathname!=newPath) navigate(newPath);
     },[title,location]);

@@ -1,11 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useState, useEffect, useCallback } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import musicAjax from '../js/musicAjax';
+import WebMusicManager from '../js/WebMusicManager';
 
 export default function Lyric() {
     var {musicId} = useParams();
     const [lyric, setLyric] = useState("");
     const [loading, setLoading] = useState(true);
+
+    var navigate = useNavigate();
 
     //fetch lyric
     useEffect(() => {
@@ -15,6 +18,23 @@ export default function Lyric() {
             setLyric(lrcGot);
             setLoading(false);
         })();
+    },[musicId]);
+
+    //订阅歌曲变化
+    var getMusicId = useCallback(async musicName => (await musicAjax.fetchSearch(musicName))?.[0].id,[]);
+    useEffect(() => {
+        var refreshId = async () => {
+            console.log("really?!");
+            if (!WebMusicManager.name) return;
+            if (!WebMusicManager.id) {
+                var name = WebMusicManager.name;
+                if (name.match(/ - /).length) name = name.replace(/^[^-]+- /,"");
+                WebMusicManager.id = await getMusicId(name);
+            }
+            navigate("../lyric/"+WebMusicManager.id);
+        };
+        WebMusicManager.handler.addEventListener("loadstart",refreshId);
+        return () => WebMusicManager.handler.removeEventListener("loadstart",refreshId);
     },[]);
 
     return (
