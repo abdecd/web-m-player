@@ -5,7 +5,8 @@ import musicAjax from '../../js/musicAjax';
 import BBasicList from './BBasicList';
 
 export default function SearchList() {
-    var [searchParams,setSearchParams] = useSearchParams({ word: "" });
+    var [searchParams,setSearchParams] = useSearchParams({word: ""});
+    const [searchWord, setSearchWord] = useState("");
     const [searchData, setSearchData] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -17,15 +18,26 @@ export default function SearchList() {
     },[]);
 
     //载入时搜索
-    useEffect(() => { searchParams.get("word") ? searchFn(searchParams.get("word")) : 1 },[]);
+    useEffect(() => {
+        var word = searchParams.get("word");
+        if (word) {
+            setSearchWord(word);
+            searchFn(word);
+        }
+    },[]);
 
     return (
         <div style={{textAlign: "center", height: "100%"}}>
             <Input
                 style={{width:"92vw", height: "2em"}}
-                value={searchParams.get("word")}
-                onChange={ev => setSearchParams({ word: ev.target.value }) }
-                onKeyUp={ev => ev.key=="Enter" ? searchFn(searchParams.get("word")) : 1}>
+                value={searchWord}
+                onChange={ev => setSearchWord(ev.target.value) }
+                onKeyUp={ev => {
+                    if (ev.key=="Enter") {
+                        setSearchParams({word: searchWord});
+                        searchFn(searchWord);
+                    }
+                }}>
             </Input>
             <div style={{transition: "0.2s", opacity: (loading ? 0.35 : 1), height: "calc(100% - 2em)", overflow: "auto"}}>
                 <BBasicList listData={searchData} loading={loading}/>
