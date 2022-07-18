@@ -24,9 +24,15 @@ var WebMusicListStorage = {
     remove(name) {
         if (this.names.indexOf(name)==-1) return;
         this.names.splice(this.names.indexOf(name),1);
-        this.changeSub.publish(this.names.slice(0));
         localStorage.setItem("wmlsNames",JSON.stringify(this.names));
         localStorage.removeItem(`wmls-${name}`);
+        this.changeSub.publish(this.names.slice(0));
+    },
+    removeAll() {
+        for (var name of this.names) localStorage.removeItem(`wmls-${name}`);
+        this.names = [];
+        localStorage.setItem("wmlsNames",JSON.stringify(this.names));
+        this.changeSub.publish(this.names.slice(0));
     },
     loadAll() {
         return this.names.map(name => {

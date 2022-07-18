@@ -104,7 +104,7 @@ function BasicLoopBlock() {
     },[]);
 
     var deleteAllList = useCallback(() => {
-        for (var n of WebMusicListStorage.names) WebMusicListStorage.remove(n);
+        WebMusicListStorage.removeAll();
         WebMusicManager.list = new WebMusicList(null,null,true);
         showTips.info("播放列表已清空。");
     },[]);
