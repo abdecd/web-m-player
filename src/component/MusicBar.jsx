@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { Box, Button, LinearProgress } from '@mui/material'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import WebMusicManager from '../js/WebMusicManager'
 
 import style from '../css/MusicBar.module.css'
+import bindLongClick from '../js/click/bindLongClick'
 import musicAjax from '../js/musicAjax'
-import betterDblClick from '../js/click/BetterDblClick'
 import showTips from '../js/showTips'
 
 export default function MusicBar({toggleLoopBlockShown}) {
@@ -49,24 +49,28 @@ export default function MusicBar({toggleLoopBlockShown}) {
     var rFn = useCallback(() => WebMusicManager.setCurrentTime(WebMusicManager.getCurrentTime()+10),[]);
     var rDblFn = useCallback(async () => (await WebMusicManager.nextByLoopOrder()) ? WebMusicManager.play() : 1,[]);
     var playBtnFn = useCallback(() => WebMusicManager.playPause(),[]);
-    var loopBtnFn = useCallback(betterDblClick(
-        () => {
-            if (loopBtnStr=="⇌") {
-                WebMusicManager.loopMode = "repeat";
-                setLoopBtnStr("↸");
-                showTips.info("单曲循环");
-            } else if (loopBtnStr=="↸") {
-                WebMusicManager.loopMode = "random";
-                setLoopBtnStr("↝");
-                showTips.info("随机播放");
-            } else if (loopBtnStr=="↝") {
-                WebMusicManager.loopMode = "next";
-                setLoopBtnStr("⇌");
-                showTips.info("列表循环");
-            }
-        },
-        () => toggleLoopBlockShown()
-    ),[loopBtnStr,toggleLoopBlockShown]);
+    var loopBtn = useRef();
+    useEffect(() => {
+        bindLongClick(
+            loopBtn.current,
+            () => {
+                if (loopBtnStr=="⇌") {
+                    WebMusicManager.loopMode = "repeat";
+                    setLoopBtnStr("↸");
+                    showTips.info("单曲循环");
+                } else if (loopBtnStr=="↸") {
+                    WebMusicManager.loopMode = "random";
+                    setLoopBtnStr("↝");
+                    showTips.info("随机播放");
+                } else if (loopBtnStr=="↝") {
+                    WebMusicManager.loopMode = "next";
+                    setLoopBtnStr("⇌");
+                    showTips.info("列表循环");
+                }
+            },
+            () => toggleLoopBlockShown()
+        );
+    },[loopBtn,loopBtnStr,toggleLoopBlockShown]);
 
     var getMusicId = useCallback(async musicName => (await musicAjax.fetchSearch(musicName))?.[0].id,[]);
     var turnToLyric = useCallback(async () => {
@@ -81,7 +85,7 @@ export default function MusicBar({toggleLoopBlockShown}) {
             <div className={style.LinearFlex}>
                 <p onClick={turnToLyric}>{title}</p>
                 <Box className={style.ButtonBar} sx={{'& .MuiButton-root': { width: '2.6em', minWidth: '0px' }}}>
-                    <Button variant="contained" disableElevation onClick={loopBtnFn}>{loopBtnStr}</Button>
+                    <Button variant="contained" disableElevation ref={loopBtn}>{loopBtnStr}</Button>
                     <Button variant="contained" disableElevation onClick={lFn} onDoubleClick={lDblFn}>L</Button>
                     <Button variant="contained" disableElevation onClick={rFn} onDoubleClick={rDblFn}>R</Button>
                     <Button variant="contained" disableElevation onClick={playBtnFn}>{playBtnStr}</Button>
