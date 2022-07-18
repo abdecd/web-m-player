@@ -3,7 +3,7 @@ import React, { useCallback } from 'react'
 import BasicList from '../../component/BasicList';
 import WebMusicManager from '../../js/WebMusicManager';
 import musicAjax from '../../js/musicAjax';
-import showTips from '../../js/ShowTipss';
+import showTips from '../../js/showTips';
 
 export default function BBasicList({listData,loading=false}) {
     //listData <==> [{ id or url, name, author },...]
