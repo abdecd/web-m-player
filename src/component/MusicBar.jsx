@@ -70,7 +70,7 @@ export default function MusicBar({toggleLoopBlockShown}) {
             },
             () => toggleLoopBlockShown()
         );
-    },[loopBtn,loopBtnStr,toggleLoopBlockShown]);
+    },[loopBtnStr,toggleLoopBlockShown]);
 
     var noLyricLocation = useRef({L: "/"});
     var getMusicId = useCallback(async musicName => (await musicAjax.fetchSearch(musicName))?.[0].id,[]);
