@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
-import { Box, Button, LinearProgress } from '@mui/material'
+import { Button, LinearProgress } from '@mui/material'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import WebMusicManager from '../js/WebMusicManager'
@@ -84,12 +84,12 @@ export default function MusicBar({toggleLoopBlockShown}) {
         <div className={style.MusicBar}>
             <div className={style.LinearFlex}>
                 <p onClick={turnToLyric}>{title}</p>
-                <Box className={style.ButtonBar} sx={{'& .MuiButton-root': { width: '2.6em', minWidth: '0px' }}}>
+                <div className={style.ButtonBar}>
                     <Button variant="contained" disableElevation ref={loopBtn}>{loopBtnStr}</Button>
                     <Button variant="contained" disableElevation onClick={lFn} onDoubleClick={lDblFn}>L</Button>
                     <Button variant="contained" disableElevation onClick={rFn} onDoubleClick={rDblFn}>R</Button>
                     <Button variant="contained" disableElevation onClick={playBtnFn}>{playBtnStr}</Button>
-                </Box>
+                </div>
             </div>
             <LinearProgress variant='determinate' value={progressValue}/>
         </div>

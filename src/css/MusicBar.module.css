@@ -30,6 +30,9 @@
     color: #EEEEEE;
     background-color: #548cc8de;
 
+    width: 2.6em;
+    min-width: 0px;
+
     margin-top: 10px;
     margin-bottom: 10px;
     margin-right: 10px;
