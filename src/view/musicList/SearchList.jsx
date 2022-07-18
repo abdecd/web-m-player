@@ -1,4 +1,4 @@
-import { Input } from '@mui/material';
+import { TextField } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import musicAjax from '../../js/musicAjax';
@@ -28,7 +28,9 @@ export default function SearchList() {
 
     return (
         <div style={{textAlign: "center", height: "100%"}}>
-            <Input
+            <TextField
+                maxRows={1}
+                variant="standard"
                 style={{width:"92vw", height: "2em"}}
                 value={searchWord}
                 onChange={ev => setSearchWord(ev.target.value) }
@@ -38,7 +40,7 @@ export default function SearchList() {
                         searchFn(searchWord);
                     }
                 }}>
-            </Input>
+            </TextField>
             <div style={{transition: "0.2s", opacity: (loading ? 0.35 : 1), height: "calc(100% - 2em)", overflow: "auto"}}>
                 <BBasicList listData={searchData} loading={loading}/>
             </div>
