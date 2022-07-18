@@ -7,7 +7,7 @@ import BBasicList from './BBasicList';
 export default function SearchList() {
     var [searchParams,setSearchParams] = useSearchParams({ word: "" });
     const [searchData, setSearchData] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     var searchFn = useCallback(async word => {
         setLoading(true);
@@ -28,7 +28,7 @@ export default function SearchList() {
                 onKeyDown={ev => ev.key=="Enter" ? searchFn(searchParams.get("word")) : 1}>
             </Input>
             <div style={{transition: "0.2s", opacity: (loading ? 0.35 : 1), height: "calc(100% - 2em)", overflow: "auto"}}>
-                <BBasicList listData={searchData}/>
+                <BBasicList listData={searchData} loading={loading}/>
             </div>
         </Box>
     )

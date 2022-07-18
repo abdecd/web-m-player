@@ -5,7 +5,7 @@ import WebMusicManager from '../../js/WebMusicManager';
 import musicAjax from '../../js/musicAjax';
 import showTips from '../../js/showTips';
 
-export default function BBasicList({listData}) {
+export default function BBasicList({listData,loading=false}) {
     //listData <==> [{ id or url, name, author },...]
 
     var playMusic = useCallback(async (ev,elem) => {
@@ -26,10 +26,18 @@ export default function BBasicList({listData}) {
         showTips.info("已全部添加至播放列表。");
     },[listData]);
 
-    return <BasicList
-        listData={listData.map(elem => {return {name: elem.name, subName: elem.author, key: elem.id||elem.url, /*私货*/id: elem.id, url: elem.url}})}
-        btnText="+"
-        itemClickFn={playMusic}
-        btnClickFn={addMusic}
-        btnLongClickFn={addAllMusic}/>
+    return (
+        <div style={{height: "100%", textAlign: "center"}}>
+            {(listData.length==0 && loading) ? 
+                <p>refreshing...</p>
+                : <BasicList
+                    listData={listData.map(elem => {return {name: elem.name, subName: elem.author, key: elem.id||elem.url, /*私货*/id: elem.id, url: elem.url}})}
+                    btnText="+"
+                    itemClickFn={playMusic}
+                    btnClickFn={addMusic}
+                    btnLongClickFn={addAllMusic}/>
+            }
+        </div>
+    )
+    
 }

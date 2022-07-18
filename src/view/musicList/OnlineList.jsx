@@ -21,8 +21,8 @@ export default function OnlineList() {
 
     useEffect(() => {
         (async () => {
+            setLoading(true);//设置加载效果
             if (dataCache.id!=listId) {
-                setLoading(true);//设置加载效果
                 var ans = await musicAjax.fetchDiscover(listId);
                 setListData(ans);
                 dataCache.id = listId;
@@ -30,8 +30,6 @@ export default function OnlineList() {
             } else {
                 setListData(dataCache.data);
             }
-
-            //无论是否需要fetch都关闭效果
             setLoading(false);
         })();
     },[listId]);
@@ -44,7 +42,7 @@ export default function OnlineList() {
                 <Button onClick={() => navigate("../onlineList/2")}>原创</Button>
             </div>
             <div style={{transition: "0.2s", opacity: (loading ? 0.35 : 1), height: "calc(100% - 25px)", overflow: "auto"}}>
-                <BBasicList listData={listData}/>
+                <BBasicList listData={listData} loading={loading}/>
             </div>
         </div>
     )
