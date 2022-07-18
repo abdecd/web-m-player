@@ -7,7 +7,7 @@ import WebMusicManager from '../js/WebMusicManager'
 import style from '../css/MusicBar.module.css'
 import musicAjax from '../js/musicAjax'
 import betterDblClick from '../js/click/BetterDblClick'
-import showTips from '../js/ShowTips'
+import showTips from '../js/showTips'
 
 export default function MusicBar({toggleLoopBlockShown}) {
     const [title, setTitle] = useState("");
