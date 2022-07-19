@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import musicAjax from '../js/musicAjax';
 import WebMusicManager from '../js/WebMusicManager';
@@ -11,11 +11,13 @@ export default function Lyric() {
     var navigate = useNavigate();
 
     //fetch lyric
+    var lyricElem = useRef();
     useEffect(() => {
         (async () => {
             setLoading(true);//设置加载效果
             var lrcGot = await musicAjax.fetchLyric(musicId);
             setLyric(lrcGot);
+            lyricElem.current.scrollTop = 0;
             setLoading(false);
         })();
     },[musicId]);
@@ -37,7 +39,7 @@ export default function Lyric() {
     },[]);
 
     return (
-        <div style={{textAlign: "center", transition: "0.2s", opacity: (loading ? 0.35 : 1), height: "100%", overflow: "auto"}}>
+        <div ref={lyricElem} style={{textAlign: "center", transition: "0.2s", opacity: (loading ? 0.35 : 1), height: "100%", overflow: "auto"}}>
         {
             lyric
                 ?.split("\n")
