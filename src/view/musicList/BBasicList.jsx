@@ -12,13 +12,16 @@ export default function BBasicList({listData,loading=false}) {
         if (await WebMusicManager.load(elem.name, elem.id || null, elem.url || await musicAjax.fetchSrc(elem.id))) {
             WebMusicManager.play();
         } else {
-            showTips.info("载入失败");
+            showTips.info("载入失败。");
         }
     },[]);
 
     var addMusic = useCallback(async (ev,elem) => {
-        if (!WebMusicManager.push(elem.name, elem.id || null, elem.url || await musicAjax.fetchSrc(elem.id)))
-            showTips.info("添加至播放列表失败");
+        if (WebMusicManager.push(elem.name, elem.id || null, elem.url || await musicAjax.fetchSrc(elem.id))) {
+            showTips.info("添加成功。")
+        } else {
+            showTips.info("添加至播放列表失败。");
+        }
     },[]);
 
     var addAllMusic = useCallback(async () => {

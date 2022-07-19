@@ -66,10 +66,10 @@ function BasicLoopBlock() {
 
     var playMusic = useCallback(async (ev,elem) => {
         var index = WebMusicManager.list.search(elem.id || elem.src);
-        if (index==-1) return showTips.info("载入失败");
+        if (index==-1) return showTips.info("载入失败。");
         WebMusicManager.list.index = index;
         WebMusicManager.list.before();
-        if (!await WebMusicManager.next()) return showTips.info("载入失败");
+        if (!await WebMusicManager.next()) return showTips.info("载入失败。");
         WebMusicManager.play();
     },[]);
 
@@ -81,6 +81,7 @@ function BasicLoopBlock() {
 
     var removeAllMusic = useCallback(() => {
         WebMusicManager.list.splice(0,WebMusicManager.list.length);
+        showTips.info("已全部移除。")
     },[]);
 
     var createList = useCallback(() => {
