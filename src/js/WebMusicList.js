@@ -2,7 +2,7 @@ import Subscription from './Subscription'
 import WebMusicListStorage from './WebMusicListStorage';
 
 class WebMusicList extends Array {
-    //[{name,src,id?},...]
+    //[{name,src,id},...] id or src
     index = -1;
     name = null;
     storage = false;
