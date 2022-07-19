@@ -1,3 +1,4 @@
+import showTips from "./showTips";
 import WebMusicList from "./WebMusicList";
 import WebMusicListStorage from "./WebMusicListStorage";
 
