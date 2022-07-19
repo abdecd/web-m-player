@@ -121,6 +121,4 @@ if (WebMusicListStorage.names.length==0) {
 WebMusicManager._loopFn = (async function() { if (await this.next()) this.play() }).bind(WebMusicManager);
 WebMusicManager.handler.addEventListener("ended",WebMusicManager._loopFn);
 
-window.WebMusicManager = WebMusicManager;
-
 export default WebMusicManager;
