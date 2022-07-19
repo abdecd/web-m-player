@@ -9,18 +9,16 @@ var WebMusicManager = {
     handler: new Audio(),
     list: null,
 
+    //受到赋值时会强制转为链接
     get src() {return (this.handler.src==window.location.origin+"/") ? "" : this.handler.src},
-    set src(theSrc) {this.handler.src = theSrc},//受到赋值时会强制转为链接
 
     //name, (src or id)
     async load(name,src,id) {
         if (!name || (!src && !id)) return false;
 
         this.name = name;
-        this.src = src ?? "";
+        this.handler.src = src ?? await musicAjax.fetchSrc(id) ?? "";
         this.id = id ?? "";
-
-        if (!this.src && this.id) this.src = await musicAjax.fetchSrc(this.id);
 
         return new Promise(resolve => {
             var fn = (function() {
