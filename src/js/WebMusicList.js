@@ -41,7 +41,7 @@ class WebMusicList extends Array {
     }
 
     push(obj) {
-        if (obj.src && !this.find(elem => WebMusicList.getIdOrSrc(elem)==WebMusicList.getIdOrSrc(obj))) {
+        if ((obj.src || obj.id) && !this.find(elem => WebMusicList.getIdOrSrc(elem)==WebMusicList.getIdOrSrc(obj))) {
             super.push(obj);
             this.randomList = null;
             this.changeSub.publish(new WebMusicList(this.name,this,false));

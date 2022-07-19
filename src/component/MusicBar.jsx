@@ -68,7 +68,7 @@ export default function MusicBar({toggleLoopBlockShown}) {
         bindLongClick(
             playBtn.current,
             () => WebMusicManager.playPause(),
-            () => showTips.prompt("path: ",WebMusicManager.handler.src)
+            () => showTips.prompt("path: ",WebMusicManager.src)
         );
     },[]);
 

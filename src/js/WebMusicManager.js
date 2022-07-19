@@ -1,3 +1,4 @@
+import musicAjax from "./musicAjax";
 import showTips from "./showTips";
 import WebMusicList from "./WebMusicList";
 import WebMusicListStorage from "./WebMusicListStorage";
@@ -8,12 +9,18 @@ var WebMusicManager = {
     handler: new Audio(),
     list: null,
 
+    get src() {return (this.handler.src==window.location.origin+"/") ? "" : this.handler.src},
+    set src(theSrc) {this.handler.src = theSrc},//受到赋值时会强制转为链接
+
+    //name, (src or id)
     async load(name,src,id) {
-        if (!name || !src) return false;
+        if (!name || (!src && !id)) return false;
 
         this.name = name;
-        this.handler.src = src;
+        this.src = src ?? "";
         this.id = id ?? "";
+
+        if (!this.src && this.id) this.src = await musicAjax.fetchSrc(this.id);
 
         return new Promise(resolve => {
             var fn = (function() {
@@ -37,7 +44,7 @@ var WebMusicManager = {
     },
     pause() { this.handler.pause(); },
     async playPause() {
-        if (!this.handler.src) return false;
+        if (!this.src) return false;
         if (this.handler.paused) {
             return await this.play();
         } else {
@@ -48,9 +55,9 @@ var WebMusicManager = {
 
     getMaxTime() { return this.handler.duration || 10000000; },
     getCurrentTime() { return this.handler.currentTime; },
-    setCurrentTime(time) { if (this.handler.src) this.handler.currentTime = time },
+    setCurrentTime(time) { if (this.src) this.handler.currentTime = time },
 
-    push(name,src,id) { return name && src && this.list.push({name,src,id}); },
+    push(name,src,id) { return name && (src || id) && this.list.push({name,src,id}); },
     pop() { return this.list.pop(); },
     getList() { return this.list; },
 
@@ -98,7 +105,7 @@ var WebMusicManager = {
             case "next":
                 return await this.next();
             case "repeat":
-                return this.handler.src ? (this.setCurrentTime(0),true) : false;
+                return this.src ? (this.setCurrentTime(0),true) : false;
             case "random":
                 return await this.nextRandom();
         }
@@ -115,5 +122,7 @@ if (WebMusicListStorage.names.length==0) {
 
 WebMusicManager._loopFn = (async function() { if (await this.next()) this.play() }).bind(WebMusicManager);
 WebMusicManager.handler.addEventListener("ended",WebMusicManager._loopFn);
+
+window.WebMusicManager = WebMusicManager;
 
 export default WebMusicManager;
