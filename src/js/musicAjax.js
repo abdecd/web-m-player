@@ -34,8 +34,8 @@ export default {
 
     loadLocalListSync() {
         return window.PhoneMusicManager?.loadFullList()?.map(elem => { return {
-            url: elem.path,
             name: elem.name.match(/(.+?)\.[^\.]+$/)?.[1],
+            url: elem.path,
             author: "",
         } });
     },
