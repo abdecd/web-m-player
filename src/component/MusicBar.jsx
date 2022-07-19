@@ -45,9 +45,23 @@ export default function MusicBar({toggleLoopBlockShown}) {
     },[]);
 
     var lFn = useCallback(() => WebMusicManager.setCurrentTime(WebMusicManager.getCurrentTime()-10),[]);
-    var lDblFn = useCallback(async () => (await WebMusicManager.before()) && WebMusicManager.play(),[]);
     var rFn = useCallback(() => WebMusicManager.setCurrentTime(WebMusicManager.getCurrentTime()+10),[]);
-    var rDblFn = useCallback(async () => (await WebMusicManager.nextByLoopOrder()) && WebMusicManager.play(),[]);
+    var lDblFn = useCallback(async () => {
+        if (WebMusicManager.list.length) {
+            await WebMusicManager.before();
+            WebMusicManager.play();
+        } else {
+            showTips.info("播放列表中暂无歌曲。");
+        }
+    },[]);
+    var rDblFn = useCallback(async () => {
+        if (WebMusicManager.list.length) {
+            await WebMusicManager.nextByLoopOrder();
+            WebMusicManager.play();
+        } else {
+            showTips.info("播放列表中暂无歌曲。");
+        }
+    },[]);
 
     var playBtn = useRef();
     useEffect(() => {
