@@ -81,7 +81,7 @@ function BasicLoopBlock() {
 
     var removeAllMusic = useCallback(() => {
         WebMusicManager.list.splice(0,WebMusicManager.list.length);
-        showTips.info("已全部移除。")
+        showTips.info("播放列表已清空。");
     },[]);
 
     var createList = useCallback(() => {
@@ -111,7 +111,7 @@ function BasicLoopBlock() {
     var deleteAllList = useCallback(() => {
         WebMusicListStorage.removeAll();
         WebMusicManager.list = new WebMusicList(null,null,true);
-        showTips.info("播放列表已清空。");
+        showTips.info("所有列表已删除。");
     },[]);
 
     return (

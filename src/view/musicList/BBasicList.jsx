@@ -17,11 +17,8 @@ export default function BBasicList({listData,loading=false}) {
     },[]);
 
     var addMusic = useCallback(async (ev,elem) => {
-        if (WebMusicManager.push(elem.name, elem.id || null, elem.url || await musicAjax.fetchSrc(elem.id))) {
-            showTips.info("添加成功。")
-        } else {
+        if (!WebMusicManager.push(elem.name, elem.id || null, elem.url || await musicAjax.fetchSrc(elem.id)))
             showTips.info("添加至播放列表失败。");
-        }
     },[]);
 
     var addAllMusic = useCallback(async () => {

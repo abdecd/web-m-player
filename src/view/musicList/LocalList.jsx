@@ -24,7 +24,7 @@ export default function LocalList() {
             ) : (
                 <>
                 <p>Nothing.</p>
-                <Button variant='outlined' onClick={fetchLocalList}>refresh</Button>
+                <Button variant='outlined' disableRipple onClick={fetchLocalList}>refresh</Button>
                 </>
             )
         ) : (
