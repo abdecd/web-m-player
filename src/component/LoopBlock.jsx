@@ -77,10 +77,12 @@ function BasicLoopBlock() {
         var index = WebMusicManager.list.search(elem.id || elem.src);
         if (index==-1) return;
         WebMusicManager.list.splice(index,1);
+        WebMusicManager.list.index--;
     },[]);
 
     var removeAllMusic = useCallback(() => {
         WebMusicManager.list.splice(0,WebMusicManager.list.length);
+        WebMusicManager.list.index = -1;
         showTips.info("播放列表已清空。");
     },[]);
 
