@@ -45,9 +45,9 @@ export default function MusicBar({toggleLoopBlockShown}) {
     },[]);
 
     var lFn = useCallback(() => WebMusicManager.setCurrentTime(WebMusicManager.getCurrentTime()-10),[]);
-    var lDblFn = useCallback(async () => (await WebMusicManager.before()) ? WebMusicManager.play() : 1,[]);
+    var lDblFn = useCallback(async () => (await WebMusicManager.before()) && WebMusicManager.play(),[]);
     var rFn = useCallback(() => WebMusicManager.setCurrentTime(WebMusicManager.getCurrentTime()+10),[]);
-    var rDblFn = useCallback(async () => (await WebMusicManager.nextByLoopOrder()) ? WebMusicManager.play() : 1,[]);
+    var rDblFn = useCallback(async () => (await WebMusicManager.nextByLoopOrder()) && WebMusicManager.play(),[]);
 
     var playBtn = useRef();
     useEffect(() => {

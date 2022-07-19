@@ -7,12 +7,12 @@ var WebMusicManager = {
     handler: new Audio(),
     list: null,
 
-    async load(name,id,src) {//id非必须
-        if (!src) return false;
+    async load(name,src,id) {
+        if (!name || !src) return false;
 
         this.name = name;
-        this.id = id;
         this.handler.src = src;
+        this.id = id ?? "";
 
         return new Promise(resolve => {
             var fn = (function() {
@@ -25,9 +25,7 @@ var WebMusicManager = {
         });
     },
 
-    async play() {
-        if (this.handler.src || await this.nextByLoopOrder()) this.handler.play();
-    },
+    play() { return this.handler.play(); },
     pause() { this.handler.pause(); },
     playPause() {
         if (this.handler.paused) {
@@ -43,7 +41,7 @@ var WebMusicManager = {
     getCurrentTime() { return this.handler.currentTime; },
     setCurrentTime(time) { this.handler.currentTime = time },
 
-    push(name,id,src) { return name && src && this.list.push({name,id,src}); },
+    push(name,src,id) { return name && src && this.list.push({name,src,id}); },
     pop() { return this.list.pop(); },
     getList() { return this.list; },
 
@@ -73,17 +71,17 @@ var WebMusicManager = {
     async next() {
         var obj = this.list.next();
         if (!obj) return false;
-        return await this.load(obj.name, obj.id, obj.src);
+        return await this.load(obj.name, obj.src, obj.id);
     },
     async before() {
         var obj = this.list.before();
         if (!obj) return false;
-        return await this.load(obj.name, obj.id, obj.src);
+        return await this.load(obj.name, obj.src, obj.id);
     },
     async nextRandom() {
         var obj = this.list.nextRandom();
         if (!obj) return false;
-        return await this.load(obj.name, obj.id, obj.src);
+        return await this.load(obj.name, obj.src, obj.id);
     },
 
     async nextByLoopOrder() {

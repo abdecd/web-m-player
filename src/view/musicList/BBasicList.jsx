@@ -9,7 +9,7 @@ export default function BBasicList({listData,loading=false}) {
     //listData <==> [{ id or url, name, author },...]
 
     var playMusic = useCallback(async (ev,elem) => {
-        if (await WebMusicManager.load(elem.name, elem.id || null, elem.url || await musicAjax.fetchSrc(elem.id))) {
+        if (await WebMusicManager.load(elem.name, elem.url || await musicAjax.fetchSrc(elem.id), elem.id)) {
             WebMusicManager.play();
         } else {
             showTips.info("载入失败。");
@@ -17,12 +17,12 @@ export default function BBasicList({listData,loading=false}) {
     },[]);
 
     var addMusic = useCallback(async (ev,elem) => {
-        if (!WebMusicManager.push(elem.name, elem.id || null, elem.url || await musicAjax.fetchSrc(elem.id)))
+        if (!WebMusicManager.push(elem.name, elem.url || await musicAjax.fetchSrc(elem.id), elem.id))
             showTips.info("添加至播放列表失败。");
     },[]);
 
     var addAllMusic = useCallback(async () => {
-        for (var elem of listData) await WebMusicManager.push(elem.name, elem.id || null, elem.url || await musicAjax.fetchSrc(elem.id));
+        for (var elem of listData) await WebMusicManager.push(elem.name, elem.url || await musicAjax.fetchSrc(elem.id), elem.id);
         showTips.info("已全部添加至播放列表。");
     },[listData]);
 
