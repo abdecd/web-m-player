@@ -16,7 +16,7 @@ class WebMusicList extends Array {
         if (this.storage) WebMusicListStorage.set(this.name,this);
     }
     
-    next() { return this.length==0 ? null : this[this.index = (this.index==this.length-1 ? 0 : this.index+1)]; }
+    next() { return this.length==0 ? null : this[this.index = (this.index>=this.length-1 ? 0 : this.index+1)]; }
     before() { return this.length==0 ? null : this[this.index = (this.index<=0 ? (this.length-1) : this.index-1)]; }
     nextRandom() {
         if (this.length==0) return null;
