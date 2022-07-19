@@ -9,7 +9,7 @@ export default {
     },
 
     async fetchSrc(musicId) {
-        return (await axios(`/api/song/enhance/player/url?ids=[${musicId}]&br=999000`)).data.data[0].url;
+        return (await axios(`/api/song/enhance/player/url?ids=[${musicId}]&br=999000`)).data?.data[0].url;
     },
 
     async fetchDiscover(listId) {
@@ -24,7 +24,7 @@ export default {
 
     async fetchSearch(word) {
         var ans = (await axios(`/api/search/get?s=${word}&type=1&limit=30`)).data;
-        ans = ans.result.songs.map(elem => { return {
+        ans = ans?.result?.songs?.map(elem => { return {
             id: elem.id,
             name: elem.name,
             author: elem.artists.map(artist => artist.name).join("、")
