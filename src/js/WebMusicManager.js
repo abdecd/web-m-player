@@ -48,7 +48,7 @@ var WebMusicManager = {
 
     getMaxTime() { return this.handler.duration || 10000000; },
     getCurrentTime() { return this.handler.currentTime; },
-    setCurrentTime(time) { this.handler.currentTime = time },
+    setCurrentTime(time) { if (this.handler.src) this.handler.currentTime = time },
 
     push(name,src,id) { return name && src && this.list.push({name,src,id}); },
     pop() { return this.list.pop(); },
