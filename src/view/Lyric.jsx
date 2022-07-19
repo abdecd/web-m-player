@@ -27,11 +27,7 @@ export default function Lyric() {
     useEffect(() => {
         var refreshId = async () => {
             if (!WebMusicManager.name) return;
-            if (!WebMusicManager.id) {
-                var name = WebMusicManager.name;
-                if (name.match(/ - /)) name = name.replace(/^[^-]+- /,"");
-                WebMusicManager.id = await getMusicId(name);
-            }
+            if (!WebMusicManager.id) WebMusicManager.id = await getMusicId(WebMusicManager.name);
             navigate("../lyric/"+WebMusicManager.id);
         };
         WebMusicManager.handler.addEventListener("loadstart",refreshId);

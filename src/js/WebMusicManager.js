@@ -25,7 +25,15 @@ var WebMusicManager = {
         });
     },
 
-    play() { return this.handler.play(); },
+    async play() {
+        try {
+            await this.handler.play();
+        } catch {
+            showTips.info("播放失败。");
+            return false;
+        }
+        return true;
+    },
     pause() { this.handler.pause(); },
     playPause() {
         if (this.handler.paused) {

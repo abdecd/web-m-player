@@ -103,12 +103,7 @@ export default function MusicBar({toggleLoopBlockShown}) {
         } else {
             if (!title) return;
             noLyricLocation.current.L = location.pathname+location.search;
-
-            if (!WebMusicManager.id) {
-                var name = WebMusicManager.name;
-                if (name.match(/ - /)) name = name.replace(/^[^-]+- /,"");
-                WebMusicManager.id = await getMusicId(name);
-            }
+            if (!WebMusicManager.id) WebMusicManager.id = await getMusicId(WebMusicManager.name);
             navigate("/lyric/"+WebMusicManager.id);
         }
     },[title,location]);
