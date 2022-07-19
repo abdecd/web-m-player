@@ -18,7 +18,7 @@ var os = (function () {
 })();
 
 function bindLongClick(target, clickFn, longClickFn) {
-    var timer = null, longTime = 500;
+    var timer = null, longTime = 400;
 
     var startFn = ev => {
         timer = setTimeout(() => { longClickFn(ev); timer = null }, longTime);
