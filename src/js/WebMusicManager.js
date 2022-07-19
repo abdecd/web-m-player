@@ -35,10 +35,9 @@ var WebMusicManager = {
         return true;
     },
     pause() { this.handler.pause(); },
-    playPause() {
+    async playPause() {
         if (this.handler.paused) {
-            this.play();
-            return true;
+            return await this.play();
         } else {
             this.pause();
             return false;
