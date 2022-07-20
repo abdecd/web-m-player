@@ -8,9 +8,9 @@ var WebMusicManager = {
     id: "",
     handler: new Audio(),
     list: null,
-    get PUSH_STATE() {return WebMusicList.PUSH_STATE},
 
-    //受到赋值时会强制转为链接
+    get PUSH_STATE() {return {SUCCESS: Symbol(), EXISTS: Symbol(), FAILED: Symbol()}},
+    //handler.src受到赋值时会强制转为链接
     get src() {return (this.handler.src==window.location.origin+"/") ? "" : this.handler.src},
 
     //name, (src or id)
@@ -58,7 +58,8 @@ var WebMusicManager = {
 
     push(name,src,id) {
         if (!name || (!src && !id)) return this.PUSH_STATE.FAILED;
-        return this.list.push({name,src,id});
+        if (this.list.find(elem => WebMusicList.getIdOrSrc(elem)==(id || src))) return this.PUSH_STATE.EXISTS;
+        return this.list.push({name,src,id}) ? this.PUSH_STATE.SUCCESS : this.PUSH_STATE.FAILED;
     },
     pop() { return this.list.pop(); },
     getList() { return this.list; },

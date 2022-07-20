@@ -9,8 +9,6 @@ class WebMusicList extends Array {
     storage = false;
     changeSub = new Subscription();
 
-    static PUSH_STATE = {SUCCESS: Symbol(), EXISTS: Symbol(), FAILED: Symbol()};
-
     constructor(name="defaultList",arr=null,storage=false) {
         super();
         this.name = name || "defaultList";
@@ -33,42 +31,41 @@ class WebMusicList extends Array {
         return this[this.index = this.randomList.splice(Math.floor(Math.random()*this.randomList.length),1)[0]];
     }
 
+    push(obj) {
+        super.push(obj);
+        this.randomList = null;
+        this.changeSub.publish(new WebMusicList(this.name,this,false));
+        if (this.storage) WebMusicListStorage.set(this.name,this);
+        return true;
+    }
+    pop() {
+        var ans = super.pop();
+        this.randomList = null;
+        this.changeSub.publish(new WebMusicList(this.name,this,false));
+        if (this.storage) WebMusicListStorage.set(this.name,this);
+        return ans;
+    }
+    shift(...sth) { throw Error("should not use it."); }
+    unshift(...sth) { throw Error("should not use it."); }
+    splice(...sth) {
+        var ans = super.splice(...sth);
+        this.randomList = null;
+        this.changeSub.publish(new WebMusicList(this.name,this,false));
+        if (this.storage) WebMusicListStorage.set(this.name,this);
+        return ans;
+    }
+
     search(idOrSrc) {
         for (let i=0,L=this.length;i<L;i++) {
             if (WebMusicList.getIdOrSrc(this[i])==idOrSrc) return i;
         }
         return -1;
     }
-    static getIdOrSrc(elem) {
-        return elem.id || elem.src;
-    }
+    
+    static getIdOrSrc(elem) { return elem.id || elem.src; }
 
-    //return PUSH_STATE
-    push(obj) {
-        if (this.find(elem => WebMusicList.getIdOrSrc(elem)==WebMusicList.getIdOrSrc(obj))) return WebMusicList.PUSH_STATE.EXISTS;
-
-        super.push(obj);
-        this.randomList = null;
-        this.changeSub.publish(new WebMusicList(this.name,this,false));
-        if (this.storage) WebMusicListStorage.set(this.name,this);
-        return WebMusicList.PUSH_STATE.SUCCESS;
-    }
-    pop() {
-        this.randomList = null;
-        this.changeSub.publish(new WebMusicList(this.name,this,false));
-        if (this.storage) WebMusicListStorage.set(this.name,this);
-        return super.pop();
-    }
-    shift(...sth) { throw Error("should not use it."); }
-    unshift(...sth) { throw Error("should not use it."); }
-    splice(...sth) {
-        super.splice(...sth);
-        this.randomList = null;
-        this.changeSub.publish(new WebMusicList(this.name,this,false));
-        if (this.storage) WebMusicListStorage.set(this.name,this);
-    }
     swap(idOrSrc) {
-        var oldIndex = 0, newIndex = this.search(WebMusicList.getIdOrSrc(idOrSrc));
+        var oldIndex = 0, newIndex = this.search(idOrSrc);
         if (newIndex==-1) return false;
         
         var swap = this[oldIndex];
