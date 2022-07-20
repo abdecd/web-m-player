@@ -89,7 +89,7 @@ function BasicLoopBlock() {
     },[]);
 
     var swapMusic = useCallback((ev,elem) => {
-        if (WebMusicManager.swap(elem.src,elem.id)) showTips.info("与首项交换成功。");
+        if (WebMusicManager.list.swap(elem.id || elem.src)) showTips.info("与首项交换成功。");
     },[]);
 
     var removeMusic = useCallback((ev,elem) => {

@@ -3,6 +3,7 @@ import WebMusicListStorage from './WebMusicListStorage';
 
 class WebMusicList extends Array {
     //[{name,src,id},...] id or src
+    //弱检验
     index = -1;
     name = null;
     storage = false;
@@ -44,7 +45,6 @@ class WebMusicList extends Array {
 
     //return PUSH_STATE
     push(obj) {
-        if (!obj.src && !obj.id) return WebMusicList.PUSH_STATE.FAILED;
         if (this.find(elem => WebMusicList.getIdOrSrc(elem)==WebMusicList.getIdOrSrc(obj))) return WebMusicList.PUSH_STATE.EXISTS;
 
         super.push(obj);
@@ -67,8 +67,8 @@ class WebMusicList extends Array {
         this.changeSub.publish(new WebMusicList(this.name,this,false));
         if (this.storage) WebMusicListStorage.set(this.name,this);
     }
-    swap(obj) {
-        var oldIndex = 0, newIndex = this.search(WebMusicList.getIdOrSrc(obj));
+    swap(idOrSrc) {
+        var oldIndex = 0, newIndex = this.search(WebMusicList.getIdOrSrc(idOrSrc));
         if (newIndex==-1) return false;
         
         var swap = this[oldIndex];

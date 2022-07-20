@@ -61,10 +61,6 @@ var WebMusicManager = {
         return this.list.push({name,src,id});
     },
     pop() { return this.list.pop(); },
-    swap(src,id) {
-        if (!src && !id) return false;
-        return this.list.swap({src,id});
-    },
     getList() { return this.list; },
 
     //循环播放
