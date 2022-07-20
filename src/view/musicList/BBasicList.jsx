@@ -29,7 +29,9 @@ export default function BBasicList({listData,loading=false}) {
 
     var addAllMusic = useCallback(() => {
         var failCnt = 0;
-        for (var elem of listData) if (!WebMusicManager.push(elem.name, elem.url, elem.id)) failCnt++;
+        for (var elem of listData)
+            if (WebMusicManager.push(elem.name, elem.url, elem.id)==WebMusicManager.PUSH_STATE.FAIL)
+                failCnt++;
 
         if (!failCnt) {
             showTips.info(`${listData.length}项已全部添加至播放列表。`);
