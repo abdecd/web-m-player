@@ -41,21 +41,17 @@ function RenameSpecificListBar() {
     )
 }
 
-function TopBar({manageList,setManageList,btnText,btnClickFn}) {
+function TopBar({manageList,setManageList,manageComponent,unManageComponent}) {
     return (
         <div style={{display: "flex", justifyContent: "space-between", margin: "10px", height: "40px"}}>
             <Button
                 variant={manageList ? 'contained' : 'outlined'}
                 disableElevation disableRipple
                 onClick={() => setManageList(!manageList)}>
-                {btnText}
+                列表管理
             </Button>
 
-            {manageList ? (
-                <Button variant='outlined' onClick={btnClickFn}>new</Button>
-            ) : (
-                <RenameSpecificListBar/>
-            )}
+            {manageList ? manageComponent : unManageComponent}
         </div>
     )
 }
@@ -147,18 +143,23 @@ function BasicLoopBlock() {
 
     return (
         <div className={style.BasicLoopBlock}>
-            <TopBar manageList={manageList} setManageList={setManageList} btnText="列表管理" btnClickFn={createList}/>
+            <TopBar
+                manageList={manageList}
+                setManageList={setManageList}
+                manageComponent={<Button variant='outlined' onClick={createList}>new</Button>}
+                unManageComponent={<RenameSpecificListBar/>}/>
             
+            {/* TopBar: 40+10+10=60px */}
             <div style={{height: "calc(100% - 60px)"}}>
-            <BasicList
-                listData={manageList ? 
-                    nameList.map(elem => {return {name: elem, key: elem}})
-                    : specificList.map(elem => {return {name: elem.name, key: elem.id||elem.src, /*私货*/id: elem.id, src: elem.src}})}
-                btnText="del"
-                itemClickFn={manageList ? selectList : selectAndPlayMusic}
-                itemLongClickFn={manageList ? bringListToFront : pushMusicToEnd}
-                btnClickFn={manageList ? deleteList : removeMusic}
-                btnLongClickFn={manageList ? deleteAllList : removeAllMusic}/>
+                <BasicList
+                    listData={manageList ? 
+                        nameList.map(elem => {return {name: elem, key: elem}})
+                        : specificList.map(elem => {return {name: elem.name, key: elem.id||elem.src, /*私货*/id: elem.id, src: elem.src}})}
+                    btnText="del"
+                    itemClickFn={manageList ? selectList : selectAndPlayMusic}
+                    itemLongClickFn={manageList ? bringListToFront : pushMusicToEnd}
+                    btnClickFn={manageList ? deleteList : removeMusic}
+                    btnLongClickFn={manageList ? deleteAllList : removeAllMusic}/>
             </div>
         </div>
     )
