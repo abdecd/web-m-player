@@ -42,6 +42,17 @@ var WebMusicListStorage = {
             };
         }) || [];
     },
+    bringToFront(index) {
+        if (this.names.length<1 || index<1) return;
+        var newNameIndex = index, oldNameIndex = 0;
+
+        var oldName = this.names[oldNameIndex];
+        this.names[oldNameIndex] = this.names[newNameIndex];
+        this.names[newNameIndex] = oldName;
+
+        this.changeSub.publish(this.names.slice(0));
+        localStorage.setItem("wmlsNames",JSON.stringify(this.names));
+    },
 
     subscribe(fn) { this.changeSub.add(fn); },
     unSubscribe(fn) { this.changeSub.remove(fn); },

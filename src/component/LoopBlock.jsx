@@ -64,13 +64,18 @@ function BasicLoopBlock() {
         return () => WebMusicListStorage.unSubscribe(refreshFn);
     },[]);
 
-    var playMusic = useCallback(async (ev,elem) => {
+    var selectAndPlayMusic = useCallback(async (ev,elem) => {
         var index = WebMusicManager.list.search(elem.id || elem.src);
         if (index==-1) return showTips.info("载入失败。");
         WebMusicManager.list.index = index;
         WebMusicManager.list.before();
         if (!await WebMusicManager.next()) return showTips.info("载入失败。");
         WebMusicManager.play();
+    },[]);
+
+    var pushMusicToEnd = useCallback((ev,elem) => {
+        if (WebMusicManager.push(elem.name,elem.src,elem.id)==WebMusicManager.PUSH_STATE.SWAP)
+            showTips.info("已移至尾项。");
     },[]);
 
     var removeMusic = useCallback((ev,elem) => {
@@ -97,6 +102,11 @@ function BasicLoopBlock() {
         WebMusicManager.list = new WebMusicList(elem.name,WebMusicListStorage.get(elem.name),true);
         setManageList(false);
     },[]);
+
+    var bringListToFront = useCallback((ev,elem) => {
+        WebMusicListStorage.bringToFront(WebMusicListStorage.names.indexOf(elem.name));
+        showTips.info("已移至首项。");
+    })
 
     var deleteList = useCallback((ev,elem) => {
         WebMusicListStorage.remove(elem.name);
@@ -139,7 +149,8 @@ function BasicLoopBlock() {
                     nameList.map(elem => {return {name: elem, key: elem}})
                     : specificList.map(elem => {return {name: elem.name, key: elem.id||elem.src, /*私货*/id: elem.id, src: elem.src}})}
                 btnText="del"
-                itemClickFn={manageList ? selectList : playMusic}
+                itemClickFn={manageList ? selectList : selectAndPlayMusic}
+                itemLongClickFn={manageList ? bringListToFront : pushMusicToEnd}
                 btnClickFn={manageList ? deleteList : removeMusic}
                 btnLongClickFn={manageList ? deleteAllList : removeAllMusic}/>
             </div>
