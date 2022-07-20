@@ -24,7 +24,7 @@ function RightBtn({btnText,clickFn,longClickFn}) {
     return (
         <ListItemButton
             ref={btn}
-            style={{textAlign: "center", fontSize: "20px", flex: 1, color: "gray"}}>
+            style={{textAlign: "center", flex: 1, color: "gray"}}>
             <ListItemText>{btnText}</ListItemText>
         </ListItemButton>
     )
