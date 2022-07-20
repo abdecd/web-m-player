@@ -8,6 +8,7 @@ var WebMusicManager = {
     id: "",
     handler: new Audio(),
     list: null,
+    PUSH_STATE: WebMusicList.PUSH_STATE,
 
     //受到赋值时会强制转为链接
     get src() {return (this.handler.src==window.location.origin+"/") ? "" : this.handler.src},
@@ -55,7 +56,10 @@ var WebMusicManager = {
     getCurrentTime() { return this.handler.currentTime; },
     setCurrentTime(time) { if (this.src) this.handler.currentTime = time },
 
-    push(name,src,id) { return name && (src || id) && this.list.push({name,src,id}); },
+    push(name,src,id) {
+        if (!name || (!src && !id)) return this.PUSH_STATE.FAIL;
+        return this.list.push({name,src,id});
+    },
     pop() { return this.list.pop(); },
     getList() { return this.list; },
 

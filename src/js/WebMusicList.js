@@ -9,6 +9,8 @@ class WebMusicList extends Array {
     storage = false;
     changeSub = new Subscription();
 
+    static PUSH_STATE = {SUCCESS: Symbol(), SWAP: Symbol(), FAIL: Symbol()}
+
     constructor(name="defaultList",arr=null,storage=false) {
         super();
         this.name = name || "defaultList";
@@ -41,23 +43,26 @@ class WebMusicList extends Array {
         return elem.id || elem.src;
     }
 
+    //return PUSH_STATE
     push(obj) {
-        if (!obj.src && !obj.id) return false;
+        if (!obj.src && !obj.id) return PUSH_STATE.FAIL;
 
+        var state = null;
         if (this.find(elem => WebMusicList.getIdOrSrc(elem)==WebMusicList.getIdOrSrc(obj))) {
             var oldIndex = this.search(WebMusicList.getIdOrSrc(obj)), newIndex = this.length-1;
             var swap = this[newIndex];
             this[newIndex] = this[oldIndex];
             this[oldIndex] = swap;
-            showTips.info("项目存在，已移至列表末。");
+            state = PUSH_STATE.SWAP;
         } else {
             super.push(obj);
+            state = PUSH_STATE.SUCCESS;
         }
 
         this.randomList = null;
         this.changeSub.publish(new WebMusicList(this.name,this,false));
         if (this.storage) WebMusicListStorage.set(this.name,this);
-        return true;
+        return state;
     }
     pop() {
         this.randomList = null;

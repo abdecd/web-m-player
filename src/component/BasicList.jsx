@@ -2,6 +2,19 @@ import React, { useEffect, useRef } from 'react'
 import { List, ListItemText, ListItemButton, ListItem } from '@mui/material'
 import bindLongClick from '../js/click/bindLongClick'
 
+function LeftItem({name,subName,clickFn,longClickFn}) {
+    var btn = useRef();
+    useEffect(() => {
+        bindLongClick(btn.current,clickFn,longClickFn);
+    },[btn]);
+
+    return (
+        <ListItemButton style={{flex: 9}}>
+            <ListItemText primary={name} secondary={subName}/>
+        </ListItemButton>
+    )
+}
+
 function RightBtn({btnText,clickFn,longClickFn}) {
     var btn = useRef();
     useEffect(() => {
@@ -17,7 +30,7 @@ function RightBtn({btnText,clickFn,longClickFn}) {
     )
 }
 
-export default function BasicList({listData,btnText,itemClickFn,btnClickFn,btnLongClickFn}) {
+export default function BasicList({listData,btnText,itemClickFn,itemLongClickFn,btnClickFn,btnLongClickFn}) {
     //listData <==> [{name,subName?,key},...]
     return (
         <div style={{height: "100%", textAlign: "center", overflow: "auto"}}>
@@ -28,10 +41,7 @@ export default function BasicList({listData,btnText,itemClickFn,btnClickFn,btnLo
             {
                 listData?.map(elem => (
                     <ListItem key={elem.key} style={{padding: "0px",alignItems: "stretch"}}>
-                        <ListItemButton style={{flex: 9}} onClick={ev => itemClickFn(ev,elem)}>
-                            <ListItemText primary={elem.name} secondary={elem.subName}/>
-                        </ListItemButton>
-
+                        <LeftItem name={elem.name} subName={elem.subName} clickFn={ev => itemClickFn(ev,elem)} longClickFn={ev => itemLongClickFn(ev,elem)}/>
                         <RightBtn btnText={btnText} clickFn={ev => btnClickFn(ev,elem)} longClickFn={ev => btnLongClickFn(ev,elem)}/>
                     </ListItem>
                 ))
