@@ -1,3 +1,4 @@
+import showTips from './showTips';
 import Subscription from './Subscription'
 import WebMusicListStorage from './WebMusicListStorage';
 
@@ -41,14 +42,17 @@ class WebMusicList extends Array {
     }
 
     push(obj) {
-        if ((obj.src || obj.id) && !this.find(elem => WebMusicList.getIdOrSrc(elem)==WebMusicList.getIdOrSrc(obj))) {
-            super.push(obj);
-            this.randomList = null;
-            this.changeSub.publish(new WebMusicList(this.name,this,false));
-            if (this.storage) WebMusicListStorage.set(this.name,this);
-            return true;
+        if (!obj.src && !obj.id) return false;
+        if (this.find(elem => WebMusicList.getIdOrSrc(elem)==WebMusicList.getIdOrSrc(obj))) {
+            super.splice(this.search(WebMusicList.getIdOrSrc(obj)),1);
+            showTips.info("项目存在，已移至列表末。");
         }
-        return false;
+
+        super.push(obj);
+        this.randomList = null;
+        this.changeSub.publish(new WebMusicList(this.name,this,false));
+        if (this.storage) WebMusicListStorage.set(this.name,this);
+        return true;
     }
     pop() {
         this.randomList = null;

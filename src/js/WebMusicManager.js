@@ -116,6 +116,7 @@ if (WebMusicListStorage.names.length==0) {
 } else  {
     var name = WebMusicListStorage.names[0];
     WebMusicManager.list = new WebMusicList(name,WebMusicListStorage.get(name),true);
+    WebMusicManager.next();
 }
 
 WebMusicManager._loopFn = (async function() { if (await this.next()) this.play() }).bind(WebMusicManager);
