@@ -43,12 +43,17 @@ class WebMusicList extends Array {
 
     push(obj) {
         if (!obj.src && !obj.id) return false;
+
         if (this.find(elem => WebMusicList.getIdOrSrc(elem)==WebMusicList.getIdOrSrc(obj))) {
-            super.splice(this.search(WebMusicList.getIdOrSrc(obj)),1);
+            var oldIndex = this.search(WebMusicList.getIdOrSrc(obj)), newIndex = this.length-1;
+            var swap = this[newIndex];
+            this[newIndex] = this[oldIndex];
+            this[oldIndex] = swap;
             showTips.info("项目存在，已移至列表末。");
+        } else {
+            super.push(obj);
         }
 
-        super.push(obj);
         this.randomList = null;
         this.changeSub.publish(new WebMusicList(this.name,this,false));
         if (this.storage) WebMusicListStorage.set(this.name,this);

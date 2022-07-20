@@ -21,6 +21,7 @@ export default function MusicBar({toggleLoopBlockShown}) {
     //订阅title
     useEffect(() => {
         var refreshTitle = () => setTitle(WebMusicManager.name);
+        refreshTitle();
         WebMusicManager.handler.addEventListener("loadstart",refreshTitle);
         return () => WebMusicManager.handler.removeEventListener("loadstart",refreshTitle);
     },[]);
