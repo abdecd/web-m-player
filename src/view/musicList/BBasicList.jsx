@@ -34,9 +34,9 @@ export default function BBasicList({listData,loading=false}) {
                 failCnt++;
 
         if (!failCnt) {
-            showTips.info(`${listData.length}项已全部添加至播放列表。`);
+            showTips.info(`${listData.length}项已成功添加至播放列表。`);
         } else {
-            showTips.info(`${listData.length-failCnt}项已全部添加至播放列表，${failCnt}项失败。`);
+            showTips.info(`${listData.length-failCnt}项已成功添加至播放列表，${failCnt}项失败。`);
         }
     },[listData]);
 
