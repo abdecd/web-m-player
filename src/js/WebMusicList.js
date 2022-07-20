@@ -48,6 +48,12 @@ class WebMusicList extends Array {
     shift(...sth) { throw Error("should not use it."); }
     unshift(...sth) { throw Error("should not use it."); }
     splice(...sth) {
+        var deleteIndex = sth[0], deleteCnt = 0;
+        if (deleteIndex<=this.index) {
+            deleteCnt = Math.min(this.index-deleteIndex+1,sth[1]);
+        }
+        this.index-=deleteCnt;
+        
         var ans = super.splice(...sth);
         this.randomList = null;
         this.changeSub.publish(new WebMusicList(this.name,this,false));
