@@ -8,7 +8,7 @@ var WebMusicManager = {
     id: "",
     handler: new Audio(),
     list: null,
-    PUSH_STATE: WebMusicList.PUSH_STATE,
+    get PUSH_STATE() {return WebMusicList.PUSH_STATE},
 
     //受到赋值时会强制转为链接
     get src() {return (this.handler.src==window.location.origin+"/") ? "" : this.handler.src},
