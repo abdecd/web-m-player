@@ -47,7 +47,7 @@ export default function BasicList({listData,btnText,itemClickFn=(function(){}),i
                 ))
             }
                 <ListItem style={{textAlign: "center", color: "gray"}}>
-                    <ListItemText>{listData.length}项</ListItemText>
+                    <ListItemText>共{listData.length}项</ListItemText>
                 </ListItem>
             </List>
         )}

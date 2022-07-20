@@ -100,7 +100,6 @@ function BasicLoopBlock() {
         var index = WebMusicManager.list.search(elem.id || elem.src);
         if (index==-1) return;
         WebMusicManager.list.splice(index,1);
-        WebMusicManager.list.index--;
     },[]);
 
     var removeAllMusic = useCallback(() => {
