@@ -45,7 +45,7 @@ class WebMusicList extends Array {
 
     //return PUSH_STATE
     push(obj) {
-        if (!obj.src && !obj.id) return PUSH_STATE.FAIL;
+        if (!obj.src && !obj.id) return WebMusicList.PUSH_STATE.FAIL;
 
         var state = null;
         if (this.find(elem => WebMusicList.getIdOrSrc(elem)==WebMusicList.getIdOrSrc(obj))) {
@@ -53,10 +53,10 @@ class WebMusicList extends Array {
             var swap = this[newIndex];
             this[newIndex] = this[oldIndex];
             this[oldIndex] = swap;
-            state = PUSH_STATE.SWAP;
+            state = WebMusicList.PUSH_STATE.SWAP;
         } else {
             super.push(obj);
-            state = PUSH_STATE.SUCCESS;
+            state = WebMusicList.PUSH_STATE.SUCCESS;
         }
 
         this.randomList = null;
