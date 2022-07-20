@@ -19,9 +19,9 @@ export default function BBasicList({listData,loading=false}) {
         switch (WebMusicManager.push(elem.name, elem.url, elem.id)) {
             case WebMusicManager.PUSH_STATE.SUCCESS:
                 return ;//showTips.info("添加至播放列表成功。");
-            case WebMusicManager.PUSH_STATE.SWAP:
-                return showTips.info("项目存在，已移至列表末。");
-            case WebMusicManager.PUSH_STATE.FAIL:
+            case WebMusicManager.PUSH_STATE.EXISTS:
+                return showTips.info("该项目已存在。");
+            case WebMusicManager.PUSH_STATE.FAILED:
                 return showTips.info("添加至播放列表失败。");
         }
     },[]);
@@ -29,7 +29,7 @@ export default function BBasicList({listData,loading=false}) {
     var addAllMusic = useCallback(() => {
         var failCnt = 0;
         for (var elem of listData)
-            if (WebMusicManager.push(elem.name, elem.url, elem.id)==WebMusicManager.PUSH_STATE.FAIL)
+            if (WebMusicManager.push(elem.name, elem.url, elem.id)==WebMusicManager.PUSH_STATE.FAILED)
                 failCnt++;
 
         if (!failCnt) {

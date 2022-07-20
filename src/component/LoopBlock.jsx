@@ -88,9 +88,8 @@ function BasicLoopBlock() {
         WebMusicManager.play();
     },[]);
 
-    var pushMusicToEnd = useCallback((ev,elem) => {
-        if (WebMusicManager.push(elem.name,elem.src,elem.id)==WebMusicManager.PUSH_STATE.SWAP)
-            showTips.info("与首项交换成功。");
+    var swapMusic = useCallback((ev,elem) => {
+        if (WebMusicManager.swap(elem.src,elem.id)) showTips.info("与首项交换成功。");
     },[]);
 
     var removeMusic = useCallback((ev,elem) => {
@@ -157,7 +156,7 @@ function BasicLoopBlock() {
                         : specificList.map(elem => {return {name: elem.name, key: elem.id||elem.src, /*私货*/id: elem.id, src: elem.src}})}
                     btnText="del"
                     itemClickFn={manageList ? selectList : selectAndPlayMusic}
-                    itemLongClickFn={manageList ? bringListToFront : pushMusicToEnd}
+                    itemLongClickFn={manageList ? bringListToFront : swapMusic}
                     btnClickFn={manageList ? deleteList : removeMusic}
                     btnLongClickFn={manageList ? deleteAllList : removeAllMusic}/>
             </div>

@@ -57,10 +57,14 @@ var WebMusicManager = {
     setCurrentTime(time) { if (this.src) this.handler.currentTime = time },
 
     push(name,src,id) {
-        if (!name || (!src && !id)) return this.PUSH_STATE.FAIL;
+        if (!name || (!src && !id)) return this.PUSH_STATE.FAILED;
         return this.list.push({name,src,id});
     },
     pop() { return this.list.pop(); },
+    swap(src,id) {
+        if (!src && !id) return false;
+        return this.list.swap({src,id});
+    },
     getList() { return this.list; },
 
     //循环播放

@@ -8,7 +8,7 @@ class WebMusicList extends Array {
     storage = false;
     changeSub = new Subscription();
 
-    static PUSH_STATE = {SUCCESS: Symbol(), SWAP: Symbol(), FAIL: Symbol()};
+    static PUSH_STATE = {SUCCESS: Symbol(), EXISTS: Symbol(), FAILED: Symbol()};
 
     constructor(name="defaultList",arr=null,storage=false) {
         super();
@@ -44,24 +44,14 @@ class WebMusicList extends Array {
 
     //return PUSH_STATE
     push(obj) {
-        if (!obj.src && !obj.id) return WebMusicList.PUSH_STATE.FAIL;
+        if (!obj.src && !obj.id) return WebMusicList.PUSH_STATE.FAILED;
+        if (this.find(elem => WebMusicList.getIdOrSrc(elem)==WebMusicList.getIdOrSrc(obj))) return WebMusicList.PUSH_STATE.EXISTS;
 
-        var state = null;
-        if (this.find(elem => WebMusicList.getIdOrSrc(elem)==WebMusicList.getIdOrSrc(obj))) {
-            var oldIndex = 0, newIndex = this.search(WebMusicList.getIdOrSrc(obj));
-            var swap = this[oldIndex];
-            this[oldIndex] = this[newIndex];
-            this[newIndex] = swap;
-            state = WebMusicList.PUSH_STATE.SWAP;
-        } else {
-            super.push(obj);
-            state = WebMusicList.PUSH_STATE.SUCCESS;
-        }
-
+        super.push(obj);
         this.randomList = null;
         this.changeSub.publish(new WebMusicList(this.name,this,false));
         if (this.storage) WebMusicListStorage.set(this.name,this);
-        return state;
+        return WebMusicList.PUSH_STATE.SUCCESS;
     }
     pop() {
         this.randomList = null;
@@ -76,6 +66,19 @@ class WebMusicList extends Array {
         this.randomList = null;
         this.changeSub.publish(new WebMusicList(this.name,this,false));
         if (this.storage) WebMusicListStorage.set(this.name,this);
+    }
+    swap(obj) {
+        var oldIndex = 0, newIndex = this.search(WebMusicList.getIdOrSrc(obj));
+        if (newIndex==-1) return false;
+        
+        var swap = this[oldIndex];
+        this[oldIndex] = this[newIndex];
+        this[newIndex] = swap;
+
+        this.randomList = null;
+        this.changeSub.publish(new WebMusicList(this.name,this,false));
+        if (this.storage) WebMusicListStorage.set(this.name,this);
+        return true;
     }
 
     subscribe(fn) { this.changeSub.add(fn); }
