@@ -9,7 +9,8 @@ var WebMusicManager = {
     handler: new Audio(),
     list: null,
 
-    get PUSH_STATE() {return {SUCCESS: Symbol(), EXISTS: Symbol(), FAILED: Symbol()}},
+    _PUSH_STATE: {SUCCESS: Symbol(), EXISTS: Symbol(), FAILED: Symbol()},
+    get PUSH_STATE() {return this._PUSH_STATE},
     //handler.src受到赋值时会强制转为链接
     get src() {return (this.handler.src==window.location.origin+"/") ? "" : this.handler.src},
 

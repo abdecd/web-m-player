@@ -27,16 +27,23 @@ export default function BBasicList({listData,loading=false}) {
     },[]);
 
     var addAllMusic = useCallback(() => {
-        var failCnt = 0;
-        for (var elem of listData)
-            if (WebMusicManager.push(elem.name, elem.url, elem.id)==WebMusicManager.PUSH_STATE.FAILED)
+        var successCnt = 0, existsCnt = 0, failCnt = 0;
+        for (var elem of listData) {
+            var statue = WebMusicManager.push(elem.name, elem.url, elem.id);
+            if (statue==WebMusicManager.PUSH_STATE.SUCCESS) {
+                successCnt++;
+            } else if (statue==WebMusicManager.PUSH_STATE.EXISTS) {
+                existsCnt++;
+            } else if (statue==WebMusicManager.PUSH_STATE.FAILED) {
                 failCnt++;
-
-        if (!failCnt) {
-            showTips.info(`${listData.length}项已成功添加至播放列表。`);
-        } else {
-            showTips.info(`${listData.length-failCnt}项已成功添加至播放列表，${failCnt}项失败。`);
+            }
         }
+
+        var strs = [];
+        if (successCnt) strs.push(`${successCnt}项已成功添加至播放列表`);
+        if (existsCnt) strs.push(`${existsCnt}项已存在`);
+        if (failCnt) strs.push(`${failCnt}项失败`);
+        showTips.info(strs.join("，")+"。");
     },[listData]);
 
     return <>
