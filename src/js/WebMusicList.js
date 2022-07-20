@@ -1,4 +1,3 @@
-import showTips from './showTips';
 import Subscription from './Subscription'
 import WebMusicListStorage from './WebMusicListStorage';
 
