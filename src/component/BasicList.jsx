@@ -30,7 +30,7 @@ function RightBtn({btnText,clickFn,longClickFn}) {
     )
 }
 
-export default function BasicList({listData,btnText,itemClickFn,itemLongClickFn,btnClickFn,btnLongClickFn}) {
+export default function BasicList({listData,btnText,itemClickFn=(function(){}),itemLongClickFn=(function(){}),btnClickFn=(function(){}),btnLongClickFn=(function(){})}) {
     //listData <==> [{name,subName?,key},...]
     return (
         <div style={{height: "100%", textAlign: "center", overflow: "auto"}}>
