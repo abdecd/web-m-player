@@ -46,6 +46,9 @@ export default function BasicList({listData,btnText,itemClickFn=(function(){}),i
                     </ListItem>
                 ))
             }
+                <ListItem style={{textAlign: "center", color: "gray"}}>
+                    <ListItemText>{listData.length}项</ListItemText>
+                </ListItem>
             </List>
         )}
         </div>
