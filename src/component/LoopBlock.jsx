@@ -41,6 +41,25 @@ function RenameSpecificListBar() {
     )
 }
 
+function TopBar({manageList,setManageList,btnText,btnClickFn}) {
+    return (
+        <div style={{display: "flex", justifyContent: "space-between", margin: "10px", height: "40px"}}>
+            <Button
+                variant={manageList ? 'contained' : 'outlined'}
+                disableElevation disableRipple
+                onClick={() => setManageList(!manageList)}>
+                {btnText}
+            </Button>
+
+            {manageList ? (
+                <Button variant='outlined' onClick={btnClickFn}>new</Button>
+            ) : (
+                <RenameSpecificListBar/>
+            )}
+        </div>
+    )
+}
+
 function BasicLoopBlock() {
     const [specificList, setSpecificList] = useState(new WebMusicList());
     const [nameList, setNameList] = useState([]);
@@ -128,20 +147,7 @@ function BasicLoopBlock() {
 
     return (
         <div className={style.BasicLoopBlock}>
-            <div style={{display: "flex", justifyContent: "space-between", margin: "10px", height: "40px"}}>
-                <Button
-                    variant={manageList ? 'contained' : 'outlined'}
-                    disableElevation disableRipple
-                    onClick={() => setManageList(!manageList)}>
-                    列表管理
-                </Button>
-
-                {manageList ? (
-                    <Button variant='outlined' onClick={createList}>new</Button>
-                ) : (
-                    <RenameSpecificListBar/>
-                )}
-            </div>
+            <TopBar manageList={manageList} setManageList={setManageList} btnText="列表管理" btnClickFn={createList}/>
             
             <div style={{height: "calc(100% - 60px)"}}>
             <BasicList
