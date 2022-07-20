@@ -106,7 +106,7 @@ function BasicLoopBlock() {
     var bringListToFront = useCallback((ev,elem) => {
         WebMusicListStorage.bringToFront(WebMusicListStorage.names.indexOf(elem.name));
         showTips.info("已移至首项。");
-    })
+    },[]);
 
     var deleteList = useCallback((ev,elem) => {
         WebMusicListStorage.remove(elem.name);
