@@ -90,7 +90,7 @@ function BasicLoopBlock() {
 
     var pushMusicToEnd = useCallback((ev,elem) => {
         if (WebMusicManager.push(elem.name,elem.src,elem.id)==WebMusicManager.PUSH_STATE.SWAP)
-            showTips.info("已移至尾项。");
+            showTips.info("与首项交换成功。");
     },[]);
 
     var removeMusic = useCallback((ev,elem) => {
@@ -120,7 +120,7 @@ function BasicLoopBlock() {
 
     var bringListToFront = useCallback((ev,elem) => {
         WebMusicListStorage.bringToFront(WebMusicListStorage.names.indexOf(elem.name));
-        showTips.info("已移至首项。");
+        showTips.info("与首项交换成功。");
     },[]);
 
     var deleteList = useCallback((ev,elem) => {

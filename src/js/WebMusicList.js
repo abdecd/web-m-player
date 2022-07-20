@@ -48,10 +48,10 @@ class WebMusicList extends Array {
 
         var state = null;
         if (this.find(elem => WebMusicList.getIdOrSrc(elem)==WebMusicList.getIdOrSrc(obj))) {
-            var oldIndex = this.search(WebMusicList.getIdOrSrc(obj)), newIndex = this.length-1;
-            var swap = this[newIndex];
-            this[newIndex] = this[oldIndex];
-            this[oldIndex] = swap;
+            var oldIndex = 0, newIndex = this.search(WebMusicList.getIdOrSrc(obj));
+            var swap = this[oldIndex];
+            this[oldIndex] = this[newIndex];
+            this[newIndex] = swap;
             state = WebMusicList.PUSH_STATE.SWAP;
         } else {
             super.push(obj);
