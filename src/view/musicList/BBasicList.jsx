@@ -18,7 +18,7 @@ export default function BBasicList({listData,loading=false}) {
     var addMusic = useCallback((ev,elem) => {
         switch (WebMusicManager.push(elem.name, elem.url, elem.id)) {
             case WebMusicManager.PUSH_STATE.SUCCESS:
-                return showTips.info("添加至播放列表成功。");
+                return ;//showTips.info("添加至播放列表成功。");
             case WebMusicManager.PUSH_STATE.SWAP:
                 return showTips.info("项目存在，已移至列表末。");
             case WebMusicManager.PUSH_STATE.FAIL:
