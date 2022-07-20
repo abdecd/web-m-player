@@ -9,7 +9,7 @@ function LeftItem({name,subName,clickFn,longClickFn}) {
     },[btn]);
 
     return (
-        <ListItemButton style={{flex: 9}}>
+        <ListItemButton ref={btn} style={{flex: 9}}>
             <ListItemText primary={name} secondary={subName}/>
         </ListItemButton>
     )
