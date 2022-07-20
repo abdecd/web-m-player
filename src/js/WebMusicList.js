@@ -8,7 +8,7 @@ class WebMusicList extends Array {
     storage = false;
     changeSub = new Subscription();
 
-    static PUSH_STATE = {SUCCESS: Symbol(), SWAP: Symbol(), FAIL: Symbol()}
+    static PUSH_STATE = {SUCCESS: Symbol(), SWAP: Symbol(), FAIL: Symbol()};
 
     constructor(name="defaultList",arr=null,storage=false) {
         super();
