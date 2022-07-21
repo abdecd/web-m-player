@@ -42,9 +42,9 @@ var WebMusicListStorage = {
             };
         }) || [];
     },
-    bringToFront(index) {
-        if (this.names.length<1 || index<1) return;
-        var newNameIndex = index, oldNameIndex = 0;
+    swapToFront(itemName) {
+        var newNameIndex = this.names.indexOf(itemName), oldNameIndex = 0;
+        if (this.names.length<1 || newNameIndex<1) return;
 
         var oldName = this.names[oldNameIndex];
         this.names[oldNameIndex] = this.names[newNameIndex];

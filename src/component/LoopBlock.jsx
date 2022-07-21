@@ -88,8 +88,8 @@ function BasicLoopBlock() {
         WebMusicManager.play();
     },[]);
 
-    var swapMusic = useCallback((ev,elem) => {
-        if (WebMusicManager.list.swap(elem.id || elem.src)) {
+    var swapMusicToFront = useCallback((ev,elem) => {
+        if (WebMusicManager.list.swapToFront(elem.id || elem.src)) {
             showTips.info("与首项交换成功。");
         } else {
             showTips.info("与首项交换失败。");
@@ -120,8 +120,8 @@ function BasicLoopBlock() {
         setManageList(false);
     },[]);
 
-    var bringListToFront = useCallback((ev,elem) => {
-        WebMusicListStorage.bringToFront(WebMusicListStorage.names.indexOf(elem.name));
+    var swapListToFront = useCallback((ev,elem) => {
+        WebMusicListStorage.swapToFront(elem.name);
         showTips.info("与首项交换成功。");
     },[]);
 
@@ -159,7 +159,7 @@ function BasicLoopBlock() {
                         : specificList.map(elem => {return {name: elem.name, key: elem.id||elem.src, /*私货*/id: elem.id, src: elem.src}})}
                     btnText="del"
                     itemClickFn={manageList ? selectList : selectAndPlayMusic}
-                    itemLongClickFn={manageList ? bringListToFront : swapMusic}
+                    itemLongClickFn={manageList ? swapListToFront : swapMusicToFront}
                     btnClickFn={manageList ? deleteList : removeMusic}
                     btnLongClickFn={manageList ? deleteAllList : removeAllMusic}/>
             </div>

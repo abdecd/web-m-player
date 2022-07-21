@@ -9,14 +9,14 @@ var WebMusicManager = {
     handler: new Audio(),
     list: null,
 
-    _PUSH_STATE: {SUCCESS: Symbol(), EXISTS: Symbol(), FAILED: Symbol()},
+    _PUSH_STATE: Object.freeze({SUCCESS: Symbol(), EXISTS: Symbol(), FAILED: Symbol()}),
     get PUSH_STATE() {return this._PUSH_STATE},
     //handler.src受到赋值时会强制转为链接
     get src() {return (this.handler.src==window.location.origin+"/") ? "" : this.handler.src},
 
     //name, (src or id)
     async load(name,src,id) {
-        if (!name || (!src && !id)) return false;
+        if (!WebMusicList.isValidItem({name,src,id})) return false;
 
         this.name = name;
         this.handler.src = src ?? await musicAjax.fetchSrc(id) ?? "";
@@ -58,12 +58,11 @@ var WebMusicManager = {
     setCurrentTime(time) { if (this.src) this.handler.currentTime = time },
 
     push(name,src,id) {
-        if (!name || (!src && !id)) return this.PUSH_STATE.FAILED;
+        if (!WebMusicList.isValidItem({name,src,id})) return this.PUSH_STATE.FAILED;
         if (this.list.find(elem => WebMusicList.getIdOrSrc(elem)==(id || src))) return this.PUSH_STATE.EXISTS;
         return this.list.push({name,src,id}) ? this.PUSH_STATE.SUCCESS : this.PUSH_STATE.FAILED;
     },
     pop() { return this.list.pop(); },
-    getList() { return this.list; },
 
     //循环播放
     _loopMode: "next",
