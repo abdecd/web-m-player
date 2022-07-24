@@ -23,7 +23,7 @@ export default {
     },
 
     async fetchSearch(word) {
-        var ans = (await axios(`/api/search/get?s=${word}&type=1&limit=30`)).data;
+        var ans = (await axios(`/api/search/get?s=${encodeURI(word)}&type=1&limit=30`)).data;
         ans = ans?.result?.songs?.map(elem => { return {
             id: elem.id,
             name: elem.name,
