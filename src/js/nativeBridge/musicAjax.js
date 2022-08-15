@@ -13,22 +13,23 @@ export default {
     },
 
     async fetchDiscover(listId) {
-        var ans = (await axios("/discover/toplist?id="+listId,{timeout: 5000})).data?.match(/<textarea id="song-list-pre-data" style="display:none;">(.+?)<\/textarea>/)?.[1];
-        ans = JSON.parse(ans).map(elem => { return {
+        var ans = (await axios("/discover/toplist?id="+listId,{timeout: 5000})).data
+        ?.match(/<textarea id="song-list-pre-data" style="display:none;">(.+?)<\/textarea>/)?.[1];
+        ans = JSON.parse(ans).map(elem => ({
             id: elem.id,
             name: elem.name,
             author: elem.artists.map(artist => artist.name).join("、")
-        } });
+        }));
         return ans;
     },
 
     async fetchSearch(word) {
         var ans = (await axios(`/api/search/get?s=${encodeURI(word)}&type=1&limit=30`,{timeout: 5000})).data;
-        ans = ans?.result?.songs?.map(elem => { return {
+        ans = ans?.result?.songs?.map(elem => ({
             id: elem.id,
             name: elem.name,
             author: elem.artists.map(artist => artist.name).join("、")
-        } });
+        }));
         return ans;
     },
 
