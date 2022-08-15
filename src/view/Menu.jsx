@@ -4,11 +4,11 @@ import { useNavigate } from 'react-router-dom'
 
 import style from '../css/LinearBar.module.css'
 
-function SettingsBtn() {
+function SettingsBtn({style}) {
     var navigate = useNavigate();
     return (
         <Button
-            style={{minWidth: "30px", height:"30px"}}
+            style={{minWidth: "30px", height:"30px", ...style}}
             onClick={() => navigate("settings")}>
             <svg width="30px" height="30px">
                 <polygon points="5,15 10,6.34 20,6.34 25,15 20,23.66 10,23.66" fill="rgba(0,0,0,0)" stroke="black" strokeWidth="1"/>
