@@ -19,17 +19,25 @@ var webMusicManager = {
         if (!WebMusicList.isValidItem({name,src,id})) return false;
 
         this.name = name;
-        this.handler.src = src ?? await musicAjax.fetchSrc(id) ?? "";
+        this.handler.src = src ?? await musicAjax.fetchSrc(id).catch(e => "") ?? "";
         this.id = id ?? "";
 
-        return new Promise(resolve => {
-            var fn = (function() {
+        return new Promise((resolve,rej) => {
+            var fn, errorFn;
+            fn = (function() {
                 this.handler.removeEventListener("canplay",fn);
+                this.handler.removeEventListener("error",errorFn);
                 resolve(true);
+            }).bind(this);
+            errorFn = (function() {
+                this.handler.removeEventListener("canplay",fn);
+                this.handler.removeEventListener("error",errorFn);
+                rej("error");
             }).bind(this);
 
             //设置监听
             this.handler.addEventListener("canplay",fn);
+            this.handler.addEventListener("error",errorFn);
         });
     },
 
@@ -90,7 +98,7 @@ var webMusicManager = {
     async next() {
         var obj = this.list.next();
         if (!obj) return false;
-        return await this.load(obj.name, obj.src, obj.id);
+        return await this.load(obj.name, obj.src, obj.id);//todo: 网卡自动重新加载 while(!await this.load(obj.name, obj.src, obj.id).catch(e => false))); return true;
     },
     async before() {
         var obj = this.list.before();
