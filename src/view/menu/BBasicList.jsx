@@ -1,27 +1,27 @@
 import React, { useCallback } from 'react'
 
 import BasicList from '../../component/BasicList';
-import WebMusicManager from '../../js/WebMusicManager';
-import showTips from '../../js/showTips';
+import webMusicManager from '../../js/webMusicManager';
+import showTips from '../../js/nativeBridge/showTips';
 
 export default function BBasicList({listData,loading=false}) {
     //listData <==> [{ id or url, name, author },...]
 
     var playMusic = useCallback(async (ev,elem) => {
-        if (await WebMusicManager.load(elem.name, elem.url, elem.id)) {
-            WebMusicManager.play();
+        if (await webMusicManager.load(elem.name, elem.url, elem.id)) {
+            webMusicManager.play();
         } else {
             showTips.info("载入失败。");
         }
     },[]);
 
     var addMusic = useCallback((ev,elem) => {
-        switch (WebMusicManager.push(elem.name, elem.url, elem.id)) {
-            case WebMusicManager.PUSH_STATE.SUCCESS:
+        switch (webMusicManager.push(elem.name, elem.url, elem.id)) {
+            case webMusicManager.PUSH_STATE.SUCCESS:
                 return ;//showTips.info("添加至播放列表成功。");
-            case WebMusicManager.PUSH_STATE.EXISTS:
+            case webMusicManager.PUSH_STATE.EXISTS:
                 return showTips.info("该项目已存在。");
-            case WebMusicManager.PUSH_STATE.FAILED:
+            case webMusicManager.PUSH_STATE.FAILED:
                 return showTips.info("添加至播放列表失败。");
         }
     },[]);
@@ -29,12 +29,12 @@ export default function BBasicList({listData,loading=false}) {
     var addAllMusic = useCallback(() => {
         var successCnt = 0, existsCnt = 0, failCnt = 0;
         for (var elem of listData) {
-            var statue = WebMusicManager.push(elem.name, elem.url, elem.id);
-            if (statue==WebMusicManager.PUSH_STATE.SUCCESS) {
+            var statue = webMusicManager.push(elem.name, elem.url, elem.id);
+            if (statue==webMusicManager.PUSH_STATE.SUCCESS) {
                 successCnt++;
-            } else if (statue==WebMusicManager.PUSH_STATE.EXISTS) {
+            } else if (statue==webMusicManager.PUSH_STATE.EXISTS) {
                 existsCnt++;
-            } else if (statue==WebMusicManager.PUSH_STATE.FAILED) {
+            } else if (statue==webMusicManager.PUSH_STATE.FAILED) {
                 failCnt++;
             }
         }

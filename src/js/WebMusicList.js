@@ -1,5 +1,5 @@
 import Subscription from './Subscription'
-import WebMusicListStorage from './WebMusicListStorage';
+import webMusicListStorage from './webMusicListStorage';
 
 class BasicWebMusicList extends Array {
     index = -1;
@@ -33,7 +33,7 @@ class WebMusicList extends BasicWebMusicList {
         this.name = name || "defaultList";
         this.storage = storage;
         if (arr) for (let i=0,L=arr.length;i<L;i++) if (WebMusicList.isValidItem(arr[i])) this[i]=arr[i];
-        if (this.storage) WebMusicListStorage.set(this.name,this);
+        if (this.storage) webMusicListStorage.set(this.name,this);
     }
 
     static isValidItem(obj) { return obj.name && (obj.src || obj.id); }
@@ -44,14 +44,14 @@ class WebMusicList extends BasicWebMusicList {
         super.push(obj);
         this.randomList = null;
         this.changeSub.publish(new WebMusicList(this.name,this,false));
-        if (this.storage) WebMusicListStorage.set(this.name,this);
+        if (this.storage) webMusicListStorage.set(this.name,this);
         return true;
     }
     pop() {
         var ans = super.pop();
         this.randomList = null;
         this.changeSub.publish(new WebMusicList(this.name,this,false));
-        if (this.storage) WebMusicListStorage.set(this.name,this);
+        if (this.storage) webMusicListStorage.set(this.name,this);
         return ans;
     }
     shift(...sth) { throw Error("should not use it."); }
@@ -65,7 +65,7 @@ class WebMusicList extends BasicWebMusicList {
         var ans = super.splice(deleteIndex,wantDeleteCnt);
         this.randomList = null;
         this.changeSub.publish(new WebMusicList(this.name,this,false));
-        if (this.storage) WebMusicListStorage.set(this.name,this);
+        if (this.storage) webMusicListStorage.set(this.name,this);
         return ans;
     }
 
@@ -86,7 +86,7 @@ class WebMusicList extends BasicWebMusicList {
 
         this.randomList = null;
         this.changeSub.publish(new WebMusicList(this.name,this,false));
-        if (this.storage) WebMusicListStorage.set(this.name,this);
+        if (this.storage) webMusicListStorage.set(this.name,this);
         return true;
     }
 

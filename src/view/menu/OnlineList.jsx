@@ -6,7 +6,8 @@ import BBasicList from "./BBasicList"
 import style from "../../css/LinearBar.module.css"
 
 import dataCache from "../../js/OnlineListCache";
-import musicAjax from '../../js/musicAjax';
+import musicAjax from '../../js/nativeBridge/musicAjax';
+import LoadingBlock from '../../component/LoadingBlock';
 
 export default function OnlineList() {
     //确定list参数
@@ -41,9 +42,9 @@ export default function OnlineList() {
                 <Button onClick={() => navigate("../onlineList/1")}>新歌榜</Button>
                 <Button onClick={() => navigate("../onlineList/2")}>原创榜</Button>
             </div>
-            <div style={{transition: "0.2s", opacity: (loading ? 0.35 : 1), height: "calc(100% - 25px)", overflow: "auto"}}>
+            <LoadingBlock loading={loading} style={{height: "calc(100% - 25px)", overflow: "auto"}}>
                 <BBasicList listData={listData} loading={loading}/>
-            </div>
+            </LoadingBlock>
         </div>
     )
 }

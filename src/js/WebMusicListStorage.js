@@ -1,6 +1,6 @@
 import Subscription from "./Subscription";
 
-var WebMusicListStorage = {
+var webMusicListStorage = {
     names: [],
     changeSub: new Subscription(),
 
@@ -58,6 +58,6 @@ var WebMusicListStorage = {
     unSubscribe(fn) { this.changeSub.remove(fn); },
 };
 
-WebMusicListStorage.init();
+webMusicListStorage.init();
 
-export default WebMusicListStorage;
+export default webMusicListStorage;

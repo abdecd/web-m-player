@@ -1,7 +1,8 @@
 import { Button } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react'
 import BBasicList from './BBasicList'
-import musicAjax from '../../js/musicAjax'
+import musicAjax from '../../js/nativeBridge/musicAjax'
+import LoadingBlock from '../../component/LoadingBlock';
 
 export default function LocalList() {
     const [listData, setListData] = useState([]);
@@ -17,7 +18,7 @@ export default function LocalList() {
     useEffect(fetchLocalList,[]);
 
     return (
-        <div style={{height: "100%", transition: "0.2s", opacity: (loading ? 0.35 : 1), textAlign: "center", overflow: "hidden"}}>
+        <LoadingBlock loading={loading} style={{height: "100%", textAlign: "center", overflow: "hidden"}}>
         { (listData.length==0) ? (
             (loading) ? (
                 <p>Refreshing...</p>
@@ -30,6 +31,6 @@ export default function LocalList() {
         ) : (
             <BBasicList listData={listData}/>
         ) }
-        </div>
+        </LoadingBlock>
     )
 }

@@ -1,9 +1,9 @@
-import musicAjax from "./musicAjax";
-import showTips from "./showTips";
+import musicAjax from "./nativeBridge/musicAjax";
+import showTips from "./nativeBridge/showTips";
 import WebMusicList from "./WebMusicList";
-import WebMusicListStorage from "./WebMusicListStorage";
+import webMusicListStorage from "./webMusicListStorage";
 
-var WebMusicManager = {
+var webMusicManager = {
     name: "",
     id: "",
     handler: new Audio(),
@@ -116,15 +116,15 @@ var WebMusicManager = {
     },
 };
 
-if (WebMusicListStorage.names.length==0) {
-    WebMusicManager.list = new WebMusicList(null,null,true);
+if (webMusicListStorage.names.length==0) {
+    webMusicManager.list = new WebMusicList(null,null,true);
 } else  {
-    var name = WebMusicListStorage.names[0];
-    WebMusicManager.list = new WebMusicList(name,WebMusicListStorage.get(name),true);
-    WebMusicManager.next();
+    var name = webMusicListStorage.names[0];
+    webMusicManager.list = new WebMusicList(name,webMusicListStorage.get(name),true);
+    webMusicManager.next();
 }
 
-WebMusicManager._loopFn = (async function() { if (await this.next()) this.play() }).bind(WebMusicManager);
-WebMusicManager.handler.addEventListener("ended",WebMusicManager._loopFn);
+webMusicManager._loopFn = (async function() { if (await this.next()) this.play() }).bind(webMusicManager);
+webMusicManager.handler.addEventListener("ended",webMusicManager._loopFn);
 
-export default WebMusicManager;
+export default webMusicManager;

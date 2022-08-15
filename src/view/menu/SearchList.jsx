@@ -1,7 +1,7 @@
 import { Input } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import musicAjax from '../../js/musicAjax';
+import musicAjax from '../../js/nativeBridge/musicAjax';
 import BBasicList from './BBasicList';
 
 export default function SearchList() {

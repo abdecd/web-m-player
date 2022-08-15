@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import musicAjax from '../js/musicAjax';
-import WebMusicManager from '../js/WebMusicManager';
+import musicAjax from '../js/nativeBridge/musicAjax';
+import webMusicManager from '../js/webMusicManager';
 
 export default function Lyric() {
     var {musicId} = useParams();
@@ -26,12 +26,12 @@ export default function Lyric() {
     var getMusicId = useCallback(async musicName => (await musicAjax.fetchSearch(musicName))?.[0].id,[]);
     useEffect(() => {
         var refreshId = async () => {
-            if (!WebMusicManager.name) return;
-            if (!WebMusicManager.id) WebMusicManager.id = await getMusicId(WebMusicManager.name);
-            navigate("../lyric/"+WebMusicManager.id);
+            if (!webMusicManager.name) return;
+            if (!webMusicManager.id) webMusicManager.id = await getMusicId(webMusicManager.name);
+            navigate("../lyric/"+webMusicManager.id);
         };
-        WebMusicManager.handler.addEventListener("loadstart",refreshId);
-        return () => WebMusicManager.handler.removeEventListener("loadstart",refreshId);
+        webMusicManager.handler.addEventListener("loadstart",refreshId);
+        return () => webMusicManager.handler.removeEventListener("loadstart",refreshId);
     },[]);
 
     return (

@@ -3,10 +3,10 @@ import { Button, Input } from '@mui/material'
 
 import BasicList from './BasicList'
 import style from '../css/LoopBlock.module.css'
-import WebMusicManager from '../js/WebMusicManager'
-import WebMusicListStorage from '../js/WebMusicListStorage'
+import webMusicManager from '../js/webMusicManager'
+import webMusicListStorage from '../js/webMusicListStorage'
 import WebMusicList from '../js/WebMusicList'
-import showTips from '../js/showTips'
+import showTips from '../js/nativeBridge/showTips'
 
 function RenameSpecificListBar() {
     const [specificListTempName, setSpecificListTempName] = useState("");
@@ -14,22 +14,22 @@ function RenameSpecificListBar() {
     //订阅specificList
     useEffect(() => {
         var refreshFn = list => setSpecificListTempName(list.name);
-        refreshFn(WebMusicManager.list);
+        refreshFn(webMusicManager.list);
         //对后续变化
-        WebMusicManager.list.subscribe(refreshFn);
-        return () => WebMusicManager.list.unSubscribe(refreshFn);
-    },[WebMusicManager.list]);
+        webMusicManager.list.subscribe(refreshFn);
+        return () => webMusicManager.list.unSubscribe(refreshFn);
+    },[webMusicManager.list]);
 
     return (
         <form
             onSubmit={ev => {
                 ev.preventDefault();
                 if (specificListTempName) {
-                    WebMusicListStorage.remove(WebMusicManager.list.name);
-                    WebMusicManager.list.name = specificListTempName;
-                    WebMusicListStorage.set(specificListTempName,WebMusicManager.list);
+                    webMusicListStorage.remove(webMusicManager.list.name);
+                    webMusicManager.list.name = specificListTempName;
+                    webMusicListStorage.set(specificListTempName,webMusicManager.list);
                 } else {
-                    setSpecificListTempName(WebMusicManager.list.name);
+                    setSpecificListTempName(webMusicManager.list.name);
                 }
                 ev.target.childNodes[0].querySelector("input").blur();
             }}>
@@ -64,32 +64,32 @@ function BasicLoopBlock() {
     //订阅specificList
     useEffect(() => {
         var refreshFn = list => setSpecificList(list);
-        refreshFn(WebMusicManager.list);
+        refreshFn(webMusicManager.list);
         //对后续变化
-        WebMusicManager.list.subscribe(refreshFn);
-        return () => WebMusicManager.list.unSubscribe(refreshFn);
-    },[WebMusicManager.list]);
+        webMusicManager.list.subscribe(refreshFn);
+        return () => webMusicManager.list.unSubscribe(refreshFn);
+    },[webMusicManager.list]);
 
     //订阅nameList
     useEffect(() => {
         var refreshFn = names => setNameList(names);
-        refreshFn(WebMusicListStorage.names);
+        refreshFn(webMusicListStorage.names);
         //对后续变化
-        WebMusicListStorage.subscribe(refreshFn);
-        return () => WebMusicListStorage.unSubscribe(refreshFn);
+        webMusicListStorage.subscribe(refreshFn);
+        return () => webMusicListStorage.unSubscribe(refreshFn);
     },[]);
 
     var selectAndPlayMusic = useCallback(async (ev,elem) => {
-        var index = WebMusicManager.list.search(elem.id || elem.src);
+        var index = webMusicManager.list.search(elem.id || elem.src);
         if (index==-1) return showTips.info("载入失败。");
-        WebMusicManager.list.index = index;
-        WebMusicManager.list.before();
-        if (!await WebMusicManager.next()) return showTips.info("载入失败。");
-        WebMusicManager.play();
+        webMusicManager.list.index = index;
+        webMusicManager.list.before();
+        if (!await webMusicManager.next()) return showTips.info("载入失败。");
+        webMusicManager.play();
     },[]);
 
     var swapMusicToFront = useCallback((ev,elem) => {
-        if (WebMusicManager.list.swapToFront(elem.id || elem.src)) {
+        if (webMusicManager.list.swapToFront(elem.id || elem.src)) {
             showTips.info("与首项交换成功。");
         } else {
             showTips.info("与首项交换失败。");
@@ -97,49 +97,49 @@ function BasicLoopBlock() {
     },[]);
 
     var removeMusic = useCallback((ev,elem) => {
-        var index = WebMusicManager.list.search(elem.id || elem.src);
+        var index = webMusicManager.list.search(elem.id || elem.src);
         if (index==-1) return;
-        WebMusicManager.list.splice(index,1);
+        webMusicManager.list.splice(index,1);
     },[]);
 
     var removeAllMusic = useCallback(() => {
-        WebMusicManager.list.splice(0,WebMusicManager.list.length);
-        WebMusicManager.list.index = -1;
+        webMusicManager.list.splice(0,webMusicManager.list.length);
+        webMusicManager.list.index = -1;
         showTips.info("播放列表已清空。");
     },[]);
 
     var createList = useCallback(() => {
         var name = showTips.prompt("name: ");
         if (!name) return;
-        if (WebMusicListStorage.names.includes(name)) return showTips.info("已有该名称。");
+        if (webMusicListStorage.names.includes(name)) return showTips.info("已有该名称。");
         new WebMusicList(name,null,true);
     },[]);
 
     var selectList = useCallback((ev,elem) => {
-        WebMusicManager.list = new WebMusicList(elem.name,WebMusicListStorage.get(elem.name),true);
+        webMusicManager.list = new WebMusicList(elem.name,webMusicListStorage.get(elem.name),true);
         setManageList(false);
     },[]);
 
     var swapListToFront = useCallback((ev,elem) => {
-        WebMusicListStorage.swapToFront(elem.name);
+        webMusicListStorage.swapToFront(elem.name);
         showTips.info("与首项交换成功。");
     },[]);
 
     var deleteList = useCallback((ev,elem) => {
-        WebMusicListStorage.remove(elem.name);
-        if (WebMusicManager.list.name==elem.name) {
-            if (WebMusicListStorage.names.length==0) {
-                WebMusicManager.list = new WebMusicList(null,null,true);
+        webMusicListStorage.remove(elem.name);
+        if (webMusicManager.list.name==elem.name) {
+            if (webMusicListStorage.names.length==0) {
+                webMusicManager.list = new WebMusicList(null,null,true);
             } else  {
-                var name = WebMusicListStorage.names[0];
-                WebMusicManager.list = new WebMusicList(name,WebMusicListStorage.get(name),true);
+                var name = webMusicListStorage.names[0];
+                webMusicManager.list = new WebMusicList(name,webMusicListStorage.get(name),true);
             }
         }
     },[]);
 
     var deleteAllList = useCallback(() => {
-        WebMusicListStorage.removeAll();
-        WebMusicManager.list = new WebMusicList(null,null,true);
+        webMusicListStorage.removeAll();
+        webMusicManager.list = new WebMusicList(null,null,true);
         showTips.info("所有列表已删除。");
     },[]);
 
@@ -170,7 +170,9 @@ function BasicLoopBlock() {
 export default function LoopBlock({shown,setShown}) {
     return (
         <>
+            {/* mask */}
             {shown && <div style={{position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh"}} onClick={() => setShown(false)}></div>}
+            
             <div style={{
                 transition: "0.3s",
                 opacity: (shown ? 1 : 0),
