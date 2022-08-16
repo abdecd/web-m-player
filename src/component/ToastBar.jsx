@@ -27,7 +27,10 @@ export default function ToastBar() {
             open={open}
             autoHideDuration={3000}
             TransitionComponent={Fade}
-            onClose={() => setOpen(false)}
+            onClose={(ev, reason) => {
+                if (reason === 'clickaway') return;
+                setOpen(false);
+            }}
             message={msg}
             style={{bottom: "68px", opacity: "0.8"}}/>
     )

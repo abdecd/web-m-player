@@ -81,10 +81,10 @@ function BasicLoopBlock() {
 
     var selectAndPlayMusic = useCallback(async (ev,elem) => {
         var index = webMusicManager.list.search(elem.id || elem.src);
-        if (index==-1) return showTips.info("载入失败。");
+        if (index==-1) return showTips.info("歌曲加载失败。");
         webMusicManager.list.index = index;
         webMusicManager.list.before();
-        if (!await webMusicManager.next()) return showTips.info("载入失败。");
+        if (!await webMusicManager.next()) return showTips.info("歌曲加载失败。");
         webMusicManager.play();
     },[]);
 

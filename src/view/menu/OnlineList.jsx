@@ -8,6 +8,7 @@ import style from "../../css/LinearBar.module.css"
 import dataCache from "../../js/OnlineListCache";
 import musicAjax from '../../js/nativeBridge/musicAjax';
 import LoadingBlock from '../../component/LoadingBlock';
+import showTips from '../../js/showTips';
 
 export default function OnlineList() {
     //确定list参数
@@ -24,7 +25,7 @@ export default function OnlineList() {
         (async () => {
             setLoading(true);//设置加载效果
             if (dataCache.id!=listId) {
-                var ans = await musicAjax.fetchDiscover(listId);
+                var ans = await musicAjax.fetchDiscover(listId).catch(e => {showTips.info("获取列表失败，请检查网络设置。"); return []});
                 setListData(ans);
                 dataCache.id = listId;
                 dataCache.data = ans;

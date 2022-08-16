@@ -2,6 +2,7 @@ import { Input } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import musicAjax from '../../js/nativeBridge/musicAjax';
+import showTips from '../../js/showTips';
 import BBasicList from './BBasicList';
 
 export default function SearchList() {
@@ -12,7 +13,7 @@ export default function SearchList() {
 
     var searchFn = useCallback(async word => {
         setLoading(true);
-        var ans = await musicAjax.fetchSearch(word);
+        var ans = await musicAjax.fetchSearch(word).catch(e => {showTips.info("搜索失败。"); return []});
         setSearchData(ans);
         setLoading(false);
     },[]);

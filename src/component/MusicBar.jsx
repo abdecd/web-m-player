@@ -116,7 +116,7 @@ export default function MusicBar({toggleLoopBlockShown}) {
         } else {
             if (!title) return;
             noLyricLocation.current.L = location.pathname+location.search;
-            if (!webMusicManager.id) webMusicManager.id = await getMusicId(webMusicManager.name);
+            if (!webMusicManager.id) webMusicManager.id = await getMusicId(webMusicManager.name).catch(e => {showTips.info("获取歌曲对应id失败，无法获取歌词。"); throw e});
             navigate("/lyric/"+webMusicManager.id);
         }
     },[title,location]);

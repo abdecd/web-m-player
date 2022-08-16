@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import musicAjax from '../js/nativeBridge/musicAjax';
+import showTips from '../js/showTips';
 import webMusicManager from '../js/webMusicManager';
 
 export default function Lyric() {
@@ -15,7 +16,7 @@ export default function Lyric() {
     useEffect(() => {
         (async () => {
             setLoading(true);//设置加载效果
-            var lrcGot = await musicAjax.fetchLyric(musicId);
+            var lrcGot = await musicAjax.fetchLyric(musicId).catch(e => {showTips.info("获取歌词失败。"); throw e});
             setLyric(lrcGot);
             lyricElem.current.scrollTop = 0;
             setLoading(false);
@@ -27,7 +28,7 @@ export default function Lyric() {
     useEffect(() => {
         var refreshId = async () => {
             if (!webMusicManager.name) return;
-            if (!webMusicManager.id) webMusicManager.id = await getMusicId(webMusicManager.name);
+            if (!webMusicManager.id) webMusicManager.id = await getMusicId(webMusicManager.name).catch(e => {showTips.info("获取歌曲对应id失败，无法获取歌词。"); throw e});
             navigate("../lyric/"+webMusicManager.id);
         };
         webMusicManager.handler.addEventListener("loadstart",refreshId);

@@ -39,7 +39,7 @@ var webMusicManager = {
             errorFn = (function() {
                 this.handler.removeEventListener("canplay",fn);
                 this.handler.removeEventListener("error",errorFn);
-                showTips.info("加载失败。");
+                showTips.info("歌曲加载失败。");
                 resolve(false);
             }).bind(this);
 
