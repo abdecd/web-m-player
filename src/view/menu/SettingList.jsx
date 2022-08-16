@@ -55,26 +55,32 @@ function BackgroundSettingBlock() {
     )
 }
 
-export default function SettingList() {
+function BackgroundSettingItem() {
     const [backgroundSetting, setBackgroundSetting] = useState(false);
 
+    return <>
+        <ListItemButton onClick={() => setBackgroundSetting(!backgroundSetting)}>
+            <ListItemText>背景设置</ListItemText>
+            {backgroundSetting ? (
+                <svg width="30px" height="30px">
+                    <polyline points='10,17 15,13 20,17' fill="rgba(0,0,0,0)" stroke="#333333" strokeWidth="2"/>
+                </svg>
+            ) : (
+                <svg width="30px" height="30px">
+                    <polyline points='10,13 15,17 20,13' fill="rgba(0,0,0,0)" stroke="#333333" strokeWidth="2"/>
+                </svg>
+            )}
+        </ListItemButton>
+        <Collapse in={backgroundSetting} timeout="auto" unmountOnExit>
+            <BackgroundSettingBlock/>
+        </Collapse>
+    </>
+}
+
+export default function SettingList() {
     return (
         <List>
-            <ListItemButton onClick={() => setBackgroundSetting(!backgroundSetting)}>
-                <ListItemText>背景设置</ListItemText>
-                {backgroundSetting ? (
-                    <svg width="30px" height="30px">
-                        <polyline points='10,17 15,13 20,17' fill="rgba(0,0,0,0)" stroke="#333333" strokeWidth="2"/>
-                    </svg>
-                ) : (
-                    <svg width="30px" height="30px">
-                        <polyline points='10,13 15,17 20,13' fill="rgba(0,0,0,0)" stroke="#333333" strokeWidth="2"/>
-                    </svg>
-                )}
-            </ListItemButton>
-            <Collapse in={backgroundSetting} timeout="auto" unmountOnExit>
-                <BackgroundSettingBlock/>
-            </Collapse>
+            <BackgroundSettingItem/>
         </List>
     )
 }
