@@ -22,7 +22,7 @@ var webMusicManager = {
         this.handler.src = src ?? await musicAjax.fetchSrc(id).catch(e => "") ?? "";
         this.id = id ?? "";
 
-        return new Promise((resolve,rej) => {
+        return new Promise(resolve => {
             var fn, errorFn;
             fn = (function() {
                 this.handler.removeEventListener("canplay",fn);
@@ -32,7 +32,8 @@ var webMusicManager = {
             errorFn = (function() {
                 this.handler.removeEventListener("canplay",fn);
                 this.handler.removeEventListener("error",errorFn);
-                rej("error");
+                showTips.info("加载失败。");
+                resolve(false);
             }).bind(this);
 
             //设置监听
@@ -52,7 +53,6 @@ var webMusicManager = {
     },
     pause() { this.handler.pause(); },
     async playPause() {
-        if (!this.src) return false;
         if (this.handler.paused) {
             return await this.play();
         } else {
@@ -98,7 +98,7 @@ var webMusicManager = {
     async next() {
         var obj = this.list.next();
         if (!obj) return false;
-        return await this.load(obj.name, obj.src, obj.id);//todo: 网卡自动重新加载 while(!await this.load(obj.name, obj.src, obj.id).catch(e => false))); return true;
+        return await this.load(obj.name, obj.src, obj.id);//todo: 网卡自动重新加载 while(!await this.load(obj.name, obj.src, obj.id)); return true;
     },
     async before() {
         var obj = this.list.before();

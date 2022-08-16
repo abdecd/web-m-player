@@ -2,14 +2,14 @@ import axios from "axios";
 
 export default {
     async fetchLyric(musicId) {
-        var obj = (await axios(`/api/song/lyric?os=pc&id=${musicId}&lv=-1&tv=-1`,{timeout: 5000})).data;
+        var obj = (await axios(`/api/song/lyric?os=pc&id=${musicId}&lv=-1&tv=-1`,{timeout: 3000})).data;
         var lrcGot = obj?.lrc?.lyric?.replace(/\[[^\]]+\]/g,"");
         if (obj?.tlyric?.lyric) lrcGot += "__the_end_of_origional_lyric__\n"+obj.tlyric.lyric?.replace(/\[[^\]]+\]/g,"");
         return lrcGot;
     },
 
     async fetchSrc(musicId) {
-        return (await axios(`/api/song/enhance/player/url?ids=[${musicId}]&br=999000`,{timeout: 5000})).data?.data[0].url;
+        return (await axios(`/api/song/enhance/player/url?ids=[${musicId}]&br=999000`,{timeout: 3000})).data?.data[0].url;
     },
 
     async fetchDiscover(listId) {
