@@ -10,13 +10,14 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 
 import settingsStorage from '../../js/settingsStorage';
 import requestPic from '../../js/picRequestor';
+import showTips from '../../js/nativeBridge/showTips';
 
 function BackgroundSettingBlock() {
     const [inputValue, setInputValue] = useState("");
 
     //初始化
     useEffect(() => {
-        setInputValue(document.body.style.background?.slice(0,200));
+        setInputValue(document.body.style.background?.slice(0,500));
     },[]);
 
     var setBackgroundAndSave = useCallback(str => {
@@ -32,8 +33,10 @@ function BackgroundSettingBlock() {
 
     var setBackgroundFromFile = useCallback(() => {
         requestPic().then(data => {
-            settingsStorage.set("background",`url("${data}") no-repeat center/cover`);
-            document.body.style.background = `url("${data}") no-repeat center/cover`;
+            var background = `url("${data}") no-repeat center/cover`;
+            if (background.length>3.5*1024*1024) return showTips.info("图片大小应小于3.5MB。");
+            settingsStorage.set("background",background);
+            document.body.style.background = background;
         });
     },[]);
 
@@ -49,7 +52,7 @@ function BackgroundSettingBlock() {
                 <Button onClick={() => setBackgroundAndSave(inputValue)}>应用</Button>
                 <Button onClick={resetBackgroundAndSave}>重置</Button>
             </div>
-            <Button style={{float: "right"}} onClick={setBackgroundFromFile}>选择本地文件</Button>
+            <Button variant='outlined' style={{float: "right"}} onClick={setBackgroundFromFile}>选择本地文件</Button>
         </div>
     )
 }
