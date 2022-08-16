@@ -34,7 +34,7 @@ function BackgroundSettingBlock() {
     var setBackgroundFromFile = useCallback(() => {
         requestPic().then(data => {
             var background = `url("${data}") no-repeat center/cover`;
-            if (background.length>3.5*1024*1024) return showTips.info("图片大小应小于3.5MB。");
+            if (background.length>4*1024*1024) return showTips.info("图片大小应小于3.5MB。");
             settingsStorage.set("background",background);
             document.body.style.background = background;
         });
