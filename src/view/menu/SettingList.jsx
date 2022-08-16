@@ -63,11 +63,11 @@ function BackgroundSettingItem() {
             <ListItemText>背景设置</ListItemText>
             {backgroundSetting ? (
                 <svg width="30px" height="30px">
-                    <polyline points='10,17 15,13 20,17' fill="rgba(0,0,0,0)" stroke="#333333" strokeWidth="2"/>
+                    <polyline points='10,17 15,13 20,17' fill="rgba(0,0,0,0)" stroke="#222222" strokeWidth="2"/>
                 </svg>
             ) : (
                 <svg width="30px" height="30px">
-                    <polyline points='10,13 15,17 20,13' fill="rgba(0,0,0,0)" stroke="#333333" strokeWidth="2"/>
+                    <polyline points='10,13 15,17 20,13' fill="rgba(0,0,0,0)" stroke="#222222" strokeWidth="2"/>
                 </svg>
             )}
         </ListItemButton>
