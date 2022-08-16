@@ -5,8 +5,6 @@ import ListItemText from '@mui/material/ListItemText';
 import Collapse from '@mui/material/Collapse';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
 
 import settingsStorage from '../../js/settingsStorage';
 import requestPic from '../../js/picRequestor';
@@ -64,7 +62,15 @@ export default function SettingList() {
         <List>
             <ListItemButton onClick={() => setBackgroundSetting(!backgroundSetting)}>
                 <ListItemText>背景设置</ListItemText>
-                {backgroundSetting ? <ExpandLess/> : <ExpandMore/>}
+                {backgroundSetting ? (
+                    <svg width="30px" height="30px">
+                        <polyline points='10,17 15,13 20,17' fill="rgba(0,0,0,0)" stroke="#333333" strokeWidth="2"/>
+                    </svg>
+                ) : (
+                    <svg width="30px" height="30px">
+                        <polyline points='10,13 15,17 20,13' fill="rgba(0,0,0,0)" stroke="#333333" strokeWidth="2"/>
+                    </svg>
+                )}
             </ListItemButton>
             <Collapse in={backgroundSetting} timeout="auto" unmountOnExit>
                 <BackgroundSettingBlock/>
