@@ -1,0 +1,29 @@
+//搜索
+http://music.163.com/api/search/get?s=going home&type=1&limit=5
+//歌词
+http://music.163.com/api/song/lyric?os=pc&id=1395222212&lv=-1&tv=-1
+//歌曲
+http://music.163.com/api/song/enhance/player/url?ids=[1395222212]&br=999000
+//飙升榜
+var ans = (await JJ.fetchT(`https://music.163.com/discover/toplist?id=${listId}`))?.match(/\/song\?id=.+?<!-- --> - <!-- -->[^<]+<\/div>/g)?.map(elem => elem.match(/\/song\?id=([^"]+).+?sgtl">([^<]+).+?sginfo">([^<]+)/).slice(1)).map(elem => { return { id: elem[0], name: elem[1], author: elem[2] }; });
+(await axios("/discover/toplist?id="+listId)).data?.match(/<textarea id="song-list-pre-data" style="display:none;">(.+?)<\/textarea>/)?.[1];
+
+
+
+//musicAjax.js
+
+    async fetchDiscover(listId) {
+        var ans = (await axios("https://music.163.com/discover/toplist?id="+listId)).data
+        ?.match(/\/song\?id=.+?<!-- --> - <!-- -->[^<]+<\/div>/g)
+        ?.map(elem => elem.match(/\/song\?id=([^"]+).+?sgtl">([^<]+).+?sginfo">([^<]+)/).slice(1))
+        .map(elem => ({ id: elem[0], name: elem[1], author: elem[2] }));
+        return ans;
+    },
+
+
+//WebMusicManager.js
+window.WebMusicManager = WebMusicManager;
+
+import bindEarphone from "./nativeBridge/earphoneBinder";
+
+setTimeout(() => bindEarphone(webMusicManager),3000);
