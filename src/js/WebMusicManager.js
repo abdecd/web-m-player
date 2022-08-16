@@ -1,5 +1,5 @@
 import musicAjax from "./nativeBridge/musicAjax";
-import showTips from "./nativeBridge/showTips";
+import showTips from "./showTips";
 import WebMusicList from "./WebMusicList";
 import webMusicListStorage from "./webMusicListStorage";
 

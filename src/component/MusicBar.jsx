@@ -7,7 +7,7 @@ import webMusicManager from '../js/webMusicManager'
 import style from '../css/MusicBar.module.css'
 import bindLongClick from '../js/click/bindLongClick'
 import musicAjax from '../js/nativeBridge/musicAjax'
-import showTips from '../js/nativeBridge/showTips'
+import showTips from '../js/showTips'
 
 export default function MusicBar({toggleLoopBlockShown}) {
     const [title, setTitle] = useState("");

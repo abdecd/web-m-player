@@ -10,7 +10,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 
 import settingsStorage from '../../js/settingsStorage';
 import requestPic from '../../js/picRequestor';
-import showTips from '../../js/nativeBridge/showTips';
+import showTips from '../../js/showTips';
 
 function BackgroundSettingBlock() {
     const [inputValue, setInputValue] = useState("");

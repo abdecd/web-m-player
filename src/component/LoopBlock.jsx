@@ -6,7 +6,7 @@ import style from '../css/LoopBlock.module.css'
 import webMusicManager from '../js/webMusicManager'
 import webMusicListStorage from '../js/webMusicListStorage'
 import WebMusicList from '../js/WebMusicList'
-import showTips from '../js/nativeBridge/showTips'
+import showTips from '../js/showTips'
 
 function RenameSpecificListBar() {
     const [specificListTempName, setSpecificListTempName] = useState("");
@@ -174,6 +174,7 @@ export default function LoopBlock({shown,setShown}) {
             {shown && <div style={{position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh"}} onClick={() => setShown(false)}></div>}
             
             <div style={{
+                backdropFilter: "blur(6px)",
                 transition: "0.3s",
                 opacity: (shown ? 1 : 0),
                 position: 'fixed',

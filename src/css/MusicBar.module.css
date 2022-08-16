@@ -1,5 +1,5 @@
 .MusicBar {
-    background-color: rgba(218,232,232,0.6);
+    backdrop-filter: blur(6px);
 
     position: fixed;
     left: 0px;

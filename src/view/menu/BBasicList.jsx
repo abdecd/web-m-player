@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 
 import BasicList from '../../component/BasicList';
 import webMusicManager from '../../js/webMusicManager';
-import showTips from '../../js/nativeBridge/showTips';
+import showTips from '../../js/showTips';
 
 export default function BBasicList({listData,loading=false}) {
     //listData <==> [{ id or url, name, author },...]
