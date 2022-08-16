@@ -17,7 +17,7 @@ export default function App({children}) {
                 {children}
             </div>
             {/* mask */}
-            <div style={{position: "fixed", top: "0", left: "0", width: "100vw", height: "100vh", zIndex: "-1", backdropFilter: "contrast(60%) brightness(120%)"}}></div>
+            <div style={{position: "fixed", top: "0", left: "0", width: "100vw", height: "100vh", zIndex: "-1", backdropFilter: "contrast(40%) brightness(140%)"}}></div>
 
             <ToastBar/>
             <LoopBlock shown={loopBlockShown} setShown={setLoopBlockShown}/>

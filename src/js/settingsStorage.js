@@ -1,3 +1,5 @@
+import localforage from "localforage";
+
 var settingsStorage = {
     defaultSettings: Object.freeze({
         background: "rgb(218,232,232)"
@@ -16,6 +18,13 @@ var settingsStorage = {
         this._saveSettingList();
     },
 
+    getFromDb(name) {
+        return localforage.getItem(name);
+    },
+    setToDb(name,value) {
+        return localforage.setItem(name,value);
+    },
+
     _saveSettingList() {
         localStorage.setItem("settingList",JSON.stringify(this.settingList));
     }
@@ -23,8 +32,15 @@ var settingsStorage = {
 
 settingsStorage.settingList = JSON.parse(localStorage.getItem("settingList")) || {...settingsStorage.defaultSettings};
 
-function initSettings() {
-    document.body.style.background = settingsStorage.get("background");
+async function initSettings() {
+    var backgroundBlob = await settingsStorage.getFromDb("backgroundBlob");
+    if (backgroundBlob) {
+        var url = URL.createObjectURL(backgroundBlob);
+        document.body.style.background = `url("${url}") no-repeat center/cover`;
+        setTimeout(() => URL.revokeObjectURL(url),1000);
+    } else if (settingsStorage.get("background")) {
+        document.body.style.background = settingsStorage.get("background");
+    }
 }
 
 export {

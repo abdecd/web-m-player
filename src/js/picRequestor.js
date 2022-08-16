@@ -4,7 +4,7 @@ input.type = "file";
 var fileReader = new FileReader();
 
 input.onchange = ev => {
-    if (input.files[0]) fileReader.readAsDataURL(input.files[0]);
+    if (input.files[0]) fileReader.readAsArrayBuffer(input.files[0]);
 };
 
 export default function requestPic() {

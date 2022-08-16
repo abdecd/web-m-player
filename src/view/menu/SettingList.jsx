@@ -21,21 +21,30 @@ function BackgroundSettingBlock() {
     var setBackgroundAndSave = useCallback(str => {
         document.body.style.background = str;
         settingsStorage.set("background",str);
+        settingsStorage.setToDb("backgroundBlob",null);
     },[]);
 
     var resetBackgroundAndSave = useCallback(() => {
         settingsStorage.reset("background");
         document.body.style.background = settingsStorage.get("background");
         setInputValue(settingsStorage.get("background"));
+        settingsStorage.setToDb("backgroundBlob",null);
     },[setInputValue]);
 
     var setBackgroundFromFile = useCallback(() => {
-        requestPic().then(data => {
-            var background = `url("${data}") no-repeat center/cover`;
-            if (background.length>4.8*1024*1024) return showTips.info("图片大小应小于3.6MB。");
-            settingsStorage.set("background",background);
+    (async () => {
+        try {
+            var blob = new Blob([await requestPic()]);            
+            var url = URL.createObjectURL(blob);
+            var background = `url("${url}") no-repeat center/cover`;
             document.body.style.background = background;
-        });
+            setTimeout(() => URL.revokeObjectURL(url),1000);
+
+            await settingsStorage.setToDb("backgroundBlob",blob);
+        } catch (e) {
+            showTips.info("图片过大，保存失败。");
+        }
+    })();
     },[]);
 
     return (
@@ -50,7 +59,10 @@ function BackgroundSettingBlock() {
                 <Button onClick={() => setBackgroundAndSave(inputValue)}>应用</Button>
                 <Button onClick={resetBackgroundAndSave}>重置</Button>
             </div>
-            <Button variant='outlined' style={{float: "right"}} onClick={setBackgroundFromFile}>选择本地文件</Button>
+            <div style={{display: "flex", justifyContent: "flex-end", alignItems: "center"}}>
+                <p style={{width: "30px"}}>or: </p>
+                <Button variant='outlined' style={{float: "right"}} onClick={setBackgroundFromFile}>选择本地文件</Button>
+            </div>
         </div>
     )
 }
