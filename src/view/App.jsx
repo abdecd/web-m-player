@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import LoopBlock from '../component/LoopBlock';
 import MusicBar from '../component/MusicBar'
-import ToastBarGroup from '../component/ToastBarGroup';
+import ToastBar from '../component/ToastBar';
 import { initSettings } from '../js/settingsStorage';
 
 initSettings();
@@ -19,7 +19,7 @@ export default function App({children}) {
             {/* mask */}
             <div style={{position: "fixed", top: "0", left: "0", width: "100vw", height: "100vh", zIndex: "-1", backdropFilter: "contrast(60%) brightness(120%)"}}></div>
 
-            <ToastBarGroup/>
+            <ToastBar/>
             <LoopBlock shown={loopBlockShown} setShown={setLoopBlockShown}/>
             
             {/* height: 60px */}

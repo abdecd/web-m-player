@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 
 import showTips from '../js/showTips';
 
-export default function ToastBarGroup() {
+export default function ToastBar() {
     const [msg, setMsg] = useState("");
     const [open, setOpen] = useState(false);
 
