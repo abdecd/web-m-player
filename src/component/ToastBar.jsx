@@ -1,3 +1,4 @@
+import Fade from '@mui/material/Fade';
 import Snackbar from '@mui/material/Snackbar';
 import React, { useEffect, useState } from 'react'
 
@@ -25,6 +26,7 @@ export default function ToastBar() {
         <Snackbar
             open={open}
             autoHideDuration={3000}
+            TransitionComponent={Fade}
             onClose={() => setOpen(false)}
             message={msg}
             style={{bottom: "60px", opacity: "0.8"}}/>
