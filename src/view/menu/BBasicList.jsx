@@ -8,11 +8,7 @@ export default function BBasicList({listData,loading=false}) {
     //listData <==> [{ id or url, name, author },...]
 
     var playMusic = useCallback(async (ev,elem) => {
-        if (await webMusicManager.load(elem.name, elem.url, elem.id)) {
-            webMusicManager.play();
-        } else {
-            showTips.info("载入失败。");
-        }
+        if (await webMusicManager.load(elem.name, elem.url, elem.id)) webMusicManager.play();
     },[]);
 
     var addMusic = useCallback((ev,elem) => {

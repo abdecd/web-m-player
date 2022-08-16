@@ -14,10 +14,10 @@
     height: 90%;
 }
 
-.LinearFlex p {
+.TitleBar {
     flex: 1;
     margin-left: 10px;
-    overflow: auto;
+    overflow-y: auto;
 }
 
 .ButtonBar {

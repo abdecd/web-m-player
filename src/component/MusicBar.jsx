@@ -8,22 +8,34 @@ import style from '../css/MusicBar.module.css'
 import bindLongClick from '../js/click/bindLongClick'
 import musicAjax from '../js/nativeBridge/musicAjax'
 import showTips from '../js/showTips'
+import LoadingBlock from './LoadingBlock'
 
 export default function MusicBar({toggleLoopBlockShown}) {
     const [title, setTitle] = useState("");
     const [progressValue, setProgressValue] = useState(0);
     const [playBtnStr, setPlayBtnStr] = useState("×_×");
     const [loopBtnStr, setLoopBtnStr] = useState("⇌");
+    const [loading, setLoading] = useState(true);
 
     var navigate = useNavigate();
     var location = useLocation();
 
     //订阅title
     useEffect(() => {
-        var refreshTitle = () => setTitle(webMusicManager.name);
-        refreshTitle();
-        webMusicManager.handler.addEventListener("loadstart",refreshTitle);
-        return () => webMusicManager.handler.removeEventListener("loadstart",refreshTitle);
+        var refreshTitle = name => {
+            setTitle(name);
+            setLoading(true);
+        };
+        setTitle(webMusicManager.name);
+        webMusicManager.addNameChangeListener(refreshTitle);
+        return () => webMusicManager.removeNameChangeListener(refreshTitle);
+    },[]);
+
+    //订阅加载状态
+    useEffect(() => {
+        var loadFn = () => setLoading(false);
+        webMusicManager.handler.addEventListener("canplay",loadFn);
+        return () => webMusicManager.handler.removeEventListener("canplay",loadFn);
     },[]);
 
     //订阅秒数变化
@@ -112,7 +124,9 @@ export default function MusicBar({toggleLoopBlockShown}) {
     return (
         <div className={style.MusicBar}>
             <div className={style.LinearFlex}>
-                <p onClick={toggleLyric}>{title}</p>
+                <LoadingBlock loading={loading} className={style.TitleBar}>
+                    <p onClick={toggleLyric}>{title}</p>
+                </LoadingBlock>
                 <div className={style.ButtonBar}>
                     <Button variant="contained" disableElevation ref={loopBtn}>{loopBtnStr}</Button>
                     <Button variant="contained" disableElevation onClick={lFn} onDoubleClick={lDblFn}>L</Button>

@@ -1,5 +1,6 @@
 import musicAjax from "./nativeBridge/musicAjax";
 import showTips from "./showTips";
+import Subscription from "./Subscription";
 import WebMusicList from "./WebMusicList";
 import webMusicListStorage from "./webMusicListStorage";
 
@@ -11,6 +12,11 @@ var webMusicManager = {
 
     _PUSH_STATE: Object.freeze({SUCCESS: Symbol(), EXISTS: Symbol(), FAILED: Symbol()}),
     get PUSH_STATE() {return this._PUSH_STATE},
+
+    _nameChangeSub: new Subscription(),
+    addNameChangeListener(fn) {this._nameChangeSub.add(fn)},
+    removeNameChangeListener(fn) {this._nameChangeSub.remove(fn)},
+    
     //handler.src受到赋值时会强制转为链接
     get src() {return (this.handler.src==window.location.origin+"/") ? "" : this.handler.src},
 
@@ -19,8 +25,9 @@ var webMusicManager = {
         if (!WebMusicList.isValidItem({name,src,id})) return false;
 
         this.name = name;
-        this.handler.src = src ?? await musicAjax.fetchSrc(id).catch(e => "") ?? "";
+        this._nameChangeSub.publish(name);
         this.id = id ?? "";
+        this.handler.src = src ?? await musicAjax.fetchSrc(id).catch(e => "") ?? "";
 
         return new Promise(resolve => {
             var fn, errorFn;
