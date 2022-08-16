@@ -29,6 +29,6 @@ export default function ToastBar() {
             TransitionComponent={Fade}
             onClose={() => setOpen(false)}
             message={msg}
-            style={{bottom: "60px", opacity: "0.8"}}/>
+            style={{bottom: "68px", opacity: "0.8"}}/>
     )
 }
