@@ -100,6 +100,7 @@ function BasicLoopBlock() {
         var index = webMusicManager.list.search(elem.id || elem.src);
         if (index==-1) return;
         webMusicManager.list.splice(index,1);
+        showTips.info("删除项目成功。");
     },[]);
 
     var removeAllMusic = useCallback(() => {
@@ -113,6 +114,7 @@ function BasicLoopBlock() {
         if (!name) return;
         if (webMusicListStorage.names.includes(name)) return showTips.info("已有该名称。");
         new WebMusicList(name,null,true);
+        showTips.info("创建播放列表成功。");
     },[]);
 
     var selectList = useCallback((ev,elem) => {
@@ -135,6 +137,7 @@ function BasicLoopBlock() {
                 webMusicManager.list = new WebMusicList(name,webMusicListStorage.get(name),true);
             }
         }
+        showTips.info("删除列表成功。");
     },[]);
 
     var deleteAllList = useCallback(() => {

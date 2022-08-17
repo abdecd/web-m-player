@@ -60,6 +60,7 @@ var webMusicManager = {
     },
     pause() { this.handler.pause(); },
     async playPause() {
+        if (!this.name) return showTips.info("未选择歌曲。");
         if (this.handler.paused) {
             return await this.play();
         } else {

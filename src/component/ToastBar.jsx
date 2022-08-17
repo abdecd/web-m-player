@@ -25,7 +25,7 @@ export default function ToastBar() {
     return (
         <Snackbar
             open={open}
-            autoHideDuration={3000}
+            autoHideDuration={2000}
             TransitionComponent={Fade}
             onClose={(ev, reason) => {
                 if (reason === 'clickaway') return;

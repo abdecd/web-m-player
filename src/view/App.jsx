@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
+import BackgroundBlock from '../component/BackgroundBlock';
 
 import LoopBlock from '../component/LoopBlock';
 import MusicBar from '../component/MusicBar'
 import ToastBar from '../component/ToastBar';
-import { initSettings } from '../js/settingsStorage';
+import { initSettings } from '../js/settings';
 
 initSettings();
 
@@ -16,9 +17,8 @@ export default function App({children}) {
             <div style={{height: "calc(100vh - 68px)", overflow: "auto"}}>
                 {children}
             </div>
-            {/* mask */}
-            <div style={{position: "fixed", top: "0", left: "0", width: "100vw", height: "100vh", zIndex: "-1", backdropFilter: "contrast(40%) brightness(140%)"}}></div>
 
+            <BackgroundBlock/>
             <ToastBar/>
             <LoopBlock shown={loopBlockShown} setShown={setLoopBlockShown}/>
             

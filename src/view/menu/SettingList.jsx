@@ -6,41 +6,39 @@ import Collapse from '@mui/material/Collapse';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
-import settingsStorage from '../../js/settingsStorage';
+import settings, { settingsStorage } from '../../js/settings';
 import requestPic from '../../js/picRequestor';
 import showTips from '../../js/showTips';
 
 function BackgroundSettingBlock() {
     const [inputValue, setInputValue] = useState("");
 
-    //初始化
+    //订阅背景变化
     useEffect(() => {
-        setInputValue(document.body.style.background?.slice(0,500));
+        var refreshFn = (type,background) => {
+            setInputValue(type=="basic" ? background : "[native resource]")
+        };
+        settings.getBackground().then(background => setInputValue(background.type=="basic" ? background.value : "[native resource]"));
+        settings.backgroundSub.add(refreshFn);
+        return () => settings.backgroundSub.remove(refreshFn);
     },[]);
 
     var setBackgroundAndSave = useCallback(str => {
-        document.body.style.background = str;
-        settingsStorage.set("background",str);
-        settingsStorage.setToDb("backgroundBlob",null);
+        settings.setBackground("basic",str);
     },[]);
 
     var resetBackgroundAndSave = useCallback(() => {
-        settingsStorage.reset("background");
-        document.body.style.background = settingsStorage.get("background");
-        setInputValue(settingsStorage.get("background"));
-        settingsStorage.setToDb("backgroundBlob",null);
-    },[setInputValue]);
+        settings.setBackground("basic",settingsStorage.defaultSettings["background"]);
+    },[]);
 
     var setBackgroundFromFile = useCallback(() => {
     (async () => {
         try {
-            var blob = new Blob([await requestPic()]);            
-            var url = URL.createObjectURL(blob);
-            var background = `url("${url}") no-repeat center/cover`;
-            document.body.style.background = background;
-            setTimeout(() => URL.revokeObjectURL(url),1000);
+            var { type, arrayBuffer } = await requestPic();
+            if (!type) return;
+            type = type.replace(/\/.*/,"");
 
-            await settingsStorage.setToDb("backgroundBlob",blob);
+            settings.setBackground(type,new Blob([arrayBuffer]));
         } catch (e) {
             showTips.info("图片过大，保存失败。");
         }
