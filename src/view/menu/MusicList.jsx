@@ -25,13 +25,13 @@ export default function MusicList({listData,loading=false}) {
     },[]);
 
     var addAllMusic = useCallback(() => {
-        var { successCnt, existsCnt, failCnt } = webMusicManager.pushAll(listData);
+        var { successCnt, existsCnt, failCnt } = webMusicManager.pushAll(listData.map(elem => ({ name: elem.name, src: elem.url, id: elem.id })));
 
         var strs = [];
         strs.push(`${successCnt}项成功添加至播放列表`);
         if (existsCnt) strs.push(`${existsCnt}项已存在`);
         if (failCnt) strs.push(`${failCnt}项失败`);
-        showTips.info(strs.join("，")+"。",undoSpecificListFn);//todo: pushAll
+        showTips.info(strs.join("，")+"。",undoSpecificListFn);
     },[listData]);
 
     return <>
