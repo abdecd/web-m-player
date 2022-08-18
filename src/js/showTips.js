@@ -1,7 +1,7 @@
 import Subscription from "./Subscription";
 
 var showTips = {
-    changeSub: new Subscription(),
+    changeSub: new Subscription(),//回调见下面
     subscribe(fn) { this.changeSub.add(fn); },
     unSubscribe(fn) { this.changeSub.remove(fn); },
 

@@ -26,7 +26,7 @@ class WebMusicList extends BasicWebMusicList {
     //弱检验
     name = null;
     storage = false;
-    changeSub = new Subscription();
+    changeSub = new Subscription();// 回调无参数
 
     addChangeListener(fn) { this.changeSub.add(fn); }
     removeChangeListener(fn) { this.changeSub.remove(fn); }

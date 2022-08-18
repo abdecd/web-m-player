@@ -2,7 +2,7 @@ import Subscription from "./Subscription";
 
 var webMusicListStorage = {
     names: [],
-    changeSub: new Subscription(),
+    changeSub: new Subscription(),// 回调参数: names
 
     init() {
         if (!window.localStorage) return false;
