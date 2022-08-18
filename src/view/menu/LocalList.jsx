@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react'
-import BBasicList from './BBasicList'
+import MusicList from './MusicList'
 import musicAjax from '../../js/nativeBridge/musicAjax'
 import LoadingBlock from '../../component/LoadingBlock';
 
@@ -29,7 +29,7 @@ export default function LocalList() {
                 </>
             )
         ) : (
-            <BBasicList listData={listData}/>
+            <MusicList listData={listData}/>
         ) }
         </LoadingBlock>
     )

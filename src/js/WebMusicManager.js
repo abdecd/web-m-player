@@ -8,7 +8,7 @@ var webMusicManager = {
     name: "",
     id: "",
     handler: new Audio(),
-    list: null,
+    list: new WebMusicList(),
 
     _PUSH_STATE: Object.freeze({SUCCESS: Symbol(), EXISTS: Symbol(), FAILED: Symbol()}),
     get PUSH_STATE() {return this._PUSH_STATE},
@@ -16,6 +16,9 @@ var webMusicManager = {
     _nameChangeSub: new Subscription(),
     addNameChangeListener(fn) {this._nameChangeSub.add(fn)},
     removeNameChangeListener(fn) {this._nameChangeSub.remove(fn)},
+    listChangeSub: new Subscription(),
+    addListChangeListener(fn) {this.listChangeSub.add(fn)},
+    removeListChangeListener(fn) {this.listChangeSub.remove(fn)},
     
     //handler.src受到赋值时会强制转为链接
     get src() {return (this.handler.src==window.location.origin+"/") ? "" : this.handler.src},
@@ -75,8 +78,24 @@ var webMusicManager = {
 
     push(name,src,id) {
         if (!WebMusicList.isValidItem({name,src,id})) return this.PUSH_STATE.FAILED;
-        if (this.list.find(elem => WebMusicList.getIdOrSrc(elem)==(id || src))) return this.PUSH_STATE.EXISTS;
+        if (this.list.arr.find(elem => WebMusicList.getIdOrSrc(elem)==(id || src))) return this.PUSH_STATE.EXISTS;
         return this.list.push({name,src,id}) ? this.PUSH_STATE.SUCCESS : this.PUSH_STATE.FAILED;
+    },
+    pushAll(objArr) {
+        var successCnt = 0, existsCnt = 0, failCnt = 0;
+        this.list.setStorage(false);
+        for (var elem of objArr) {
+            var statue = this.push(elem.name, elem.url, elem.id);
+            if (statue==webMusicManager.PUSH_STATE.SUCCESS) {
+                successCnt++;
+            } else if (statue==webMusicManager.PUSH_STATE.EXISTS) {
+                existsCnt++;
+            } else if (statue==webMusicManager.PUSH_STATE.FAILED) {
+                failCnt++;
+            }
+        }
+        this.list.setStorage(true);
+        return { successCnt, existsCnt, failCnt };
     },
     pop() { return this.list.pop(); },
 
@@ -134,9 +153,11 @@ var webMusicManager = {
 
 if (webMusicListStorage.names.length==0) {
     webMusicManager.list = new WebMusicList(null,null,true);
+    webMusicManager.listChangeSub.publish();
 } else  {
     var name = webMusicListStorage.names[0];
     webMusicManager.list = new WebMusicList(name,webMusicListStorage.get(name),true);
+    webMusicManager.listChangeSub.publish();
     webMusicManager.next();
 }
 

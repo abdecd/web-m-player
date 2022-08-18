@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Button from '@mui/material/Button';
 
-import BBasicList from "./BBasicList"
+import MusicList from "./MusicList"
 import style from "../../css/LinearBar.module.css"
 
 import dataCache from "../../js/OnlineListCache";
@@ -44,7 +44,7 @@ export default function OnlineList() {
                 <Button onClick={() => navigate("../onlineList/2")}>原创榜</Button>
             </div>
             <LoadingBlock loading={loading} style={{height: "calc(100% - 25px)", overflow: "auto"}}>
-                <BBasicList listData={listData} loading={loading}/>
+                <MusicList listData={listData} loading={loading}/>
             </LoadingBlock>
         </div>
     )

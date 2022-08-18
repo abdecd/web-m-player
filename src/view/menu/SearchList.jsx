@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import musicAjax from '../../js/nativeBridge/musicAjax';
 import showTips from '../../js/showTips';
-import BBasicList from './BBasicList';
+import MusicList from './MusicList';
 
 export default function SearchList() {
     var [searchParams,setSearchParams] = useSearchParams({word: ""});
@@ -43,7 +43,7 @@ export default function SearchList() {
                     onChange={ev => setSearchWord(ev.target.value)}/>
             </form>
             <div style={{transition: "0.2s", opacity: (loading ? 0.35 : 1), height: "calc(100% - 2em)", overflow: "auto"}}>
-                <BBasicList listData={searchData} loading={loading}/>
+                <MusicList listData={searchData} loading={loading}/>
             </div>
         </div>
     )

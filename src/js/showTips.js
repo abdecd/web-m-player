@@ -5,8 +5,9 @@ var showTips = {
     subscribe(fn) { this.changeSub.add(fn); },
     unSubscribe(fn) { this.changeSub.remove(fn); },
 
-    info(msg) { this.changeSub.publish(msg) },
+    info(msg,fn) { this.changeSub.publish(msg,fn) },
     prompt(...sth) { return window.prompt(...sth); },
+    confirm(tip) { return window.confirm(tip); },
 };
 
 export default showTips;
