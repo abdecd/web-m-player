@@ -185,16 +185,6 @@ function BasicLoopBlock() {
 }
 
 export default function LoopBlock({shown,setShown}) {
-    const [shouldRender, setShouldRender] = useState(false);
-
-    useEffect(() => {
-        if (shown) {
-            setShouldRender(true);
-        } else {
-            setTimeout(() => setShouldRender(false),300);
-        }
-    },[shown]);
-
     return (
         <>
             {/* mask */}
@@ -209,7 +199,7 @@ export default function LoopBlock({shown,setShown}) {
                 bottom: (shown ? "60px" : "20px"),
                 pointerEvents: (shown ? "auto" : "none")
             }}>
-                {shouldRender && <BasicLoopBlock/>}
+                <BasicLoopBlock/>
             </div>
         </>
     )
