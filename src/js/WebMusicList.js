@@ -13,7 +13,7 @@ class BasicWebMusicList {
         //create new list
         if (this.randomList.length==0) {
             this.randomList = new Array(this.arr.length);
-            for (let i=0;i<this.arr.length;i++) this.randomList[i]=i;
+            for (let i=0;i<this.arr.length;i++) this.randomList[i] = i;
         }
         
         //get an element from randomList, delete and return it
@@ -36,14 +36,14 @@ class WebMusicList extends BasicWebMusicList {
         super();
         this.name = name || "defaultList";
         this.storage = storage;
-        if (arr) for (let i=0,L=arr.length;i<L;i++) if (WebMusicList.isValidItem(arr[i])) this.arr[i]=arr[i];
+        if (arr) for (let i=0,L=arr.length;i<L;i++) if (WebMusicList.isValidItem(arr[i])) this.arr.push(arr[i]);
         if (this.storage) webMusicListStorage.set(this.name,this.arr);
     }
 
     clone() {
         var obj = new WebMusicList(this.name,this.arr,this.storage);
         obj.index = this.index;
-        obj.randomList = this.randomList;
+        obj.randomList = [...this.randomList];
         return obj;
     }
 
