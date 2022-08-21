@@ -11,7 +11,6 @@ initSettings();
 
 export default function App({children}) {
     const [loopBlockShown, setLoopBlockShown] = useState(false);
-
     undoFnContainer.value = useUndoableMusicList();
 
     return (

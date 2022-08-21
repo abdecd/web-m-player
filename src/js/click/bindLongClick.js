@@ -10,7 +10,6 @@ var os = (function () {
         isPhone = /(?:iPhone)/.test(ua) && !isTablet,
         isPc = !isPhone && !isAndroid && !isSymbian;
     if (isAndroid || isPhone || isTablet) {
-        // 手机
         return "phone";
     } else {
         return "pc";
