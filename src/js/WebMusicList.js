@@ -58,7 +58,7 @@ class WebMusicList extends BasicWebMusicList {
     push(obj) {
         if (!WebMusicList.isValidItem(obj)) return false;
         this.arr.push(obj);
-        this.randomList = null;
+        this.randomList = [];
         this.changeSub.publish();
         if (this.storage) webMusicListStorage.set(this.name,this.arr);
         return true;
@@ -66,13 +66,13 @@ class WebMusicList extends BasicWebMusicList {
     pushSilent(obj) {
         if (!WebMusicList.isValidItem(obj)) return false;
         this.arr.push(obj);
-        this.randomList = null;
+        this.randomList = [];
         if (this.storage) webMusicListStorage.set(this.name,this.arr);
         return true;
     }
     pop() {
         var ans = this.arr.pop();
-        this.randomList = null;
+        this.randomList = [];
         this.changeSub.publish();
         if (this.storage) webMusicListStorage.set(this.name,this.arr);
         return ans;
@@ -84,7 +84,7 @@ class WebMusicList extends BasicWebMusicList {
         this.index-=deleteCnt;
         
         var ans = this.arr.splice(deleteIndex,wantDeleteCnt);
-        this.randomList = null;
+        this.randomList = [];
         this.changeSub.publish();
         if (this.storage) webMusicListStorage.set(this.name,this.arr);
         return ans;
@@ -105,7 +105,7 @@ class WebMusicList extends BasicWebMusicList {
         this.arr[oldIndex] = this.arr[newIndex];
         this.arr[newIndex] = swap;
 
-        this.randomList = null;
+        this.randomList = [];
         this.changeSub.publish();
         if (this.storage) webMusicListStorage.set(this.name,this.arr);
         return true;
