@@ -2,7 +2,7 @@ import { useRef, useEffect, useCallback } from 'react';
 import WebMusicList from './WebMusicList';
 import webMusicManager from './webMusicManager';
 
-export default function useUndoableMusicList() {
+function useUndoableMusicList() {
     const specificList = useRef(new WebMusicList());
     const oldSpecificList = useRef(new WebMusicList());
 
@@ -33,3 +33,10 @@ export default function useUndoableMusicList() {
 
     return undoSpecificListFn;
 }
+
+var undoFnContainer = { value: null };
+
+export {
+    useUndoableMusicList,
+    undoFnContainer as default
+};

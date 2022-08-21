@@ -7,7 +7,7 @@ import webMusicManager from '../js/webMusicManager'
 import webMusicListStorage from '../js/webMusicListStorage'
 import WebMusicList from '../js/WebMusicList'
 import showTips from '../js/showTips'
-import useUndoableMusicList from '../js/useUndoableMusicList'
+import undoFnContainer from '../js/supportUndoMusicList'
 
 function RenameSpecificListBar() {
     const [specificListTempName, setSpecificListTempName] = useState("");
@@ -86,7 +86,7 @@ function BasicLoopBlock() {
         return () => webMusicListStorage.removeChangeListener(refreshFn);
     },[]);
 
-    var undoSpecificListFn = useUndoableMusicList();
+    var undoSpecificListFn = undoFnContainer.value;
 
     var selectAndPlayMusic = useCallback(async (ev,elem) => {
         var index = webMusicManager.list.search(elem.id || elem.src);

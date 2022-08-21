@@ -3,11 +3,11 @@ import React, { useCallback } from 'react'
 import BasicList from '../../component/BasicList';
 import webMusicManager from '../../js/webMusicManager';
 import showTips from '../../js/showTips';
-import useUndoableMusicList from '../../js/useUndoableMusicList';
+import undoFnContainer from '../../js/supportUndoMusicList';
 
 export default function MusicList({listData,loading=false}) {
     //listData <==> [{ id or url, name, author },...]
-    var undoSpecificListFn = useUndoableMusicList();
+    var undoSpecificListFn = undoFnContainer.value;
 
     var playMusic = useCallback(async (ev,elem) => {
         if (await webMusicManager.load(elem.name, elem.url, elem.id)) webMusicManager.play();

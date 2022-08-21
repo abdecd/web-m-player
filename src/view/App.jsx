@@ -5,11 +5,14 @@ import LoopBlock from '../component/LoopBlock';
 import MusicBar from '../component/MusicBar'
 import ToastBar from '../component/ToastBar';
 import { initSettings } from '../js/settings';
+import undoFnContainer, { useUndoableMusicList } from '../js/supportUndoMusicList';
 
 initSettings();
 
 export default function App({children}) {
     const [loopBlockShown, setLoopBlockShown] = useState(false);
+
+    undoFnContainer.value = useUndoableMusicList();
 
     return (
         <div>
