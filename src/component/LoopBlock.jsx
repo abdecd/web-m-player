@@ -2,63 +2,19 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Button, Input } from '@mui/material'
 
 import BasicList from './BasicList'
-import style from '../css/LoopBlock.module.css'
 import webMusicManager from '../js/webMusicManager'
 import webMusicListStorage from '../js/webMusicListStorage'
 import WebMusicList from '../js/WebMusicList'
 import showTips from '../js/showTips'
 import undoFnContainer from '../js/supportUndoMusicList'
 
-function RenameSpecificListBar() {
-    const [specificListTempName, setSpecificListTempName] = useState("");
+var basicLoopBlockCss = {
+    width: "70vw",
+    height: "65vh",
+    overflow: "auto",
 
-    //订阅specificList
-    useEffect(() => {
-        var refreshFn = () => setSpecificListTempName(webMusicManager.list.name);
-        var topFn = () => {
-            refreshFn();
-            webMusicManager.list.addChangeListener(refreshFn);
-        };
-        topFn();
-        webMusicManager.addListChangeListener(topFn);
-        return () => webMusicManager.removeListChangeListener(topFn);
-    },[]);
-
-    return (
-        <form
-            onSubmit={ev => {
-                ev.preventDefault();
-                if (specificListTempName) {
-                    webMusicListStorage.remove(webMusicManager.list.name);
-                    webMusicManager.list.name = specificListTempName;
-                    webMusicListStorage.set(specificListTempName,webMusicManager.list);
-                } else {
-                    setSpecificListTempName(webMusicManager.list.name);
-                }
-                ev.target.childNodes[0].querySelector("input").blur();
-            }}>
-            <Input
-                style={{width: "5em"}}
-                value={specificListTempName}
-                onChange={ev => setSpecificListTempName(ev.target.value)}/>
-        </form>
-    )
-}
-
-function TopBar({manageListState,setManageListState,manageComponent,unManageComponent}) {
-    return (
-        <div style={{display: "flex", justifyContent: "space-between", margin: "10px", height: "40px"}}>
-            <Button
-                variant={manageListState ? 'contained' : 'outlined'}
-                disableElevation disableRipple
-                onClick={() => setManageListState(!manageListState)}>
-                列表管理
-            </Button>
-
-            {manageListState ? manageComponent : unManageComponent}
-        </div>
-    )
-}
+    boxShadow: "0px 0px 20px 0px rgba(0,0,0,0.2)"
+};
 
 function BasicLoopBlock() {
     const [specificList, setSpecificList] = useState(new WebMusicList());
@@ -161,7 +117,7 @@ function BasicLoopBlock() {
     },[]);
 
     return (
-        <div className={style.BasicLoopBlock}>
+        <div style={basicLoopBlockCss}>
             <TopBar
                 manageListState={manageListState}
                 setManageListState={setManageListState}
@@ -180,6 +136,57 @@ function BasicLoopBlock() {
                     btnClickFn={manageListState ? deleteList : removeMusic}
                     btnLongClickFn={manageListState ? deleteAllList : removeAllMusic}/>
             </div>
+        </div>
+    )
+}
+
+function RenameSpecificListBar() {
+    const [specificListTempName, setSpecificListTempName] = useState("");
+
+    //订阅specificList
+    useEffect(() => {
+        var refreshFn = () => setSpecificListTempName(webMusicManager.list.name);
+        var topFn = () => {
+            refreshFn();
+            webMusicManager.list.addChangeListener(refreshFn);
+        };
+        topFn();
+        webMusicManager.addListChangeListener(topFn);
+        return () => webMusicManager.removeListChangeListener(topFn);
+    },[]);
+
+    return (
+        <form
+            onSubmit={ev => {
+                ev.preventDefault();
+                if (specificListTempName) {
+                    webMusicListStorage.remove(webMusicManager.list.name);
+                    webMusicManager.list.name = specificListTempName;
+                    webMusicListStorage.set(specificListTempName,webMusicManager.list);
+                } else {
+                    setSpecificListTempName(webMusicManager.list.name);
+                }
+                ev.target.childNodes[0].querySelector("input").blur();
+            }}>
+            <Input
+                style={{width: "5em"}}
+                value={specificListTempName}
+                onChange={ev => setSpecificListTempName(ev.target.value)}/>
+        </form>
+    )
+}
+
+function TopBar({manageListState,setManageListState,manageComponent,unManageComponent}) {
+    return (
+        <div style={{display: "flex", justifyContent: "space-between", margin: "10px", height: "40px"}}>
+            <Button
+                variant={manageListState ? 'contained' : 'outlined'}
+                disableElevation disableRipple
+                onClick={() => setManageListState(!manageListState)}>
+                列表管理
+            </Button>
+
+            {manageListState ? manageComponent : unManageComponent}
         </div>
     )
 }
