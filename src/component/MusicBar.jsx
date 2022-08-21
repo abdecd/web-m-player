@@ -9,6 +9,7 @@ import bindLongClick from '../js/click/bindLongClick'
 import musicAjax from '../js/nativeBridge/musicAjax'
 import showTips from '../js/showTips'
 import LoadingBlock from './LoadingBlock'
+import undoFnContainer from '../js/supportUndoMusicList'
 
 export default function MusicBar({toggleLoopBlockShown}) {
     const [title, setTitle] = useState("");
@@ -120,12 +121,32 @@ export default function MusicBar({toggleLoopBlockShown}) {
             navigate("/lyric/"+webMusicManager.id);
         }
     },[title,location]);
-    
+
+    var undoSpecificListFn = undoFnContainer.value;
+
+    var titleBlock = useRef();
+    useEffect(() => {
+        bindLongClick(
+            titleBlock.current,
+            toggleLyric,
+            () => {
+                switch (webMusicManager.push(webMusicManager.name, webMusicManager.handler.url, webMusicManager.id)) {
+                    case webMusicManager.PUSH_STATE.SUCCESS:
+                        return showTips.info("添加至播放列表成功。",undoSpecificListFn);
+                    case webMusicManager.PUSH_STATE.EXISTS:
+                        return showTips.info("该项目已存在。");
+                    case webMusicManager.PUSH_STATE.FAILED:
+                        return showTips.info("添加至播放列表失败。");
+                }
+            }
+        )
+    },[toggleLyric]);
+
     return (
         <div className={style.MusicBar}>
             <div className={style.LinearFlex}>
                 <LoadingBlock loading={loading} className={style.TitleBar}>
-                    <p onClick={toggleLyric}>{title}</p>
+                    <p ref={titleBlock}>{title}</p>
                 </LoadingBlock>
                 <div className={style.ButtonBar}>
                     <Button variant="contained" disableElevation ref={loopBtn}>{loopBtnStr}</Button>
