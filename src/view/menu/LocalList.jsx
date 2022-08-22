@@ -23,7 +23,7 @@ export default function LocalList() {
         <LoadingBlock loading={loading} style={{height: "100%", textAlign: "center", overflow: "hidden"}}>
         { (listData.length==0) ? (
             (loading) ? (
-                <p>Refreshing...</p>
+                <p>refreshing...</p>
             ) : (
                 <>
                 <p>Nothing in "/sdcard/Music".</p>
