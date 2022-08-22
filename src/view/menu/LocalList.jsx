@@ -6,7 +6,7 @@ import LoadingBlock from '../../component/LoadingBlock';
 import PinyinEngine from 'pinyin-engine';
 
 export default function LocalList() {
-    const [listData, setListData] = useState([]);
+    const [listData, setListData] = useState({});
     const [searchWord, setSearchWord] = useState("");
     const [loading, setLoading] = useState(true);
 
@@ -21,7 +21,7 @@ export default function LocalList() {
 
     return (
         <LoadingBlock loading={loading} style={{height: "100%", textAlign: "center", overflow: "hidden"}}>
-        { (listData.length==0) ? (
+        { (!listData.query?.("").length) ? (
             (loading) ? (
                 <p>refreshing...</p>
             ) : (
@@ -33,7 +33,7 @@ export default function LocalList() {
         ) : (
             <>
             <Filter searchWord={searchWord} setSearchWord={setSearchWord} inputStyle={{width:"92vw", height: "1.6em"}}/>
-            <MusicList listData={listData.query(searchWord)} style={{height: "calc(100% - 1.6em)"}}/>
+            <MusicList listData={listData.query?.(searchWord)} style={{height: "calc(100% - 1.6em)"}}/>
             </>
         ) }
         </LoadingBlock>
