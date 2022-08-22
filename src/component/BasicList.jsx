@@ -30,10 +30,10 @@ function RightBtn({btnText,clickFn,longClickFn}) {
     )
 }
 
-export default function BasicList({listData,btnText,itemClickFn=(function(){}),itemLongClickFn=(function(){}),btnClickFn=(function(){}),btnLongClickFn=(function(){})}) {
+export default function BasicList({listData,btnText,itemClickFn=(function(){}),itemLongClickFn=(function(){}),btnClickFn=(function(){}),btnLongClickFn=(function(){}),style}) {
     //listData <==> [{name,subName?,key},...]
     return (
-        <div style={{height: "100%", textAlign: "center", overflow: "auto"}}>
+        <div style={{height: "100%", textAlign: "center", overflow: "auto", ...style}}>
         {(!listData || listData.length==0) ? (
             <p>当前列表为空。</p>
         ) : (

@@ -5,7 +5,7 @@ import webMusicManager from '../../js/webMusicManager';
 import showTips from '../../js/showTips';
 import undoFnContainer from '../../js/supportUndoMusicList';
 
-export default function MusicList({listData,loading=false}) {
+export default function MusicList({listData,loading=false,style}) {
     //listData <==> [{ id or url, name, author },...]
     var undoSpecificListFn = undoFnContainer.value;
 
@@ -39,6 +39,7 @@ export default function MusicList({listData,loading=false}) {
             <p style={{textAlign: "center"}}>refreshing...</p>
         ) : (
             <BasicList
+                style={style}
                 listData={listData.map(elem => {return {name: elem.name, subName: elem.author, key: elem.id||elem.url, /*私货*/id: elem.id, url: elem.url}})}
                 btnText="+"
                 itemClickFn={playMusic}
