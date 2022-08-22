@@ -26,8 +26,7 @@ export default function App({children}) {
     return (
         <ThemeProvider theme={currentTheme}>
             <CssBaseline/>
-            {/* margin: 8px */}
-            <div style={{height: "calc(100vh - 68px)", overflow: "auto"}}>
+            <div style={{height: "calc(100vh - 60px)", overflow: "auto"}}>
                 {children}
             </div>
 

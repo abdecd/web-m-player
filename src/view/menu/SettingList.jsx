@@ -48,7 +48,7 @@ function BackgroundSettingBlock() {
     },[]);
 
     return (
-        <div>
+        <div style={{margin: "8px"}}>
             <div style={{display: "flex"}}>
                 <TextField
                     style={{flex: "1"}}

@@ -38,5 +38,6 @@ export default function ToastBar() {
             message={msg}
             action={undoFn.current && <Button onClick={() => { undoFn.current(); showTips.info("撤销成功。"); }} size="small">撤销</Button>}
             style={{bottom: "68px", opacity: "0.8"}}/>
+        // margin: 8px
     )
 }

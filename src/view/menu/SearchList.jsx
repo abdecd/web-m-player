@@ -1,6 +1,7 @@
 import { Input } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import LoadingBlock from '../../component/LoadingBlock';
 import musicAjax from '../../js/nativeBridge/musicAjax';
 import showTips from '../../js/showTips';
 import MusicList from './MusicList';
@@ -42,9 +43,9 @@ export default function SearchList() {
                     value={searchWord}
                     onChange={ev => setSearchWord(ev.target.value)}/>
             </form>
-            <div style={{transition: "0.2s", opacity: (loading ? 0.35 : 1), height: "calc(100% - 2em)", overflow: "auto"}}>
+            <LoadingBlock loading={loading} setLoading={setLoading} style={{height: "calc(100% - 2em)", overflow: "auto"}}>
                 <MusicList listData={searchData} loading={loading}/>
-            </div>
+            </LoadingBlock>
         </div>
     )
 }

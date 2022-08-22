@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import LoadingBlock from '../component/LoadingBlock';
 import musicAjax from '../js/nativeBridge/musicAjax';
 import showTips from '../js/showTips';
 import webMusicManager from '../js/webMusicManager';
@@ -36,16 +37,18 @@ export default function Lyric() {
     },[]);
 
     return (
-        <div ref={lyricElem} style={{textAlign: "center", transition: "0.2s", opacity: (loading ? 0.35 : 1), height: "100%", overflow: "auto"}}>
-        {
-            lyric
-                ?.split("\n")
-                .map((elem,index) => (
-                    elem=="__the_end_of_origional_lyric__" ? 
-                        <div key={index+elem} style={{width: "100%", height: "0px", border: "1px solid gray"}}/>
-                        : <p key={index+elem}>{elem}</p>
-                ))
-        }
-        </div>
+        <LoadingBlock loading={loading} setLoading={setLoading} style={{textAlign: "center", height: "100%", overflow: "auto"}}>
+            <div ref={lyricElem}>
+            {
+                lyric
+                    ?.split("\n")
+                    .map((elem,index) => (
+                        elem=="__the_end_of_origional_lyric__" ? 
+                            <div key={index+elem} style={{width: "100%", height: "0px", border: "1px solid gray"}}/>
+                            : <p key={index+elem}>{elem}</p>
+                    ))
+            }
+            </div>
+        </LoadingBlock>
     )
 }
