@@ -10,14 +10,14 @@ export default function LocalList() {
     const [searchWord, setSearchWord] = useState("");
     const [loading, setLoading] = useState(true);
 
-    var fetchLocalList = useCallback(() => {
+    var fetchLocalList = useCallback(async () => {
         setLoading(true);
-        setListData(new PinyinEngine(musicAjax.loadLocalListSync() || [],["name"],true));
+        setListData(new PinyinEngine(await musicAjax.loadLocalListSync() || [],["name"],true));
         setLoading(false);
     },[]);
 
     //初始载入
-    useEffect(fetchLocalList,[]);
+    useEffect(() => { fetchLocalList(); },[]);
 
     return (
         <LoadingBlock loading={loading} style={{height: "100%", textAlign: "center", overflow: "hidden"}}>
