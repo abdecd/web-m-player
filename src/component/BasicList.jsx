@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { List, ListItemText, ListItemButton, ListItem } from '@mui/material'
+import { List, ListItemText, ListItemButton, ListItem, useTheme } from '@mui/material'
 import bindLongClick from '../js/click/bindLongClick'
 
 function LeftItem({name,subName,clickFn,longClickFn}) {
@@ -20,11 +20,12 @@ function RightBtn({btnText,clickFn,longClickFn}) {
     useEffect(() => {
         bindLongClick(btn.current,clickFn,longClickFn);
     },[btn]);
+    var theme = useTheme();
 
     return (
         <ListItemButton
             ref={btn}
-            style={{textAlign: "center", flex: 1, color: "gray"}}>
+            style={{textAlign: "center", flex: 1, color: theme.palette.text.secondary}}>
             <ListItemText>{btnText}</ListItemText>
         </ListItemButton>
     )
@@ -32,6 +33,8 @@ function RightBtn({btnText,clickFn,longClickFn}) {
 
 export default function BasicList({listData,btnText,itemClickFn=(function(){}),itemLongClickFn=(function(){}),btnClickFn=(function(){}),btnLongClickFn=(function(){}),style}) {
     //listData <==> [{name,subName?,key},...]
+    var theme = useTheme();
+
     return (
         <div style={{height: "100%", textAlign: "center", overflow: "auto", ...style}}>
         {(!listData || listData.length==0) ? (
@@ -46,7 +49,7 @@ export default function BasicList({listData,btnText,itemClickFn=(function(){}),i
                     </ListItem>
                 ))
             }
-                <ListItem style={{textAlign: "center", color: "gray"}}>
+                <ListItem style={{textAlign: "center", color: theme.palette.text.secondary}}>
                     <ListItemText>共{listData.length}项</ListItemText>
                 </ListItem>
             </List>

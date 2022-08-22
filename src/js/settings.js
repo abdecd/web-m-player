@@ -4,9 +4,10 @@ import Subscription from "./Subscription";
 var settingsStorage = {
     defaultSettings: Object.freeze({
         backgroundType: "basic",
-        background: "rgb(218,232,232)"
+        background: "rgb(218,232,232)",
+        isDarkMode: false
     }),
-    settingList: {},
+    settingList: JSON.parse(localStorage.getItem("settingList")),
 
     get(name) {
         return this.settingList[name];
@@ -28,7 +29,10 @@ var settingsStorage = {
     }
 };
 
-settingsStorage.settingList = JSON.parse(localStorage.getItem("settingList")) || {...settingsStorage.defaultSettings};
+if (!settingsStorage.settingList) {
+    settingsStorage.settingList = {...settingsStorage.defaultSettings};
+    settingsStorage._saveSettingList();
+}
 
 var settings = {
     backgroundSub: new Subscription(),//publish: type, url

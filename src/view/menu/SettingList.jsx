@@ -9,6 +9,8 @@ import Button from '@mui/material/Button';
 import settings, { settingsStorage } from '../../js/settings';
 import requestPic from '../../js/picRequestor';
 import showTips from '../../js/showTips';
+import { ListItem, Switch, useTheme } from '@mui/material';
+import theme from '../Theme';
 
 function BackgroundSettingBlock() {
     const [inputValue, setInputValue] = useState("");
@@ -67,17 +69,18 @@ function BackgroundSettingBlock() {
 
 function BackgroundSettingItem() {
     const [backgroundSetting, setBackgroundSetting] = useState(false);
+    var theme = useTheme();
 
     return <>
         <ListItemButton onClick={() => setBackgroundSetting(!backgroundSetting)}>
             <ListItemText>背景设置</ListItemText>
             {backgroundSetting ? (
                 <svg width="30px" height="30px">
-                    <polyline points='10,17 15,13 20,17' fill="rgba(0,0,0,0)" stroke="#222222" strokeWidth="2"/>
+                    <polyline points='10,17 15,13 20,17' fill="rgba(0,0,0,0)" stroke={theme.palette.text.secondary} strokeWidth="2"/>
                 </svg>
             ) : (
                 <svg width="30px" height="30px">
-                    <polyline points='10,13 15,17 20,13' fill="rgba(0,0,0,0)" stroke="#222222" strokeWidth="2"/>
+                    <polyline points='10,13 15,17 20,13' fill="rgba(0,0,0,0)" stroke={theme.palette.text.secondary} strokeWidth="2"/>
                 </svg>
             )}
         </ListItemButton>
@@ -87,10 +90,34 @@ function BackgroundSettingItem() {
     </>
 }
 
+function ThemeSettingItem() {
+    const [isDarkMode, setIsDarkMode] = useState(theme.getThemeType()=="dark");
+
+    var handleChange = useCallback(checked => {
+        if (checked) {
+            theme.setThemeType("dark");
+            setIsDarkMode(true);
+            settingsStorage.set("isDarkMode",true);
+        } else {
+            theme.setThemeType("light");
+            setIsDarkMode(false);
+            settingsStorage.set("isDarkMode",false);
+        }
+    },[]);
+
+    return <ListItem>
+        <ListItemText>夜间字体</ListItemText>
+        <Switch
+            checked={isDarkMode}
+            onChange={ev => handleChange(ev.target.checked)}/>
+    </ListItem>
+}
+
 export default function SettingList() {
     return (
         <List>
             <BackgroundSettingItem/>
+            <ThemeSettingItem/>
         </List>
     )
 }
