@@ -3,6 +3,7 @@ import showTips from "./showTips";
 import Subscription from "./Subscription";
 import WebMusicList from "./WebMusicList";
 import webMusicListStorage from "./webMusicListStorage";
+import bindEarphone from "./nativeBridge/earphoneBinder";
 
 var webMusicManager = {
     name: "",
@@ -84,7 +85,7 @@ var webMusicManager = {
     pushSilent(name,src,id) {
         if (!WebMusicList.isValidItem({name,src,id})) return this.PUSH_STATE.FAILED;
         if (this.list.arr.find(elem => WebMusicList.getIdOrSrc(elem)==(id || src))) return this.PUSH_STATE.EXISTS;
-        return this.list.pushSilent({name,src,id}) ? this.PUSH_STATE.SUCCESS : this.PUSH_STATE.FAILED;
+        return this.list.push({name,src,id},true) ? this.PUSH_STATE.SUCCESS : this.PUSH_STATE.FAILED;
     },
     pushAll(objArr) {
         var successCnt = 0, existsCnt = 0, failCnt = 0;
@@ -169,5 +170,7 @@ if (webMusicListStorage.names.length==0) {
 
 webMusicManager._loopFn = (async function() { if (await this.next()) this.play() }).bind(webMusicManager);
 webMusicManager.handler.addEventListener("ended",webMusicManager._loopFn);
+
+setTimeout(() => bindEarphone(webMusicManager),3000);
 
 export default webMusicManager;
