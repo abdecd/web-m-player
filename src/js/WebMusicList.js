@@ -27,9 +27,12 @@ class WebMusicList extends BasicWebMusicList {
     name = null;
     storage = false;
     changeSub = new Subscription();// 回调无参数
+    static _PUSH_STATE = Object.freeze({SUCCESS: Symbol(), EXISTS: Symbol(), FAILED: Symbol()});
+    static get PUSH_STATE() { return WebMusicList._PUSH_STATE; }
 
     addChangeListener(fn) { this.changeSub.add(fn); }
     removeChangeListener(fn) { this.changeSub.remove(fn); }
+    
     get length() { return this.arr.length; }
 
     constructor(name="defaultList",arr=null,storage=false) {
@@ -56,12 +59,13 @@ class WebMusicList extends BasicWebMusicList {
     }
     
     push(obj,silent=false) {
-        if (!WebMusicList.isValidItem(obj)) return false;
+        if (!WebMusicList.isValidItem(obj)) return WebMusicList.PUSH_STATE.FAILED;
+        if (this.arr.find(elem => WebMusicList.getIdOrSrc(elem)==WebMusicList.getIdOrSrc(obj))) return WebMusicList.PUSH_STATE.EXISTS;
         this.arr.push(obj);
         this.randomList = [];
         if (!silent) this.changeSub.publish();
         if (this.storage) webMusicListStorage.set(this.name,this.arr);
-        return true;
+        return WebMusicList.PUSH_STATE.SUCCESS;
     }
     pop(silent=false) {
         var ans = this.arr.pop();
@@ -78,6 +82,25 @@ class WebMusicList extends BasicWebMusicList {
         if (this.storage) webMusicListStorage.set(this.name,this.arr);
         return ans;
     }
+    pushSomeElem(objArr,silent=false) {
+        var isStorage = this.storage;
+        this.setStorage(false);
+        
+        var successCnt = 0, existsCnt = 0, failCnt = 0;
+        for (var elem of objArr) {
+            var statue = this.push(elem, true);
+            if (statue==WebMusicList.PUSH_STATE.SUCCESS) {
+                successCnt++;
+            } else if (statue==WebMusicList.PUSH_STATE.EXISTS) {
+                existsCnt++;
+            } else if (statue==WebMusicList.PUSH_STATE.FAILED) {
+                failCnt++;
+            }
+        }
+        if (!silent) this.changeSub.publish();
+        this.setStorage(isStorage);
+        return { successCnt, existsCnt, failCnt };
+    }
     deleteSomeElem(objArr,silent=false) {
         var isStorage = this.storage;
         this.setStorage(false);
@@ -87,7 +110,6 @@ class WebMusicList extends BasicWebMusicList {
             let temp = this.delete(this.search(WebMusicList.getIdOrSrc(obj)),true);
             if (temp) ans.push(temp);
         }
-        this.randomList = [];
         if (!silent) this.changeSub.publish();
         this.setStorage(isStorage);
         return ans;

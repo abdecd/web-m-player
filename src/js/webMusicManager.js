@@ -10,8 +10,7 @@ var webMusicManager = {
     handler: new Audio(),
     list: new WebMusicList(),
 
-    _PUSH_STATE: Object.freeze({SUCCESS: Symbol(), EXISTS: Symbol(), FAILED: Symbol()}),
-    get PUSH_STATE() {return this._PUSH_STATE},
+    get PUSH_STATE() {return WebMusicList.PUSH_STATE},
 
     _nameChangeSub: new Subscription(),
     addNameChangeListener(fn) {this._nameChangeSub.add(fn)},
@@ -76,27 +75,11 @@ var webMusicManager = {
     getCurrentTime() { return this.handler.currentTime; },
     setCurrentTime(time) { if (this.src) this.handler.currentTime = time },
 
-    push(name,src,id,silent=false) {
-        if (!WebMusicList.isValidItem({name,src,id})) return this.PUSH_STATE.FAILED;
-        if (this.list.arr.find(elem => WebMusicList.getIdOrSrc(elem)==(id || src))) return this.PUSH_STATE.EXISTS;
-        return this.list.push({name,src,id},silent) ? this.PUSH_STATE.SUCCESS : this.PUSH_STATE.FAILED;
+    push(name,src,id) {
+        return this.list.push({name,src,id});
     },
     pushAll(objArr) {
-        var successCnt = 0, existsCnt = 0, failCnt = 0;
-        this.list.setStorage(false);
-        for (var elem of objArr) {
-            var statue = this.push(elem.name, elem.src, elem.id, true);
-            if (statue==webMusicManager.PUSH_STATE.SUCCESS) {
-                successCnt++;
-            } else if (statue==webMusicManager.PUSH_STATE.EXISTS) {
-                existsCnt++;
-            } else if (statue==webMusicManager.PUSH_STATE.FAILED) {
-                failCnt++;
-            }
-        }
-        this.list.changeSub.publish();
-        this.list.setStorage(true);
-        return { successCnt, existsCnt, failCnt };
+        return this.list.pushSomeElem(objArr);
     },
     pop() { return this.list.pop(); },
 
