@@ -3,7 +3,6 @@ import showTips from "./showTips";
 import Subscription from "./Subscription";
 import WebMusicList from "./WebMusicList";
 import webMusicListStorage from "./webMusicListStorage";
-import bindEarphone from "./nativeBridge/earphoneBinder";
 
 var webMusicManager = {
     name: "",
@@ -170,7 +169,5 @@ if (webMusicListStorage.names.length==0) {
 
 webMusicManager._loopFn = (async function() { if (await this.next()) this.play() }).bind(webMusicManager);
 webMusicManager.handler.addEventListener("ended",webMusicManager._loopFn);
-
-setTimeout(() => bindEarphone(webMusicManager),3000);
 
 export default webMusicManager;
