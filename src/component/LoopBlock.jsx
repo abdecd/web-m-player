@@ -7,7 +7,6 @@ import webMusicListStorage from '../js/webMusicListStorage'
 import WebMusicList from '../js/WebMusicList'
 import showTips from '../js/showTips'
 import undoFnContainer from '../js/supportUndoMusicList'
-import PinyinEngine from 'pinyin-engine'
 import ListItemFilter from './ListItemFilter'
 
 var basicLoopBlockCss = {
@@ -19,14 +18,14 @@ var basicLoopBlockCss = {
 };
 
 function BasicLoopBlock() {
-    const [specificList, setSpecificList] = useState({ query() { return []; } });
+    const [specificList, setSpecificList] = useState([]);
+    const [filterList, setFilterList] = useState([]);
     const [nameList, setNameList] = useState([]);
     const [manageListState, setManageListState] = useState(false);
-    const [searchWord, setSearchWord] = useState("");
 
     //订阅specificList
     useEffect(() => {
-        var refreshFn = () => setSpecificList(new PinyinEngine(webMusicManager.list.clone().arr,["name"],true));
+        var refreshFn = () => setSpecificList(webMusicManager.list.clone().arr.map(elem => ({name: elem.name, key: elem.id||elem.src, /*私货*/id: elem.id, src: elem.src})));
         var topFn = () => {
             refreshFn();
             webMusicManager.list.addChangeListener(refreshFn);
@@ -35,11 +34,10 @@ function BasicLoopBlock() {
         webMusicManager.addListChangeListener(topFn);
         return () => webMusicManager.removeListChangeListener(topFn);
     },[]);
-    console.log(specificList);
 
     //订阅nameList
     useEffect(() => {
-        var refreshFn = names => setNameList(names);
+        var refreshFn = names => setNameList(names.map(elem => ({name: elem, key: elem})));
         refreshFn(webMusicListStorage.names);
         //对后续变化
         webMusicListStorage.addChangeListener(refreshFn);
@@ -73,11 +71,11 @@ function BasicLoopBlock() {
     },[]);
 
     var removeAllMusic = useCallback(() => {
-        var len = webMusicManager.list.deleteSomeElem(specificList.query(searchWord).map(elem => {return {name: elem.name, key: elem.id||elem.src, /*私货*/id: elem.id, src: elem.src}})).length;
+        var len = webMusicManager.list.deleteSomeElem(filterList).length;
 
         webMusicManager.list.index = webMusicManager.list.search(webMusicManager.id || webMusicManager.handler.src);
         showTips.info(`已成功删除${len}项。`,undoSpecificListFn);
-    },[specificList,searchWord]);
+    },[filterList]);
 
     var createList = useCallback(() => {
         var name = showTips.prompt("name: ");
@@ -130,13 +128,11 @@ function BasicLoopBlock() {
                 manageComponent={<Button variant='outlined' onClick={createList}>new</Button>}
                 unManageComponent={<RenameSpecificListBar/>}/>
             {/* ListItemFilter: 1.6em */}
-            {!manageListState && <ListItemFilter searchWord={searchWord} setSearchWord={setSearchWord} inputStyle={{height: "1.6em"}}/>}
+            {!manageListState && <ListItemFilter listData={specificList} setFilterList={setFilterList} inputStyle={{height: "1.6em"}}/>}
 
             <div style={{height: "calc(100% - 60px - 1.6em)"}}>
                 <BasicList
-                    listData={manageListState ? 
-                        nameList.map(elem => {return {name: elem, key: elem}})
-                        : specificList.query(searchWord).map(elem => {return {name: elem.name, key: elem.id||elem.src, /*私货*/id: elem.id, src: elem.src}})}
+                    listData={manageListState ? nameList : filterList}
                     btnText="del"
                     itemClickFn={manageListState ? selectList : selectAndPlayMusic}
                     itemLongClickFn={manageListState ? swapListToFront : swapMusicToFront}
