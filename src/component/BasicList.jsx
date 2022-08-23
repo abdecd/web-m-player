@@ -6,7 +6,7 @@ function LeftItem({name,subName,clickFn,longClickFn}) {
     var btn = useRef();
     useEffect(() => {
         bindLongClick(btn.current,clickFn,longClickFn);
-    },[btn]);
+    },[clickFn,longClickFn]);
 
     return (
         <ListItemButton ref={btn} style={{flex: 9}}>
@@ -19,7 +19,7 @@ function RightBtn({btnText,clickFn,longClickFn}) {
     var btn = useRef();
     useEffect(() => {
         bindLongClick(btn.current,clickFn,longClickFn);
-    },[btn]);
+    },[clickFn,longClickFn]);
     var theme = useTheme();
 
     return (

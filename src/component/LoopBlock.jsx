@@ -67,15 +67,16 @@ function BasicLoopBlock() {
     var removeMusic = useCallback((ev,elem) => {
         var index = webMusicManager.list.search(elem.id || elem.src);
         if (index==-1) return;
-        webMusicManager.list.splice(index,1);
-        showTips.info("删除项目成功。",undoSpecificListFn);
+        webMusicManager.list.delete(index);
+        showTips.info("项目删除成功。",undoSpecificListFn);
     },[]);
 
     var removeAllMusic = useCallback(() => {
-        webMusicManager.list.splice(0,webMusicManager.list.length);
-        webMusicManager.list.index = -1;
-        showTips.info("播放列表已清空。",undoSpecificListFn);
-    },[]);
+        var len = webMusicManager.list.deleteSomeElem(specificList.query(searchWord).map(elem => {return {name: elem.name, key: elem.id||elem.src, /*私货*/id: elem.id, src: elem.src}})).length;
+
+        webMusicManager.list.index = webMusicManager.list.search(webMusicManager.id || webMusicManager.handler.src);
+        showTips.info(`已成功删除${len}项。`,undoSpecificListFn);
+    },[specificList,searchWord]);
 
     var createList = useCallback(() => {
         var name = showTips.prompt("name: ");

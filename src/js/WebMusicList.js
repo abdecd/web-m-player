@@ -55,38 +55,41 @@ class WebMusicList extends BasicWebMusicList {
         if (this.storage) webMusicListStorage.set(this.name,this.arr);
     }
     
-    push(obj) {
+    push(obj,silent=false) {
         if (!WebMusicList.isValidItem(obj)) return false;
         this.arr.push(obj);
         this.randomList = [];
-        this.changeSub.publish();
+        if (!silent) this.changeSub.publish();
         if (this.storage) webMusicListStorage.set(this.name,this.arr);
         return true;
     }
-    pushSilent(obj) {
-        if (!WebMusicList.isValidItem(obj)) return false;
-        this.arr.push(obj);
-        this.randomList = [];
-        if (this.storage) webMusicListStorage.set(this.name,this.arr);
-        return true;
-    }
-    pop() {
+    pop(silent=false) {
         var ans = this.arr.pop();
         this.randomList = [];
-        this.changeSub.publish();
+        if (!silent) this.changeSub.publish();
         if (this.storage) webMusicListStorage.set(this.name,this.arr);
         return ans;
     }
-    splice(deleteIndex,wantDeleteCnt) {
-        var deleteCnt = (deleteIndex<=this.index) ?
-            Math.min(this.index-deleteIndex+1,wantDeleteCnt)
-            : 0;
-        this.index-=deleteCnt;
-        
-        var ans = this.arr.splice(deleteIndex,wantDeleteCnt);
+    delete(index,silent=false) {
+        if (index<0 || index>this.arr.length) return null;
+        var ans = this.arr.splice(index,1)[0];
         this.randomList = [];
-        this.changeSub.publish();
+        if (!silent) this.changeSub.publish();
         if (this.storage) webMusicListStorage.set(this.name,this.arr);
+        return ans;
+    }
+    deleteSomeElem(objArr,silent=false) {
+        var isStorage = this.storage;
+        this.setStorage(false);
+
+        var ans = [];
+        for (var obj of objArr) {
+            let temp = this.delete(this.search(WebMusicList.getIdOrSrc(obj)),true);
+            if (temp) ans.push(temp);
+        }
+        this.randomList = [];
+        if (!silent) this.changeSub.publish();
+        this.setStorage(isStorage);
         return ans;
     }
 
