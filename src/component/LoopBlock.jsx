@@ -12,7 +12,7 @@ import ListItemFilter from './ListItemFilter'
 
 var basicLoopBlockCss = {
     width: "70vw",
-    height: "70vh",
+    height: "68vh",
     overflow: "auto",
 
     boxShadow: "0px 0px 20px 0px rgba(0,0,0,0.2)"
@@ -128,7 +128,7 @@ function BasicLoopBlock() {
                 manageComponent={<Button variant='outlined' onClick={createList}>new</Button>}
                 unManageComponent={<RenameSpecificListBar/>}/>
             {/* ListItemFilter: 1.6em */}
-            <ListItemFilter searchWord={searchWord} setSearchWord={setSearchWord} inputStyle={{height: "1.6em"}}/>
+            {!manageListState && <ListItemFilter searchWord={searchWord} setSearchWord={setSearchWord} inputStyle={{height: "1.6em"}}/>}
 
             <div style={{height: "calc(100% - 60px - 1.6em)"}}>
                 <BasicList

@@ -31,6 +31,7 @@ export default function SearchList() {
     return (
         <div style={{textAlign: "center", height: "100%"}}>
             <form
+                style={{marginLeft: "10px", marginRight: "10px"}}
                 onSubmit={ev => {
                     ev.preventDefault();
                     if (!searchWord) return;
@@ -39,7 +40,8 @@ export default function SearchList() {
                     ev.target.childNodes[0].querySelector("input").blur();
                 }}>
                 <Input
-                    style={{width:"92vw", height: "2em"}}
+                    style={{height: "2em"}}
+                    fullWidth
                     value={searchWord}
                     onChange={ev => setSearchWord(ev.target.value)}/>
             </form>
