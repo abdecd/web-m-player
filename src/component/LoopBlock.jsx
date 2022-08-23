@@ -7,23 +7,26 @@ import webMusicListStorage from '../js/webMusicListStorage'
 import WebMusicList from '../js/WebMusicList'
 import showTips from '../js/showTips'
 import undoFnContainer from '../js/supportUndoMusicList'
+import PinyinEngine from 'pinyin-engine'
+import ListItemFilter from './ListItemFilter'
 
 var basicLoopBlockCss = {
     width: "70vw",
-    height: "65vh",
+    height: "70vh",
     overflow: "auto",
 
     boxShadow: "0px 0px 20px 0px rgba(0,0,0,0.2)"
 };
 
 function BasicLoopBlock() {
-    const [specificList, setSpecificList] = useState(new WebMusicList());
+    const [specificList, setSpecificList] = useState(new PinyinEngine([]));
     const [nameList, setNameList] = useState([]);
     const [manageListState, setManageListState] = useState(false);
+    const [searchWord, setSearchWord] = useState("");
 
     //订阅specificList
     useEffect(() => {
-        var refreshFn = () => setSpecificList(webMusicManager.list.clone());
+        var refreshFn = () => setSpecificList(new PinyinEngine(webMusicManager.list.clone().arr,["name"],true));
         var topFn = () => {
             refreshFn();
             webMusicManager.list.addChangeListener(refreshFn);
@@ -118,18 +121,20 @@ function BasicLoopBlock() {
 
     return (
         <div style={basicLoopBlockCss}>
+            {/* TopBar: 40+10+10=60px */}
             <TopBar
                 manageListState={manageListState}
                 setManageListState={setManageListState}
                 manageComponent={<Button variant='outlined' onClick={createList}>new</Button>}
                 unManageComponent={<RenameSpecificListBar/>}/>
-            
-            {/* TopBar: 40+10+10=60px */}
-            <div style={{height: "calc(100% - 60px)"}}>
+            {/* ListItemFilter: 1.6em */}
+            <ListItemFilter searchWord={searchWord} setSearchWord={setSearchWord} inputStyle={{height: "1.6em"}}/>
+
+            <div style={{height: "calc(100% - 60px - 1.6em)"}}>
                 <BasicList
                     listData={manageListState ? 
                         nameList.map(elem => {return {name: elem, key: elem}})
-                        : specificList.arr.map(elem => {return {name: elem.name, key: elem.id||elem.src, /*私货*/id: elem.id, src: elem.src}})}
+                        : specificList.query(searchWord).map(elem => {return {name: elem.name, key: elem.id||elem.src, /*私货*/id: elem.id, src: elem.src}})}
                     btnText="del"
                     itemClickFn={manageListState ? selectList : selectAndPlayMusic}
                     itemLongClickFn={manageListState ? swapListToFront : swapMusicToFront}
