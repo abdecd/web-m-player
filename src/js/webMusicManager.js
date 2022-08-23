@@ -75,12 +75,8 @@ var webMusicManager = {
     getCurrentTime() { return this.handler.currentTime; },
     setCurrentTime(time) { if (this.src) this.handler.currentTime = time },
 
-    push(name,src,id) {
-        return this.list.push({name,src,id});
-    },
-    pushAll(objArr) {
-        return this.list.pushSomeElem(objArr);
-    },
+    push(name,src,id) { return this.list.push({name,src,id}); },
+    pushAll(objArr) { return this.list.pushSomeElem(objArr); },
     pop() { return this.list.pop(); },
 
     //循环播放
