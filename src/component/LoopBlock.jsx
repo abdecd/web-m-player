@@ -19,7 +19,7 @@ var basicLoopBlockCss = {
 };
 
 function BasicLoopBlock() {
-    const [specificList, setSpecificList] = useState(new PinyinEngine([]));
+    const [specificList, setSpecificList] = useState({ query() { return []; } });
     const [nameList, setNameList] = useState([]);
     const [manageListState, setManageListState] = useState(false);
     const [searchWord, setSearchWord] = useState("");
@@ -35,6 +35,7 @@ function BasicLoopBlock() {
         webMusicManager.addListChangeListener(topFn);
         return () => webMusicManager.removeListChangeListener(topFn);
     },[]);
+    console.log(specificList);
 
     //订阅nameList
     useEffect(() => {

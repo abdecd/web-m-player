@@ -7,7 +7,7 @@ import PinyinEngine from 'pinyin-engine';
 import ListItemFilter from '../../component/ListItemFilter';
 
 export default function LocalList() {
-    const [listData, setListData] = useState(new PinyinEngine([]));
+    const [listData, setListData] = useState({ query() { return []; } });
     const [searchWord, setSearchWord] = useState("");
     const [loading, setLoading] = useState(true);
 
