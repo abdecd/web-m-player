@@ -76,21 +76,16 @@ var webMusicManager = {
     getCurrentTime() { return this.handler.currentTime; },
     setCurrentTime(time) { if (this.src) this.handler.currentTime = time },
 
-    push(name,src,id) {
+    push(name,src,id,silent=false) {
         if (!WebMusicList.isValidItem({name,src,id})) return this.PUSH_STATE.FAILED;
         if (this.list.arr.find(elem => WebMusicList.getIdOrSrc(elem)==(id || src))) return this.PUSH_STATE.EXISTS;
-        return this.list.push({name,src,id}) ? this.PUSH_STATE.SUCCESS : this.PUSH_STATE.FAILED;
-    },
-    pushSilent(name,src,id) {
-        if (!WebMusicList.isValidItem({name,src,id})) return this.PUSH_STATE.FAILED;
-        if (this.list.arr.find(elem => WebMusicList.getIdOrSrc(elem)==(id || src))) return this.PUSH_STATE.EXISTS;
-        return this.list.push({name,src,id},true) ? this.PUSH_STATE.SUCCESS : this.PUSH_STATE.FAILED;
+        return this.list.push({name,src,id},silent) ? this.PUSH_STATE.SUCCESS : this.PUSH_STATE.FAILED;
     },
     pushAll(objArr) {
         var successCnt = 0, existsCnt = 0, failCnt = 0;
         this.list.setStorage(false);
         for (var elem of objArr) {
-            var statue = this.pushSilent(elem.name, elem.src, elem.id);
+            var statue = this.push(elem.name, elem.src, elem.id, true);
             if (statue==webMusicManager.PUSH_STATE.SUCCESS) {
                 successCnt++;
             } else if (statue==webMusicManager.PUSH_STATE.EXISTS) {
