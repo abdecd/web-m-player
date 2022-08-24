@@ -13,7 +13,11 @@ export default function LocalList() {
     var fetchLocalList = useCallback(async () => {
         setLoading(true);
         setListData(await musicAjax.loadLocalListSync() || []);
-        setTimeout(() => setLoading(false),50);
+    },[]);
+
+    var handleFilter = useCallback(list => {
+        setFilterList(list);
+        setLoading(false);
     },[]);
 
     //初始载入
@@ -23,7 +27,7 @@ export default function LocalList() {
         <LoadingBlock loading={loading} style={{height: "100%", textAlign: "center", overflow: "hidden"}}>
             <ListItemFilter
                 listData={listData}
-                setFilterList={setFilterList}
+                setFilterList={handleFilter}
                 inputStyle={{height: "1.6em"}}
                 style={{display: (loading || !listData.length) ? "none" : "block"}}/>
             { loading ? (

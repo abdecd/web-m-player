@@ -14,7 +14,8 @@ export default function Filter({listData,setFilterList,style,inputStyle}) {
 
     useEffect(() => {
         if (!initLoad.current["setFilterList"]) { initLoad.current["setFilterList"] = true; return; }
-        setFilterList(pinyinDir.query(searchWord));
+        // listData为空时，不触发变化
+        if (listData.length) setFilterList(pinyinDir.query(searchWord));
     },[pinyinDir,searchWord]);
 
     return (
