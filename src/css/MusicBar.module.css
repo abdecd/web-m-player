@@ -21,6 +21,11 @@
     user-select: none;
 }
 
+.TitleBar p {
+    margin: auto;
+    margin-top: 0.3em;
+}
+
 .ButtonBar {
     display: flex;
     justify-content: flex-end;
