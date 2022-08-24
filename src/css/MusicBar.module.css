@@ -16,7 +16,7 @@
 
 .TitleBar {
     flex: 1;
-    margin-left: 10px;
+    margin: 10px;
     overflow-y: auto;
     user-select: none;
 }
