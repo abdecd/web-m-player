@@ -9,13 +9,12 @@ export default function Filter({listData,setFilterList,style,inputStyle}) {
     const initLoad = useRef({ "setFilterList": false });
 
     useEffect(() => {
-        setPinyinDir(new PinyinEngine(listData,["name"],true));
+        if (listData.length) setPinyinDir(new PinyinEngine(listData,["name"],true));
     },[listData]);
 
     useEffect(() => {
         if (!initLoad.current["setFilterList"]) { initLoad.current["setFilterList"] = true; return; }
-        // listData为空时，不触发变化
-        if (listData.length) setFilterList(pinyinDir.query(searchWord));
+        setFilterList(pinyinDir.query(searchWord));
     },[pinyinDir,searchWord]);
 
     return (
