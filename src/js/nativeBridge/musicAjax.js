@@ -34,6 +34,7 @@ export default {
     },
 
     async loadLocalListSync() {
+        // native: null(no permission) or arr(may empty)
         return (await window.PhoneMusicManager?.loadFullList())?.map(elem => ({
             name: elem.name.match(/(.+?)\.[^\.]+$/)?.[1],
             url: elem.path,

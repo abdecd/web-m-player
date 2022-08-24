@@ -13,9 +13,8 @@ export default function LocalList() {
     var fetchLocalList = useCallback(async () => {
         setLoading(true);
         var ans = await musicAjax.loadLocalListSync();
-        if (ans) {
+        if (ans?.length) {
             setListData(ans);
-            setLoading(2);
         } else {
             setLoading(false);
         }
@@ -31,7 +30,7 @@ export default function LocalList() {
 
     return (
         <LoadingBlock loading={loading} style={{height: "100%", textAlign: "center", overflow: "hidden"}}>
-            { (listData.length!=0 || loading==2) && <ListItemFilter
+            { listData.length!=0 && <ListItemFilter
                 listData={listData}
                 setFilterList={handleFilter}
                 inputStyle={{height: "1.6em"}}
