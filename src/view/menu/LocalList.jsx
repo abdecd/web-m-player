@@ -12,7 +12,12 @@ export default function LocalList() {
 
     var fetchLocalList = useCallback(async () => {
         setLoading(true);
-        setListData(await musicAjax.loadLocalListSync() || []);
+        var ans = await musicAjax.loadLocalListSync();
+        if (ans) {
+            setListData(ans);
+        } else {
+            setLoading(false);
+        }
     },[]);
 
     var handleFilter = useCallback(list => {
@@ -25,11 +30,11 @@ export default function LocalList() {
 
     return (
         <LoadingBlock loading={loading} style={{height: "100%", textAlign: "center", overflow: "hidden"}}>
-            <ListItemFilter
+            { listData.length && <ListItemFilter
                 listData={listData}
                 setFilterList={handleFilter}
                 inputStyle={{height: "1.6em"}}
-                style={{display: (loading || !listData.length) ? "none" : "block"}}/>
+                style={{display: loading ? "none" : "block"}}/> }
             { loading ? (
                 <p>refreshing...</p>
             ) : (

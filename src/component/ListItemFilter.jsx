@@ -9,7 +9,7 @@ export default function Filter({listData,setFilterList,style,inputStyle}) {
     const initLoad = useRef({ "setFilterList": false });
 
     useEffect(() => {
-        if (listData.length) setPinyinDir(new PinyinEngine(listData,["name"],true));
+        setPinyinDir(new PinyinEngine(listData,["name"],true));
     },[listData]);
 
     useEffect(() => {
