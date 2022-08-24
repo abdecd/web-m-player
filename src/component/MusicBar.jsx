@@ -130,7 +130,7 @@ export default function MusicBar({toggleLoopBlockShown}) {
             titleBlock.current,
             toggleLyric,
             () => {
-                switch (webMusicManager.push(webMusicManager.name, webMusicManager.handler.src, webMusicManager.id)) {
+                switch (webMusicManager.push(webMusicManager.name, webMusicManager.handler.src.startsWith("http") ? undefined : webMusicManager.handler.src, webMusicManager.id)) {
                     case webMusicManager.PUSH_STATE.SUCCESS:
                         return showTips.info("添加至播放列表成功。",undoSpecificListFn);
                     case webMusicManager.PUSH_STATE.EXISTS:
