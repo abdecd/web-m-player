@@ -13,7 +13,7 @@ export default function LocalList() {
     var fetchLocalList = useCallback(async () => {
         setLoading(true);
         setListData(await musicAjax.loadLocalListSync() || []);
-        setLoading(false);
+        setTimeout(() => setLoading(false),50);
     },[]);
 
     //初始载入
@@ -21,21 +21,23 @@ export default function LocalList() {
 
     return (
         <LoadingBlock loading={loading} style={{height: "100%", textAlign: "center", overflow: "hidden"}}>
-        { (!filterList.length || !listData.length) ? (
-            (loading || listData.length) ? (
+            <ListItemFilter
+                listData={listData}
+                setFilterList={setFilterList}
+                inputStyle={{height: "1.6em"}}
+                style={{display: (loading || !listData.length) ? "none" : "block"}}/>
+            { loading ? (
                 <p>refreshing...</p>
             ) : (
-                <>
-                <p>Nothing in "/sdcard/Music".</p>
-                <Button variant='outlined' disableRipple onClick={fetchLocalList}>refresh</Button>
-                </>
-            )
-        ) : (
-            <>
-            <ListItemFilter listData={listData} setFilterList={setFilterList} inputStyle={{height: "1.6em"}}/>
-            <MusicList listData={filterList} style={{height: "calc(100% - 1.6em)"}}/>
-            </>
-        ) }
+                (listData.length) ? (
+                    <MusicList listData={filterList} style={{height: "calc(100% - 1.6em)"}}/>
+                ) : (
+                    <>
+                    <p>Nothing in "/sdcard/Music".</p>
+                    <Button variant='outlined' disableRipple onClick={fetchLocalList}>refresh</Button>
+                    </>
+                )
+            ) }
         </LoadingBlock>
     )
 }
