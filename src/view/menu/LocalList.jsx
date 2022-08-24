@@ -31,7 +31,7 @@ export default function LocalList() {
 
     return (
         <LoadingBlock loading={loading} style={{height: "100%", textAlign: "center", overflow: "hidden"}}>
-            { loading==2 && <ListItemFilter
+            { (listData.length!=0 || loading==2) && <ListItemFilter
                 listData={listData}
                 setFilterList={handleFilter}
                 inputStyle={{height: "1.6em"}}
