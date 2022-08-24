@@ -21,8 +21,8 @@ export default function LocalList() {
 
     return (
         <LoadingBlock loading={loading} style={{height: "100%", textAlign: "center", overflow: "hidden"}}>
-        { (!listData.length) ? (
-            (loading) ? (
+        { (!filterList.length || !listData.length) ? (
+            (loading || listData.length) ? (
                 <p>refreshing...</p>
             ) : (
                 <>
