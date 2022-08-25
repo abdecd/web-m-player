@@ -62,6 +62,7 @@ class WebMusicList extends BasicWebMusicList {
         if (!WebMusicList.isValidItem(obj)) return WebMusicList.PUSH_STATE.FAILED;
         if (this.arr.find(elem => WebMusicList.getIdOrSrc(elem)==WebMusicList.getIdOrSrc(obj))) return WebMusicList.PUSH_STATE.EXISTS;
         if (obj.src?.startsWith("http")) obj = { ...obj, src: undefined };
+        if (obj.src) obj = { ...obj, id: undefined };
         this.arr.push(obj);
         this.randomList = [];
         if (!silent) this.changeSub.publish();
