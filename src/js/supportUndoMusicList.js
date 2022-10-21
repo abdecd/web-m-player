@@ -10,8 +10,7 @@ function useUndoableMusicList() {
     useEffect(() => {
         var refreshFn = () => {
             oldSpecificList.current = specificList.current;
-            var newCloneList = webMusicManager.list.clone();
-            newCloneList.setStorage(false);
+            var newCloneList = webMusicManager.list.cloneWithNoStorage();
             specificList.current = newCloneList;
         };
         var topFn = () => {
@@ -25,7 +24,7 @@ function useUndoableMusicList() {
 
     //撤销specificList函数
     var undoSpecificListFn = useCallback(() => {
-        var oldList = oldSpecificList.current.clone();
+        var oldList = oldSpecificList.current.cloneWithNoStorage();
         oldList.setStorage(true);
         webMusicManager.list = oldList;
         webMusicManager.listChangeSub.publish();

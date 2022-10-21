@@ -14,12 +14,13 @@ var webMusicListStorage = {
         return JSON.parse(localStorage.getItem(`wmls-${name}`));
     },
     set(name,data) {
+        // data: {index, arr}
         if (!this.names.includes(name)) {
             this.names.push(name);
             this.changeSub.publish(this.names.slice(0));
             localStorage.setItem("wmlsNames",JSON.stringify(this.names));
         }
-        localStorage.setItem(`wmls-${name}`,JSON.stringify(data));
+        localStorage.setItem(`wmls-${name}`,JSON.stringify({index: data.index, arr: data.arr}));
     },
     remove(name) {
         if (this.names.indexOf(name)==-1) return;

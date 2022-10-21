@@ -25,7 +25,7 @@ function BasicLoopBlock() {
 
     //订阅specificList
     useEffect(() => {
-        var refreshFn = () => setSpecificList(webMusicManager.list.clone().arr.map(elem => ({name: elem.name, key: elem.id||elem.src, /*私货*/id: elem.id, src: elem.src})));
+        var refreshFn = () => setSpecificList(webMusicManager.list.cloneWithNoStorage().arr.map(elem => ({name: elem.name, key: elem.id||elem.src, /*私货*/id: elem.id, src: elem.src})));
         var topFn = () => {
             refreshFn();
             webMusicManager.list.addChangeListener(refreshFn);

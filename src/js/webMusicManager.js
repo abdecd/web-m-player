@@ -138,7 +138,7 @@ if (webMusicListStorage.names.length==0) {
     var name = webMusicListStorage.names[0];
     webMusicManager.list = new WebMusicList(name,webMusicListStorage.get(name),true);
     webMusicManager.listChangeSub.publish();
-    webMusicManager.next();
+    webMusicManager.next();// load to the MusicBar
 }
 
 webMusicManager._loopFn = (async function() { if (await this.next()) this.play() }).bind(webMusicManager);
