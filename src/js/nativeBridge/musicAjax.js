@@ -3,8 +3,19 @@ import fetchWithTimeout from "../fetchWithTimeout";
 export default {
     async fetchLyric(musicId) {
         var obj = await fetchWithTimeout(`/api/song/lyric?os=pc&id=${musicId}&lv=-1&tv=-1`,{timeout: 3000}).then(x => x.json());
-        var lrcGot = obj?.lrc?.lyric?.replace(/\[[^\]]+\]/g,"");
-        if (obj?.tlyric?.lyric) lrcGot += "__the_end_of_origional_lyric__\n"+obj.tlyric.lyric?.replace(/\[[^\]]+\]/g,"");
+        var lrcGot;
+        if (obj?.tlyric?.lyric) {
+            var lrc = obj?.lrc?.lyric?.split(/\[[^\]]+\]/);
+            var tLrc = obj.tlyric.lyric.split(/\[[^\]]+\]/);
+            var lrcArr = [];
+            while (lrc.length || tLrc.length) {
+                if (tLrc.length) lrcArr.unshift(tLrc.pop());
+                if (lrc.length) lrcArr.unshift(lrc.pop());
+            }
+            lrcGot = lrcArr.join("");
+        } else {
+            lrcGot = obj?.lrc?.lyric?.replace(/\[[^\]]+\]/g,"");
+        }
         return lrcGot;
     },
 

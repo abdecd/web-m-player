@@ -14,7 +14,9 @@ export default function SearchList() {
 
     var searchFn = useCallback(async word => {
         setLoading(true);
-        var ans = await musicAjax.fetchSearch(word).catch(e => {showTips.info("搜索失败。"); return []});
+        var ans = await musicAjax.fetchSearch(word)
+            .catch(e => {showTips.info("搜索失败。"); return []})
+            || [];
         setSearchData(ans);
         setLoading(false);
     },[]);
