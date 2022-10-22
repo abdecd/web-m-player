@@ -149,7 +149,7 @@ function BasicLoopBlock() {
                     itemLongClickFn={manageListState ? swapListToFront : swapMusicToFront}
                     btnClickFn={manageListState ? deleteList : removeMusic}
                     btnLongClickFn={manageListState ? deleteAllList : removeAllMusic}
-                    currentIndex={currentIndex}/>
+                    currentIndex={manageListState ? -1 : currentIndex}/>
             </div>
         </div>
     )
