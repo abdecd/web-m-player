@@ -69,8 +69,7 @@ export default {
 
 
 //WebMusicManager.js
-window.WebMusicManager = WebMusicManager;
-
 import bindEarphone from "./nativeBridge/earphoneBinder";
 
+window.webMusicManager = webMusicManager;
 setTimeout(() => bindEarphone(webMusicManager),3000);
