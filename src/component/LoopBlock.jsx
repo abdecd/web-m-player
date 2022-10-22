@@ -26,10 +26,7 @@ function BasicLoopBlock() {
 
     //订阅specificList
     useEffect(() => {
-        var refreshFn = () => {
-            setSpecificList(webMusicManager.list.cloneWithNoStorage().arr.map(elem => ({name: elem.name, key: elem.id||elem.src, /*私货*/id: elem.id, src: elem.src})));
-            setCurrentIndex(webMusicManager.list.search(webMusicManager.id || webMusicManager.src));
-        };
+        var refreshFn = () => setSpecificList(webMusicManager.list.cloneWithNoStorage().arr.map(elem => ({name: elem.name, key: elem.id||elem.src, /*私货*/id: elem.id, src: elem.src})));
         var topFn = () => {
             refreshFn();
             webMusicManager.list.addChangeListener(refreshFn);
@@ -48,15 +45,13 @@ function BasicLoopBlock() {
         return () => webMusicListStorage.removeChangeListener(refreshFn);
     },[]);
 
-    //订阅歌曲变化
+    //订阅歌曲变化和filterList变化
     useEffect(() => {
-        var refreshFn = () => {
-            setCurrentIndex(webMusicManager.list.search(webMusicManager.id || webMusicManager.src));
-        };
+        var refreshFn = () => setCurrentIndex(filterList.findIndex(elem => WebMusicList.getIdOrSrc(elem)==WebMusicList.getIdOrSrc(webMusicManager)));
         refreshFn();
         webMusicManager.handler.addEventListener("loadstart",refreshFn);
         return () => webMusicManager.handler.removeEventListener("loadStart",refreshFn);
-    },[]);
+    },[filterList]);
 
     var undoSpecificListFn = undoFnContainer.value;
 
