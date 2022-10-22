@@ -90,6 +90,7 @@ class WebMusicList extends BasicWebMusicList {
     }
     pop(silent=false) {
         var ans = this.arr.pop();
+        if (this.index==this.arr.length) this.index--;
         this.randomList = [];
         if (!silent) this.changeSub.publish();
         if (this.storage) webMusicListStorage.set(this.name,this);
@@ -98,6 +99,7 @@ class WebMusicList extends BasicWebMusicList {
     delete(index,silent=false) {
         if (index<0 || index>this.arr.length) return null;
         var ans = this.arr.splice(index,1)[0];
+        if (index<=this.index) this.index--;
         this.randomList = [];
         if (!silent) this.changeSub.publish();
         if (this.storage) webMusicListStorage.set(this.name,this);
