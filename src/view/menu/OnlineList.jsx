@@ -41,9 +41,9 @@ export default function OnlineList() {
     return (
         <div style={{height: "100%"}}>
             <div className={style.LinearBar} style={{height: "25px"}}>
-                <Button onClick={() => navigate("../onlineList/0")}>飙升榜</Button>
-                <Button onClick={() => navigate("../onlineList/1")}>新歌榜</Button>
-                <Button onClick={() => navigate("../onlineList/2")}>原创榜</Button>
+                <Button onClick={() => navigate("../onlineList/0")} style={idIndex==0 ? {color: "#16a091"} : null}>飙升榜</Button>
+                <Button onClick={() => navigate("../onlineList/1")} style={idIndex==1 ? {color: "#16a091"} : null}>新歌榜</Button>
+                <Button onClick={() => navigate("../onlineList/2")} style={idIndex==2 ? {color: "#16a091"} : null}>原创榜</Button>
             </div>
             <LoadingBlock loading={loading} style={{height: "calc(100% - 25px)", overflow: "auto"}}>
                 <MusicList listData={listData} loading={loading}/>
