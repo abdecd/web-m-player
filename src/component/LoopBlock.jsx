@@ -22,6 +22,7 @@ function BasicLoopBlock() {
     const [filterList, setFilterList] = useState([]);
     const [nameList, setNameList] = useState([]);
     const [manageListState, setManageListState] = useState(false);
+    const [currentIndex, setCurrentIndex] = useState(-1);
 
     //订阅specificList
     useEffect(() => {
@@ -43,6 +44,16 @@ function BasicLoopBlock() {
         webMusicListStorage.addChangeListener(refreshFn);
         return () => webMusicListStorage.removeChangeListener(refreshFn);
     },[]);
+
+    //订阅歌曲变化
+    useEffect(() => {
+        var refreshFn = () => {
+            setCurrentIndex(webMusicManager.list.search(webMusicManager.id || webMusicManager.src));
+        };
+        refreshFn();
+        webMusicManager.handler.addEventListener("loadstart",refreshFn);
+        return () => webMusicManager.handler.removeEventListener("loadStart",refreshFn);
+    },[setCurrentIndex]);
 
     var undoSpecificListFn = undoFnContainer.value;
 
@@ -137,7 +148,8 @@ function BasicLoopBlock() {
                     itemClickFn={manageListState ? selectList : selectAndPlayMusic}
                     itemLongClickFn={manageListState ? swapListToFront : swapMusicToFront}
                     btnClickFn={manageListState ? deleteList : removeMusic}
-                    btnLongClickFn={manageListState ? deleteAllList : removeAllMusic}/>
+                    btnLongClickFn={manageListState ? deleteAllList : removeAllMusic}
+                    currentIndex={currentIndex}/>
             </div>
         </div>
     )
