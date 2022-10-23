@@ -39,7 +39,7 @@ export default function Lyric() {
     return (
         <LoadingBlock innerRef={lyricElem} loading={loading} style={{textAlign: "center", height: "100%", overflow: "auto"}}>
         {
-            lyric?.split("\n").map((elem,index) => <p key={index+elem}>{elem}</p>)
+            lyric?.trim().split("\n").map((elem,index) => <p key={index+elem}>{elem}</p>)
         }
         </LoadingBlock>
     )

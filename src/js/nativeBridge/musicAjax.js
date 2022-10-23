@@ -5,8 +5,8 @@ export default {
         var obj = await fetchWithTimeout(`/api/song/lyric?os=pc&id=${musicId}&lv=-1&tv=-1`,{timeout: 3000}).then(x => x.json());
         var lrcGot;
         if (obj?.tlyric?.lyric) {
-            var lrc = obj?.lrc?.lyric?.split(/\[[^\]]+\]/);
-            var tLrc = obj.tlyric.lyric.split(/\[[^\]]+\]/);
+            var lrc = obj?.lrc?.lyric?.split(/\[[^\]]+\]/).map(x => x.trim()+'\n').filter(x => x!='\n');
+            var tLrc = obj.tlyric.lyric.split(/\[[^\]]+\]/).map(x => x.trim()+'\n').filter(x => x!='\n');
             var lrcArr = [];
             while (lrc.length || tLrc.length) {
                 if (tLrc.length) lrcArr.unshift(tLrc.pop());
