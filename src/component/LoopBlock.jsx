@@ -45,17 +45,12 @@ function BasicLoopBlock() {
         return () => webMusicListStorage.removeChangeListener(refreshFn);
     },[]);
 
-    //订阅歌曲变化
+    //订阅歌曲变化和filterList变化
     useEffect(() => {
         var refreshFn = () => setCurrentIndex(filterList.findIndex(elem => WebMusicList.getIdOrSrc(elem)==WebMusicList.getIdOrSrc(webMusicManager)));
         refreshFn();
         webMusicManager.handler.addEventListener("loadstart",refreshFn);
         return () => webMusicManager.handler.removeEventListener("loadStart",refreshFn);
-    },[]);
-
-    //订阅filterList变化
-    useEffect(() => {
-        setCurrentIndex(filterList.findIndex(elem => WebMusicList.getIdOrSrc(elem)==WebMusicList.getIdOrSrc(webMusicManager)));
     },[filterList]);
 
     var undoSpecificListFn = undoFnContainer.value;
