@@ -9,10 +9,7 @@ export default function BasicList({children,style}) {
     var bScrollStorage = useRef();
 
     useEffect(() => { bScrollStorage.current = new BScroll(wrapper.current); });
-
-    useEffect(() => {
-        bScrollStorage.current.refresh();
-    },[children]);
+    useEffect(() => { bScrollStorage.current.refresh(); },[children]);
 
     return (
         <div ref={wrapper} style={{height: "100%", textAlign: "center", overflow: "auto", ...style}}>
