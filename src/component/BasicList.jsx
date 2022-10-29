@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { List, ListItemText, ListItem, useTheme } from '@mui/material'
-import BScroll from '@better-scroll/core';
+import BScroll from '@better-scroll/core';//需要改源码 pointerEvents
 
 export default function BasicList({children,style}) {
     //listData <==> [{name,subName?,key},...]
