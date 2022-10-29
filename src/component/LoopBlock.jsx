@@ -129,6 +129,11 @@ function BasicLoopBlock() {
         showTips.info("所有列表已删除。");
     },[]);
 
+    var copyList = useCallback((ev,elem) => {
+        new WebMusicList(elem.name+" copy",webMusicListStorage.get(elem.name),true);
+        showTips.info("复制成功。");
+    },[]);
+
     return (
         <div style={basicLoopBlockCss}>
             {/* TopBar: 40+10+10=60px */}
@@ -150,6 +155,9 @@ function BasicLoopBlock() {
                             subName={elem.subName}
                             clickFn={ev=>selectList(ev,elem)}
                             longClickFn={ev=>swapListToFront(ev,elem)}/>
+                        <RightBtn
+                            btnText="cp"
+                            clickFn={ev=>copyList(ev,elem)}/>
                         <RightBtn
                             btnText="del"
                             clickFn={ev=>deleteList(ev,elem)}
