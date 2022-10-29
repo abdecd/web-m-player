@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Button, Input } from '@mui/material'
+import { Button, Input, ListItem } from '@mui/material'
 
 import BasicList from './BasicList'
 import webMusicManager from '../js/webMusicManager'
@@ -8,6 +8,7 @@ import WebMusicList from '../js/WebMusicList'
 import showTips from '../js/showTips'
 import undoFnContainer from '../js/supportUndoMusicList'
 import ListItemFilter from './ListItemFilter'
+import { LeftItem, RightBtn } from './ListButton'
 
 var basicLoopBlockCss = {
     width: "70vw",
@@ -140,14 +141,34 @@ function BasicLoopBlock() {
             {!manageListState && <ListItemFilter listData={specificList} setFilterList={setFilterList} inputStyle={{height: "1.6em"}}/>}
 
             <div style={{height: "calc(100% - 60px - 1.6em)"}}>
-                <BasicList
-                    listData={manageListState ? nameList : filterList}
-                    btnText="del"
-                    itemClickFn={manageListState ? selectList : selectAndPlayMusic}
-                    itemLongClickFn={manageListState ? swapListToFront : swapMusicToFront}
-                    btnClickFn={manageListState ? deleteList : removeMusic}
-                    btnLongClickFn={manageListState ? deleteAllList : removeAllMusic}
-                    currentIndex={manageListState ? -1 : currentIndex}/>
+                <BasicList>
+                {(manageListState ? nameList : filterList)?.map((elem,index) => (
+                    <ListItem key={elem.key}>
+                    {manageListState ? (<>
+                        <LeftItem
+                            name={elem.name}
+                            subName={elem.subName}
+                            clickFn={ev=>selectList(ev,elem)}
+                            longClickFn={ev=>swapListToFront(ev,elem)}/>
+                        <RightBtn
+                            btnText="del"
+                            clickFn={ev=>deleteList(ev,elem)}
+                            longClickFn={ev=>deleteAllList(ev,elem)}/>
+                    </>) : (<>
+                        <LeftItem
+                            name={elem.name}
+                            subName={elem.subName}
+                            clickFn={ev=>selectAndPlayMusic(ev,elem)}
+                            longClickFn={ev=>swapMusicToFront(ev,elem)}
+                            shouldHighLight={!manageListState && index==currentIndex}/>
+                        <RightBtn
+                            btnText="del"
+                            clickFn={ev=>removeMusic(ev,elem)}
+                            longClickFn={ev=>removeAllMusic(ev,elem)}/>
+                    </>)}
+                    </ListItem>
+                ))}
+                </BasicList>
             </div>
         </div>
     )

@@ -4,6 +4,8 @@ import BasicList from '../../component/BasicList';
 import webMusicManager from '../../js/webMusicManager';
 import showTips from '../../js/showTips';
 import undoFnContainer from '../../js/supportUndoMusicList';
+import { ListItem } from '@mui/material';
+import { LeftItem, RightBtn } from '../../component/ListButton';
 
 export default function MusicList({listData,loading=false,style}) {
     //listData <==> [{ id or url, name, author },...]
@@ -38,13 +40,18 @@ export default function MusicList({listData,loading=false,style}) {
         {(listData.length==0 && loading) ? (
             <p style={{textAlign: "center"}}>refreshing...</p>
         ) : (
-            <BasicList
-                style={style}
-                listData={listData.map(elem => {return {name: elem.name, subName: elem.author, key: elem.id||elem.url, /*私货*/id: elem.id, url: elem.url}})}
-                btnText="+"
-                itemClickFn={playMusic}
-                btnClickFn={addMusic}
-                btnLongClickFn={addAllMusic}/>
+            <BasicList style={style}>
+            {
+                listData
+                .map(elem => ({name: elem.name, subName: elem.author, key: elem.id||elem.url, /*私货*/id: elem.id, url: elem.url}))
+                .map(elem => (
+                    <ListItem key={elem.key}>
+                        <LeftItem name={elem.name} subName={elem.subName} clickFn={ev=>playMusic(ev,elem)}></LeftItem>
+                        <RightBtn btnText="+" clickFn={ev=>addMusic(ev,elem)} longClickFn={ev=>addAllMusic(ev,elem)}></RightBtn>
+                    </ListItem>
+                ))
+            }
+            </BasicList>
         )}
     </>
 }
