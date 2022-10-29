@@ -8,7 +8,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@better-scroll/core": "^2.5.0",
     "@mui/material": "^5.9.0",
     "localforage": "^1.10.0",
     "pinyin-engine": "^1.2.2",
