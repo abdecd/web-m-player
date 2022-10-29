@@ -1,4 +1,3 @@
-import BScroll from '@better-scroll/core';
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import LoadingBlock from '../component/LoadingBlock';
@@ -37,13 +36,8 @@ export default function Lyric() {
         return () => webMusicManager.handler.removeEventListener("loadstart",refreshId);
     },[]);
 
-    var bScrollStorage = useRef();
-
-    useEffect(() => { bScrollStorage.current = new BScroll(lyricElem.current); },[]);
-    useEffect(() => { bScrollStorage.current.refresh(); },[lyric]);
-
     return (
-        <LoadingBlock innerRef={lyricElem} loading={loading} style={{textAlign: "center", height: "100%", overflow: "hidden"}}>
+        <LoadingBlock innerRef={lyricElem} loading={loading} style={{textAlign: "center", height: "100%", overflow: "auto"}}>
             <div>
             {
                 lyric?.trim().split("\n").map((elem,index) => <p key={index+elem}>{elem}</p>)

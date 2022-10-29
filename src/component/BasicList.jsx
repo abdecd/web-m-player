@@ -1,18 +1,12 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import { List, ListItemText, ListItem, useTheme } from '@mui/material'
-import BScroll from '@better-scroll/core';//需要改源码 pointerEvents
 
 export default function BasicList({children,style}) {
     //listData <==> [{name,subName?,key},...]
     var theme = useTheme();
-    var wrapper = useRef();
-    var bScrollStorage = useRef();
-
-    useEffect(() => { bScrollStorage.current = new BScroll(wrapper.current); },[]);
-    useEffect(() => { bScrollStorage.current.refresh(); },[children]);
 
     return (
-        <div ref={wrapper} style={{height: "100%", textAlign: "center", overflow: "hidden", ...style}}>
+        <div ref={wrapper} style={{height: "100%", textAlign: "center", overflow: "auto", ...style}}>
         {(!children.length) ? (
             <p>当前列表为空。</p>
         ) : (
