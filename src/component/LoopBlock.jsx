@@ -201,12 +201,15 @@ function RenameSpecificListBar() {
         <form
             onSubmit={ev => {
                 ev.preventDefault();
-                if (specificListTempName) {
+                if (specificListTempName && !webMusicListStorage.names.includes(specificListTempName)) {
                     webMusicListStorage.remove(webMusicManager.list.name);
                     webMusicManager.list.name = specificListTempName;
                     webMusicListStorage.set(specificListTempName,webMusicManager.list);
+                } else if (!specificListTempName) {
+                    setSpecificListTempName(webMusicManager.list.name);
                 } else {
                     setSpecificListTempName(webMusicManager.list.name);
+                    showTips.info("重命名失败，与已有名称重复。");
                 }
                 ev.target.childNodes[0].querySelector("input").blur();
             }}>
