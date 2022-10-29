@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import settings from '../js/settings';
 import LoadingBlock from './LoadingBlock'
 
@@ -24,6 +24,7 @@ export default function BackgroundBlock({style}) {
     const [loading, setLoading] = useState(true);
     const [type, setType] = useState("image");
     const [src, setSrc] = useState("");
+    const video = useRef();
 
     useEffect(() => {
         var handleBackground = (newType,url) => {
@@ -37,6 +38,16 @@ export default function BackgroundBlock({style}) {
         return () => settings.backgroundSub.remove(handleBackground);
     },[]);
 
+    useEffect(() => {
+        var pauseFn=() => {
+            if (!video.current) return;
+            if (document.hidden) video.current.pause();
+            else video.current.play();
+        };
+        document.addEventListener("visibilitychange",pauseFn);
+        () => document.removeEventListener("visibilitychange",pauseFn);
+    },[]);
+
     return (
         <div style={{ ...maskCss, ...style }}>
             {
@@ -48,7 +59,7 @@ export default function BackgroundBlock({style}) {
                 {type=="image" ? (
                     <img src={src} onLoad={() => setLoading(false)} style={backgroundImgCss}/>
                 ) : (
-                    <video src={src} onCanPlay={() => setLoading(false)} autoPlay loop muted style={backgroundImgCss}/>
+                    <video ref={video} src={src} onCanPlay={() => setLoading(false)} autoPlay loop muted style={backgroundImgCss}/>
                 )}
             </LoadingBlock>
             }
