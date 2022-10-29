@@ -12,7 +12,7 @@ export default function BasicList({children,style}) {
     useEffect(() => { bScrollStorage.current.refresh(); },[children]);
 
     return (
-        <div ref={wrapper} style={{height: "100%", textAlign: "center", overflow: "auto", ...style}}>
+        <div ref={wrapper} style={{height: "100%", textAlign: "center", overflow: "hidden", ...style}}>
         {(!children.length) ? (
             <p>当前列表为空。</p>
         ) : (

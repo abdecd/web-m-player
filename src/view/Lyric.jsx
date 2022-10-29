@@ -43,7 +43,7 @@ export default function Lyric() {
     useEffect(() => { bScrollStorage.current.refresh(); },[lyric]);
 
     return (
-        <LoadingBlock innerRef={lyricElem} loading={loading} style={{textAlign: "center", height: "100%", overflow: "auto"}}>
+        <LoadingBlock innerRef={lyricElem} loading={loading} style={{textAlign: "center", height: "100%", overflow: "hidden"}}>
             <div>
             {
                 lyric?.trim().split("\n").map((elem,index) => <p key={index+elem}>{elem}</p>)
