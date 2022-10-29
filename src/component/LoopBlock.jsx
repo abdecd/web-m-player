@@ -244,7 +244,7 @@ export default function LoopBlock({shown,setShown}) {
             
             <div style={{
                 backdropFilter: "blur(6px)",
-                transition: "0.2s",
+                transition: "0.3s",
                 opacity: (shown ? 1 : 0),
                 zIndex: (shown ? 0 : -1),
                 position: "fixed",
