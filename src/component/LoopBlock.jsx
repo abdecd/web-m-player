@@ -9,6 +9,7 @@ import showTips from '../js/showTips'
 import undoFnContainer from '../js/supportUndoMusicList'
 import ListItemFilter from './ListItemFilter'
 import { LeftItem, RightBtn } from './ListButton'
+import { useRef } from 'react'
 
 var basicLoopBlockCss = {
     width: "70vw",
@@ -246,7 +247,7 @@ export default function LoopBlock({shown,setShown}) {
                 backdropFilter: "blur(6px)",
                 transition: "0.3s",
                 opacity: (shown ? 1 : 0),
-                zIndex: (shown ? 0 : -1),
+                pointerEvents: (shown ? "inherit" : "none"),
                 position: "fixed",
                 right: "3vw",
                 bottom: (shown ? "60px" : "20px")
