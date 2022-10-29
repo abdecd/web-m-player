@@ -8,7 +8,7 @@ export default function BasicList({children,style}) {
     var wrapper = useRef();
     var bScrollStorage = useRef();
 
-    useEffect(() => { bScrollStorage.current = new BScroll(wrapper.current); });
+    useEffect(() => { bScrollStorage.current = new BScroll(wrapper.current); },[]);
     useEffect(() => { bScrollStorage.current.refresh(); },[children]);
 
     return (

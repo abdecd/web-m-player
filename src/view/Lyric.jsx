@@ -39,7 +39,7 @@ export default function Lyric() {
 
     var bScrollStorage = useRef();
 
-    useEffect(() => { bScrollStorage.current = new BScroll(lyricElem.current); });
+    useEffect(() => { bScrollStorage.current = new BScroll(lyricElem.current); },[]);
     useEffect(() => { bScrollStorage.current.refresh(); },[lyric]);
 
     return (
