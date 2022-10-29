@@ -237,15 +237,19 @@ function TopBar({manageListState,setManageListState,manageComponent,unManageComp
 }
 
 export default function LoopBlock({shown,setShown}) {
+    const [display, setDisplay] = useState(false);
+    useEffect(() => { if (shown) setDisplay(true); },[shown]);
+
     return (
         <>
             {/* mask */}
-            {shown && <div style={{position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh"}} onClick={() => setShown(false)}></div>}
+            {shown && <div style={{position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh"}} onClick={() => { setShown(false); setTimeout(() => setDisplay(false),300); }}></div>}
             
             <div style={{
                 backdropFilter: "blur(6px)",
                 transition: "0.3s",
                 opacity: (shown ? 1 : 0),
+                display: (display ? "block" : "none"),
                 position: 'fixed',
                 right: "3vw",
                 bottom: (shown ? "60px" : "20px"),
