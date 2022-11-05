@@ -131,7 +131,9 @@ function BasicLoopBlock() {
     },[]);
 
     var copyList = useCallback((ev,elem) => {
-        new WebMusicList(elem.name+" copy",webMusicListStorage.get(elem.name),true);
+        var newListName = elem.name+" copy";
+        while (webMusicListStorage.names.includes(newListName)) newListName+="_";
+        new WebMusicList(newListName,webMusicListStorage.get(elem.name),true);
         showTips.info("复制成功。");
     },[]);
 
