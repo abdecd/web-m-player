@@ -50,13 +50,13 @@ var webMusicManager = {
             this.handler.addEventListener("error",errorFn);
         });
     },
-    // get _VOLUME_TIME_PER_BLOCK() { return 50; },
-    // get _VOLUME_CNT() { return 10; },
+    // get _VOLUME_TIME_PER_BLOCK() { return 30; },
+    // get _VOLUME_CNT() { return 15; },
     async play() {
         try {
             await this.handler.play();
-            // for (let i=0;i<this._VOLUME_CNT;i++) {
-            //     setTimeout(() => this.handler.volume=1/(this._VOLUME_CNT-i),i*this._VOLUME_TIME_PER_BLOCK+20);
+            // for (let i=0;i<=this._VOLUME_CNT;i++) {
+            //     setTimeout(() => this.handler.volume=i/this._VOLUME_CNT,i*this._VOLUME_TIME_PER_BLOCK+20);
             // }
         } catch {
             showTips.info("播放失败。");
@@ -66,8 +66,8 @@ var webMusicManager = {
     },
     pause() {
         this.handler.pause();
-        // for (let i=1;i<=this._VOLUME_CNT;i++) {
-        //     setTimeout(() => this.handler.volume=1/i,i*this._VOLUME_TIME_PER_BLOCK+20);
+        // for (let i=0;i<=this._VOLUME_CNT;i++) {
+        //     setTimeout(() => this.handler.volume=(this._VOLUME_CNT-i)/this._VOLUME_CNT,i*this._VOLUME_TIME_PER_BLOCK+20);
         // }
         // setTimeout(() => this.handler.pause(),this._VOLUME_CNT*this._VOLUME_TIME_PER_BLOCK+20);
     },
