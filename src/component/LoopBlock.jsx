@@ -25,6 +25,7 @@ function BasicLoopBlock() {
     const [nameList, setNameList] = useState([]);
     const [manageListState, setManageListState] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(-1);
+    const [currentListIndex, setCurrentListIndex] = useState(-1);
 
     //订阅specificList
     useEffect(() => {
@@ -54,6 +55,14 @@ function BasicLoopBlock() {
         webMusicManager.handler.addEventListener("loadstart",refreshFn);
         return () => webMusicManager.handler.removeEventListener("loadStart",refreshFn);
     },[filterList]);
+
+    //订阅list的改变 改currentListIndex
+    useEffect(() => {
+        var refreshFn = () => setCurrentListIndex(webMusicListStorage.names.indexOf(webMusicManager.list?.name));
+        refreshFn();
+        webMusicManager.addListChangeListener(refreshFn);
+        return () => webMusicManager.removeListChangeListener(refreshFn);
+    },[]);
 
     var undoSpecificListFn = undoFnContainer.value;
 
@@ -158,7 +167,8 @@ function BasicLoopBlock() {
                             name={elem.name}
                             subName={elem.subName}
                             clickFn={ev=>selectList(ev,elem)}
-                            longClickFn={ev=>swapListToFront(ev,elem)}/>
+                            longClickFn={ev=>swapListToFront(ev,elem)}
+                            shouldHighLight={index==currentListIndex}/>
                         <RightBtn
                             btnText="cp"
                             clickFn={ev=>copyList(ev,elem)}/>
@@ -172,7 +182,7 @@ function BasicLoopBlock() {
                             subName={elem.subName}
                             clickFn={ev=>selectAndPlayMusic(ev,elem)}
                             longClickFn={ev=>swapMusicToFront(ev,elem)}
-                            shouldHighLight={!manageListState && index==currentIndex}/>
+                            shouldHighLight={index==currentIndex}/>
                         <RightBtn
                             btnText="del"
                             clickFn={ev=>removeMusic(ev,elem)}
