@@ -9,7 +9,6 @@ import showTips from '../js/showTips'
 import undoFnContainer from '../js/supportUndoMusicList'
 import ListItemFilter from './ListItemFilter'
 import { LeftItem, RightBtn } from './ListButton'
-import { useRef } from 'react'
 
 var basicLoopBlockCss = {
     width: "70vw",
@@ -56,12 +55,16 @@ function BasicLoopBlock() {
         return () => webMusicManager.handler.removeEventListener("loadStart",refreshFn);
     },[filterList]);
 
-    //订阅list的改变 改currentListIndex
+    //订阅list和names的改变 改currentListIndex
     useEffect(() => {
         var refreshFn = () => setCurrentListIndex(webMusicListStorage.names.indexOf(webMusicManager.list?.name));
         refreshFn();
         webMusicManager.addListChangeListener(refreshFn);
-        return () => webMusicManager.removeListChangeListener(refreshFn);
+        webMusicListStorage.addChangeListener(refreshFn);
+        return () => {
+            webMusicManager.removeListChangeListener(refreshFn);
+            webMusicListStorage.removeChangeListener(refreshFn);
+        };
     },[]);
 
     var undoSpecificListFn = undoFnContainer.value;
