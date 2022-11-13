@@ -16,7 +16,7 @@ export default function MusicList({listData,loading=false,style}) {
     },[]);
 
     var addAheadMusic = useCallback((ev,elem) => {
-        webMusicManager.aheadList.push(elem);
+        webMusicManager.pushAhead(elem.name, elem.url, elem.id);
         showTips.info("已加入“即将播放”。",() => webMusicManager.aheadList.pop());
     },[]);
 
