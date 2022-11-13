@@ -161,8 +161,8 @@ class WebMusicList extends BasicWebMusicList {
 
     mvToIndexNext(index) {
         if (index<0 || index>=this.arr.length) return false;
-        if (index==this.index) return true;
-        
+        if (index==this.index) return false;
+
         var temp=this.arr.splice(index,1)[0];
         if (index<this.index) this.index--;
         this.arr.splice(this.index+1,0,temp);
