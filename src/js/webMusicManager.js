@@ -9,6 +9,7 @@ var webMusicManager = {
     id: "",
     handler: new Audio(),
     list: new WebMusicList(),
+    aheadList: [],
 
     get PUSH_STATE() {return WebMusicList.PUSH_STATE},
 
@@ -88,6 +89,7 @@ var webMusicManager = {
     push(name,src,id) { return this.list.push({name,src,id}); },
     pushAll(objArr) { return this.list.pushSomeElem(objArr); },
     pop() { return this.list.pop(); },
+    pushAhead(name,src,id) { return this.aheadList.push({name,src,id}); },
 
     //循环播放
     _loopMode: "next",
@@ -112,20 +114,20 @@ var webMusicManager = {
         this.handler.addEventListener("ended",this._loopFn);
     },
 
-    async next() {
-        var obj = this.list.next();
+    async loadMusicObj(obj) {
         if (!obj) return false;
-        return await this.load(obj.name, obj.src, obj.id);//todo: 网卡自动重新加载 while(!await this.load(obj.name, obj.src, obj.id)); return true;
+        var loadCnt=0;
+        while (++loadCnt<=3 && !await this.load(obj.name, obj.src, obj.id));
+        return loadCnt<=3;
+    },
+    async next() {
+        return this.loadMusicObj(this.aheadList.shift() || this.list.next());
     },
     async before() {
-        var obj = this.list.before();
-        if (!obj) return false;
-        return await this.load(obj.name, obj.src, obj.id);
+        return this.loadMusicObj(this.list.before());
     },
     async nextRandom() {
-        var obj = this.list.nextRandom();
-        if (!obj) return false;
-        return await this.load(obj.name, obj.src, obj.id);
+        return this.loadMusicObj(this.aheadList.shift() || this.list.nextRandom());
     },
 
     async nextByLoopOrder() {

@@ -15,14 +15,31 @@ export default function MusicList({listData,loading=false,style}) {
         if (await webMusicManager.load(elem.name, elem.url, elem.id)) webMusicManager.play();
     },[]);
 
+    var addAheadMusic = useCallback((ev,elem) => {
+        webMusicManager.aheadList.push(elem);
+        showTips.info("已加入“即将播放”。",() => webMusicManager.aheadList.pop());
+    },[]);
+
+    var addMusicToIndexNext = useCallback((ev,elem) => {
+        if (addMusic(ev,elem)!=webMusicManager.PUSH_STATE.SUCCESS) return;
+        if (webMusicManager.list.mvToIndexNext(webMusicManager.list.length-1)) {
+            showTips.info("已添加至当前播放位置的下一个。");
+        } else {
+            showTips.info("添加至当前播放位置的下一个失败。");
+        }
+    })
+
     var addMusic = useCallback((ev,elem) => {
         switch (webMusicManager.push(elem.name, elem.url, elem.id)) {
             case webMusicManager.PUSH_STATE.SUCCESS:
-                return showTips.info("添加至播放列表成功。",undoSpecificListFn);
+                showTips.info("添加至播放列表成功。",undoSpecificListFn);
+                return webMusicManager.PUSH_STATE.SUCCESS;
             case webMusicManager.PUSH_STATE.EXISTS:
-                return showTips.info("该项目已存在。");
+                showTips.info("该项目已存在。");
+                return webMusicManager.PUSH_STATE.EXISTS;
             case webMusicManager.PUSH_STATE.FAILED:
-                return showTips.info("添加至播放列表失败。");
+                showTips.info("添加至播放列表失败。");
+                return webMusicManager.PUSH_STATE.FAILED;
         }
     },[]);
 
@@ -47,6 +64,7 @@ export default function MusicList({listData,loading=false,style}) {
                 .map(elem => (
                     <ListItem key={elem.key}>
                         <LeftItem name={elem.name} subName={elem.subName} clickFn={ev=>playMusic(ev,elem)}></LeftItem>
+                        <RightBtn btnText="=>" clickFn={ev=>addAheadMusic(ev,elem)} longClickFn={ev=>addMusicToIndexNext(ev,elem)}></RightBtn>
                         <RightBtn btnText="+" clickFn={ev=>addMusic(ev,elem)} longClickFn={ev=>addAllMusic(ev,elem)}></RightBtn>
                     </ListItem>
                 ))

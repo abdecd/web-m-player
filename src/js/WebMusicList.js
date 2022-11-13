@@ -145,13 +145,27 @@ class WebMusicList extends BasicWebMusicList {
         return -1;
     }
 
-    swapToFront(idOrSrc) {
-        var oldIndex = 0, newIndex = this.search(idOrSrc);
-        if (newIndex==-1) return false;
+    swap(oldIndex,newIndex) {
+        if (oldIndex<0 || oldIndex>=this.arr.length) return false;
+        if (newIndex<0 || newIndex>=this.arr.length) return false;
         
         var swap = this.arr[oldIndex];
         this.arr[oldIndex] = this.arr[newIndex];
         this.arr[newIndex] = swap;
+
+        this.randomList = [];
+        this.changeSub.publish();
+        if (this.storage) webMusicListStorage.set(this.name,this);
+        return true;
+    }
+
+    mvToIndexNext(index) {
+        if (index<0 || index>=this.arr.length) return false;
+        if (index==this.index) return true;
+        
+        var temp=this.arr.splice(index,1)[0];
+        if (index<this.index) this.index--;
+        this.arr.splice(this.index+1,0,temp);
 
         this.randomList = [];
         this.changeSub.publish();

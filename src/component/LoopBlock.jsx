@@ -79,12 +79,25 @@ function BasicLoopBlock() {
     },[]);
 
     var swapMusicToFront = useCallback((ev,elem) => {
-        if (webMusicManager.list.swapToFront(elem.id || elem.src)) {
+        if (webMusicManager.list.swap(0,webMusicManager.list.search(elem.id || elem.src))) {
             showTips.info("与首项交换成功。",undoSpecificListFn);
         } else {
             showTips.info("与首项交换失败。");
         }
     },[]);
+
+    var addAheadMusic = useCallback((ev,elem) => {
+        webMusicManager.aheadList.push(elem);
+        showTips.info("已加入“即将播放”。",() => webMusicManager.aheadList.pop());
+    },[]);
+
+    var mvToIndexNext = useCallback((ev,elem,index) => {
+        if (webMusicManager.list.mvToIndexNext(index)) {
+            showTips.info("已移动至当前播放位置的下一个。",undoSpecificListFn);
+        } else {
+            showTips.info("移动失败。");
+        }
+    })
 
     var removeMusic = useCallback((ev,elem) => {
         var index = webMusicManager.list.search(elem.id || elem.src);
@@ -186,6 +199,10 @@ function BasicLoopBlock() {
                             clickFn={ev=>selectAndPlayMusic(ev,elem)}
                             longClickFn={ev=>swapMusicToFront(ev,elem)}
                             shouldHighLight={index==currentIndex}/>
+                        <RightBtn
+                            btnText="=>"
+                            clickFn={ev=>addAheadMusic(ev,elem)}
+                            longClickFn={ev=>mvToIndexNext(ev,elem,index)}/>
                         <RightBtn
                             btnText="del"
                             clickFn={ev=>removeMusic(ev,elem)}
