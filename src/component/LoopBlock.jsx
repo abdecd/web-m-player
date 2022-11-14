@@ -216,7 +216,7 @@ function BasicLoopBlock() {
     )
 }
 
-function RenameSpecificListBar() {
+var RenameSpecificListBar = React.memo(() => {
     const [specificListTempName, setSpecificListTempName] = useState("");
 
     //订阅specificList
@@ -253,9 +253,9 @@ function RenameSpecificListBar() {
                 onChange={ev => setSpecificListTempName(ev.target.value)}/>
         </form>
     )
-}
+});
 
-function TopBar({manageListState,setManageListState,manageComponent,unManageComponent}) {
+var TopBar = React.memo(({manageListState,setManageListState,manageComponent,unManageComponent}) => {
     return (
         <div style={{display: "flex", justifyContent: "space-between", margin: "10px", height: "40px"}}>
             <Button
@@ -268,7 +268,7 @@ function TopBar({manageListState,setManageListState,manageComponent,unManageComp
             {manageListState ? manageComponent : unManageComponent}
         </div>
     )
-}
+});
 
 export default function LoopBlock({shown,setShown}) {
     return (

@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react'
 
 import showTips from '../js/showTips';
 
-export default function ToastBar() {
+export default React.memo(function ToastBar() {
     const [msg, setMsg] = useState("");
     const [open, setOpen] = useState(false);
 
@@ -40,4 +40,4 @@ export default function ToastBar() {
             style={{bottom: "68px", opacity: "0.8"}}/>
         // margin: 8px
     )
-}
+})

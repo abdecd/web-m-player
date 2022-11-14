@@ -2,7 +2,7 @@ import { ListItemButton, ListItemText, useTheme } from '@mui/material';
 import React, { useRef, useEffect } from 'react'
 import bindLongClick from '../js/click/bindLongClick'
 
-function LeftItem({name,subName,clickFn,longClickFn,shouldHighLight}) {
+var LeftItem = React.memo(({name,subName,clickFn,longClickFn,shouldHighLight}) => {
     var btn = useRef();
     useEffect(() => {
         bindLongClick(btn.current,clickFn,longClickFn);
@@ -13,9 +13,9 @@ function LeftItem({name,subName,clickFn,longClickFn,shouldHighLight}) {
             <ListItemText primary={name} secondary={subName} sx={shouldHighLight ? {"span": {color: "#1976d2"}} : null}/>
         </ListItemButton>
     )
-}
+});
 
-function RightBtn({btnText,clickFn,longClickFn}) {
+var RightBtn = React.memo(({btnText,clickFn,longClickFn}) => {
     var btn = useRef();
     useEffect(() => {
         bindLongClick(btn.current,clickFn,longClickFn);
@@ -29,7 +29,7 @@ function RightBtn({btnText,clickFn,longClickFn}) {
             <ListItemText>{btnText}</ListItemText>
         </ListItemButton>
     )
-}
+});
 
 export {
     LeftItem,

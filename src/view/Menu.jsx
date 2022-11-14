@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 
 import style from '../css/LinearBar.module.css'
 
-function SettingsBtn({style}) {
+var SettingsBtn = React.memo(({style}) => {
     var navigate = useNavigate();
     var theme = useTheme();
     return (
@@ -17,7 +17,7 @@ function SettingsBtn({style}) {
             </svg>
         </Button>
     );
-}
+});
 
 export default function Menu({children}) {
     var navigate = useNavigate();

@@ -11,7 +11,7 @@ import showTips from '../js/showTips'
 import LoadingBlock from './LoadingBlock'
 import undoFnContainer from '../js/supportUndoMusicList'
 
-export default function MusicBar({toggleLoopBlockShown}) {
+export default React.memo(function MusicBar({toggleLoopBlockShown}) {
     const [title, setTitle] = useState("");
     const [progressValue, setProgressValue] = useState(0);
     const [playBtnStr, setPlayBtnStr] = useState("×_×");
@@ -158,4 +158,4 @@ export default function MusicBar({toggleLoopBlockShown}) {
             <LinearProgress variant='determinate' value={progressValue}/>
         </div>
     )
-}
+})

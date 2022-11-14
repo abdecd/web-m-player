@@ -20,7 +20,7 @@ var backgroundImgCss = {
     transform: "translateX(-50%)"
 };
 
-export default function BackgroundBlock({style}) {
+export default React.memo(function BackgroundBlock({style}) {
     const [loading, setLoading] = useState(true);
     const [type, setType] = useState("image");
     const [src, setSrc] = useState("");
@@ -65,4 +65,4 @@ export default function BackgroundBlock({style}) {
             }
         </div>
     )
-}
+})
