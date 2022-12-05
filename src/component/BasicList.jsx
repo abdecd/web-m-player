@@ -7,7 +7,7 @@ export default function BasicList({children,style}) {
     var theme = useTheme();
 
     return (
-        <div className={cssStyle.BasicList} style={{height: "100%", textAlign: "center", overflow: "auto", scrollbarWidth: "none", ...style}}>
+        <div className={cssStyle.BasicList} style={{...style}}>
         {(!children.length) ? (
             <p>当前列表为空。</p>
         ) : (
