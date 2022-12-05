@@ -11,20 +11,16 @@ export default React.memo(function ToastBar() {
 
     var undoFn = useRef(null);
 
-    useEffect(() => {
-        var refreshFn = (msg,fn) => {
-            undoFn.current = fn ?? null;
-            if (open) {
-                setOpen(false);
-                setTimeout(() => { setMsg(msg); setOpen(true); },200);
-            } else {
-                setOpen(true);
-                setMsg(msg);
-            }
+    useEffect(() => showTips.changeSub.subscribe((msg,fn) => {
+        undoFn.current = fn ?? null;
+        if (open) {
+            setOpen(false);
+            setTimeout(() => { setMsg(msg); setOpen(true); },200);
+        } else {
+            setOpen(true);
+            setMsg(msg);
         }
-        showTips.subscribe(refreshFn);
-        return () => showTips.unSubscribe(refreshFn);
-    },[open]);// todo: 减少重绑定
+    }),[open]);// todo: 减少重绑定
 
     return (
         <Snackbar

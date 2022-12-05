@@ -13,13 +13,10 @@ function useUndoableMusicList() {
             var newCloneList = webMusicManager.list.cloneWithNoStorage();
             specificList.current = newCloneList;
         };
-        var topFn = () => {
+        return webMusicManager.addListChangeListener(() => {
             refreshFn();
             webMusicManager.list.addChangeListener(refreshFn);
-        };
-        topFn();
-        webMusicManager.addListChangeListener(topFn);
-        return () => webMusicManager.removeListChangeListener(topFn);
+        });
     },[]);
 
     //撤销specificList函数

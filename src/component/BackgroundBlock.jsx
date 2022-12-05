@@ -26,17 +26,13 @@ export default React.memo(function BackgroundBlock({style}) {
     const [src, setSrc] = useState("");
     const video = useRef();
 
-    useEffect(() => {
-        var handleBackground = (newType,url) => {
-            setLoading(true);
-            setTimeout(() => {
-                setType(newType);
-                setSrc(url);
-            },400);
-        };
-        settings.backgroundSub.add(handleBackground);
-        return () => settings.backgroundSub.remove(handleBackground);
-    },[]);
+    useEffect(() => settings.backgroundSub.subscribe((newType,url) => {
+        setLoading(true);
+        setTimeout(() => {
+            setType(newType);
+            setSrc(url);
+        },400);
+    }),[]);
 
     useEffect(() => {
         var pauseFn=() => {

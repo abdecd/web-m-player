@@ -55,8 +55,8 @@ var webMusicListStorage = {
         localStorage.setItem("wmlsNames",JSON.stringify(this.names));
     },
 
-    addChangeListener(fn) { this.changeSub.add(fn); },
-    removeChangeListener(fn) { this.changeSub.remove(fn); },
+    addChangeListener(fn) { return this.changeSub.subscribe(fn); },
+    removeChangeListener(fn) { this.changeSub.unsubscribe(fn); },
 };
 
 webMusicListStorage.init();

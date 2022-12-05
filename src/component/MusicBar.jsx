@@ -28,8 +28,7 @@ export default React.memo(function MusicBar({toggleLoopBlockShown}) {
             setLoading(true);
         };
         setTitle(webMusicManager.name);
-        webMusicManager.addNameChangeListener(refreshTitle);
-        return () => webMusicManager.removeNameChangeListener(refreshTitle);
+        return webMusicManager.addNameChangeListener(refreshTitle);
     },[]);
 
     //订阅加载状态

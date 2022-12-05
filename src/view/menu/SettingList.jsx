@@ -17,12 +17,10 @@ function BackgroundSettingBlock() {
 
     //订阅背景变化
     useEffect(() => {
-        var refreshFn = (type,background) => {
-            setInputValue(type=="basic" ? background : "[native resource]")
-        };
         settings.getBackground().then(background => setInputValue(background.type=="basic" ? background.value : "[native resource]"));
-        settings.backgroundSub.add(refreshFn);
-        return () => settings.backgroundSub.remove(refreshFn);
+        return settings.backgroundSub.subscribe((type,background) => {
+            setInputValue(type=="basic" ? background : "[native resource]")
+        });
     },[]);
 
     var setBackgroundAndSave = useCallback(str => {

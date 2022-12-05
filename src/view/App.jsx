@@ -17,11 +17,7 @@ export default function App({children}) {
     const [currentTheme, setCurrentTheme] = useState(theme.value);
     undoFnContainer.value = useUndoableMusicList();
     
-    useEffect(() => {
-        var refreshFn = () => setCurrentTheme(theme.value);
-        theme.changeSub.add(refreshFn);
-        return () => theme.changeSub.remove(refreshFn);
-    },[]);
+    useEffect(() => theme.changeSub.subscribe(() => setCurrentTheme(theme.value)),[]);
 
     return (
         <ThemeProvider theme={currentTheme}>

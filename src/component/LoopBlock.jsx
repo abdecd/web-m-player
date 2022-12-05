@@ -29,22 +29,17 @@ function BasicLoopBlock() {
     //订阅specificList
     useEffect(() => {
         var refreshFn = () => setSpecificList(webMusicManager.list.cloneWithNoStorage().arr.map(elem => ({name: elem.name, key: elem.id||elem.src, /*私货*/id: elem.id, src: elem.src})));
-        var topFn = () => {
+        return webMusicManager.addListChangeListener(() => {
             refreshFn();
             webMusicManager.list.addChangeListener(refreshFn);
-        };
-        topFn();
-        webMusicManager.addListChangeListener(topFn);
-        return () => webMusicManager.removeListChangeListener(topFn);
+        });
     },[]);
 
     //订阅nameList
     useEffect(() => {
         var refreshFn = names => setNameList(names.map(elem => ({name: elem, key: elem})));
         refreshFn(webMusicListStorage.names);
-        //对后续变化
-        webMusicListStorage.addChangeListener(refreshFn);
-        return () => webMusicListStorage.removeChangeListener(refreshFn);
+        return webMusicListStorage.addChangeListener(refreshFn);
     },[]);
 
     //订阅歌曲变化和filterList变化 改currentIndex

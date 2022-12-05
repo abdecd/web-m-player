@@ -13,12 +13,12 @@ var webMusicManager = {
 
     get PUSH_STATE() {return WebMusicList.PUSH_STATE},
 
-    _nameChangeSub: new Subscription(),
-    addNameChangeListener(fn) {this._nameChangeSub.add(fn)},
-    removeNameChangeListener(fn) {this._nameChangeSub.remove(fn)},
+    nameChangeSub: new Subscription(),
+    addNameChangeListener(fn) {return this.nameChangeSub.subscribe(fn)},
+    removeNameChangeListener(fn) {this.nameChangeSub.unsubscribe(fn)},
     listChangeSub: new Subscription(),
-    addListChangeListener(fn) {this.listChangeSub.add(fn)},
-    removeListChangeListener(fn) {this.listChangeSub.remove(fn)},
+    addListChangeListener(fn) {return this.listChangeSub.subscribe(fn)},
+    removeListChangeListener(fn) {this.listChangeSub.unsubscribe(fn)},
     
     //handler.src受到赋值时会强制转为链接
     get src() {return (this.handler.src==window.location.origin+"/") ? "" : this.handler.src},
@@ -28,7 +28,7 @@ var webMusicManager = {
         if (!WebMusicList.isValidItem({name,src,id})) return false;
 
         this.name = name;
-        this._nameChangeSub.publish(name);
+        this.nameChangeSub.publish(name);
         this.id = id ?? "";
         this.handler.src = src ?? await musicAjax.fetchSrc(id).catch(e => "") ?? "";
 
