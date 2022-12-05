@@ -1,11 +1,14 @@
 .BasicList::-webkit-scrollbar {
-    width: 0;
-    height: 0;
+    width: 5px;
+}
+
+.BasicList::-webkit-scrollbar-thumb {
+    background: #00000055;
+    border-radius: 2px;
 }
 
 .BasicList {
     height: 100%;
     text-align: center;
     overflow: auto;
-    scrollbar-width: none;
 }
