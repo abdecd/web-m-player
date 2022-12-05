@@ -7,6 +7,11 @@
     border-radius: 2px;
 }
 
+.BasicList::-webkit-scrollbar-track {
+    background: #00000010;
+    border-radius: 2px;
+}
+
 .BasicList {
     height: 100%;
     text-align: center;
