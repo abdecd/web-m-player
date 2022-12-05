@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 
 import webMusicManager from '../js/webMusicManager'
 
-import style from '../css/MusicBar.module.css'
+import style from './MusicBar.module.css'
 import bindLongClick from '../js/click/bindLongClick'
 import musicAjax from '../js/nativeBridge/musicAjax'
 import showTips from '../js/showTips'
