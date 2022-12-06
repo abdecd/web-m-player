@@ -3,11 +3,11 @@ import React, { useCallback } from 'react'
 import BasicList from '../../component/BasicList';
 import webMusicManager from '../../js/webMusicManager';
 import showTips from '../../js/showTips';
-import undoFnContainer from '../../js/supportUndoMusicList';
+import undoFnContainer from '../../js/reactHooks/supportUndoMusicList';
 import { ListItem } from '@mui/material';
 import { LeftItem, RightBtn } from '../../component/ListButton';
 
-export default function MusicList({listData,loading=false,style}) {
+export default function MusicList({listData,loading=false,style,innerRef}) {
     //listData <==> [{ id or url, name, author },...]
     var undoSpecificListFn = undoFnContainer.value;
 
@@ -57,7 +57,7 @@ export default function MusicList({listData,loading=false,style}) {
         {(listData.length==0 && loading) ? (
             <p style={{textAlign: "center"}}>refreshing...</p>
         ) : (
-            <BasicList style={style}>
+            <BasicList innerRef={innerRef} style={style}>
             {
                 listData
                 .map(elem => ({name: elem.name, subName: elem.author, key: elem.id||elem.url, /*私货*/id: elem.id, url: elem.url}))

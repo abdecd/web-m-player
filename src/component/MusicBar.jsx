@@ -9,7 +9,7 @@ import bindLongClick from '../js/click/bindLongClick'
 import musicAjax from '../js/nativeBridge/musicAjax'
 import showTips from '../js/showTips'
 import LoadingBlock from './LoadingBlock'
-import undoFnContainer from '../js/supportUndoMusicList'
+import undoFnContainer from '../js/reactHooks/supportUndoMusicList'
 
 export default React.memo(function MusicBar({toggleLoopBlockShown}) {
     const [title, setTitle] = useState("");

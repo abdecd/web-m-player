@@ -1,14 +1,18 @@
 import { Button } from '@mui/material';
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState, useRef } from 'react'
 import MusicList from './MusicList'
 import musicAjax from '../../js/nativeBridge/musicAjax'
 import LoadingBlock from '../../component/LoadingBlock';
 import ListItemFilter from '../../component/ListItemFilter';
+import useScrollRecorder from '../../js/reactHooks/useScrollRecoder';
 
 export default function LocalList() {
     const [listData, setListData] = useState([]);
     const [filterList, setFilterList] = useState([]);
     const [loading, setLoading] = useState(true);
+    const topBlockRef = useRef();
+
+    useScrollRecorder("LocalList",topBlockRef,!loading);
 
     var fetchLocalList = useCallback(async () => {
         setLoading(true);
@@ -39,7 +43,7 @@ export default function LocalList() {
                 <p>refreshing...</p>
             ) : (
                 (listData.length) ? (
-                    <MusicList listData={filterList} style={{height: "calc(100% - 1.6em)"}}/>
+                    <MusicList innerRef={topBlockRef} listData={filterList} style={{height: "calc(100% - 1.6em)"}}/>
                 ) : (
                     <>
                     <p>Nothing in "/sdcard/Music".</p>

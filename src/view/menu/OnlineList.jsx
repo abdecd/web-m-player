@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Button from '@mui/material/Button';
 
@@ -9,6 +9,7 @@ import dataCache from "../../js/OnlineListCache";
 import musicAjax from '../../js/nativeBridge/musicAjax';
 import LoadingBlock from '../../component/LoadingBlock';
 import showTips from '../../js/showTips';
+import useScrollRecoder from '../../js/reactHooks/useScrollRecoder';
 
 export default function OnlineList() {
     //确定list参数
@@ -21,6 +22,21 @@ export default function OnlineList() {
     const [listData, setListData] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    var topBlockRef = useRef();
+    useScrollRecoder("OnlineList",topBlockRef,!loading);
+
+    var firstLoad = useRef(true);
+    // 重置滚动
+    useEffect(() => {
+        if (!listData.length) return;
+        if (!firstLoad.current) {
+            topBlockRef.current.scrollTop = 0;
+        } else {
+            firstLoad.current = false;
+        }
+    },[listData]);
+
+    // 获取列表
     useEffect(() => {
         (async () => {
             setLoading(true);//设置加载效果
@@ -46,7 +62,7 @@ export default function OnlineList() {
                 <Button onClick={() => navigate("../onlineList/2")} style={idIndex==2 ? {color: "#16a091"} : null}>原创榜</Button>
             </div>
             <LoadingBlock loading={loading} style={{height: "calc(100% - 25px)", overflow: "auto"}}>
-                <MusicList listData={listData} loading={loading}/>
+                <MusicList innerRef={topBlockRef} listData={listData} loading={loading}/>
             </LoadingBlock>
         </div>
     )

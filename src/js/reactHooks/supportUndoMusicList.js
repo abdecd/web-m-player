@@ -1,6 +1,6 @@
 import { useRef, useEffect, useCallback } from 'react';
-import WebMusicList from './WebMusicList';
-import webMusicManager from './webMusicManager';
+import WebMusicList from '../WebMusicList';
+import webMusicManager from '../webMusicManager';
 
 function useUndoableMusicList() {
     const specificList = useRef(new WebMusicList());

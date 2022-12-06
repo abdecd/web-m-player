@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import LoadingBlock from '../component/LoadingBlock';
 import musicAjax from '../js/nativeBridge/musicAjax';
+import useScrollRecoder from '../js/reactHooks/useScrollRecoder';
 import showTips from '../js/showTips';
 import webMusicManager from '../js/webMusicManager';
 
@@ -12,14 +13,27 @@ export default function Lyric() {
 
     var navigate = useNavigate();
 
-    //fetch lyric
     var lyricElem = useRef();
+    var firstLoad = useRef(true);
+    useScrollRecoder("Lyric",lyricElem,!loading);
+
+    // 重置滚动
+    useEffect(() => {
+        if (!lyric) return;
+        if (!firstLoad.current) {
+            lyricElem.current.scrollTop = 0;
+        } else {
+            // 排除第一次载入歌词
+            firstLoad.current = false;
+        }
+    },[lyric]);
+
+    //fetch lyric
     useEffect(() => {
         (async () => {
             setLoading(true);//设置加载效果
             var lrcGot = await musicAjax.fetchLyric(musicId).catch(e => {showTips.info("获取歌词失败。"); throw e});
             setLyric(lrcGot);
-            lyricElem.current.scrollTop = 0;
             setLoading(false);
         })();
     },[musicId]);
