@@ -20,19 +20,19 @@ var backgroundImgCss = {
     transform: "translateX(-50%)"
 };
 
-export default React.memo(function BackgroundBlock({style}) {
+export default React.memo(function BackgroundBlock({ style, type: prop_type, src: prop_src }) {
     const [loading, setLoading] = useState(true);
-    const [type, setType] = useState("image");
-    const [src, setSrc] = useState("");
+    const [type, setType] = useState(prop_type);
+    const [src, setSrc] = useState(prop_src);
     const video = useRef();
 
-    useEffect(() => settings.backgroundSub.subscribe((newType,url) => {
+    useEffect(() => {
         setLoading(true);
         setTimeout(() => {
-            setType(newType);
-            setSrc(url);
+            setType(prop_type);
+            setSrc(prop_src);
         },400);
-    }),[]);
+    },[prop_type,prop_src]);
 
     useEffect(() => {
         var pauseFn=() => {
