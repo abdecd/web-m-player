@@ -1,13 +1,12 @@
 import React from 'react'
 import { List, ListItemText, ListItem, useTheme } from '@mui/material'
-import cssStyle from './BasicList.module.css'
 
 export default function BasicList({children,style,innerRef}) {
     //listData <==> [{name,subName?,key},...]
     var theme = useTheme();
 
     return (
-        <div ref={innerRef} className={cssStyle.BasicList} style={{...style}}>
+        <div ref={innerRef} style={{height: "100%", textAlign: "center", overflow: "auto", ...style}}>
         {(!children.length) ? (
             <p>当前列表为空。</p>
         ) : (

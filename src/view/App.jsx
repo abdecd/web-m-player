@@ -9,6 +9,7 @@ import ToastBar from '../component/ToastBar';
 import settings, { initSettings } from '../js/settings';
 import undoFnContainer, { useUndoableMusicList } from '../js/reactHooks/supportUndoMusicList';
 import theme from './Theme';
+import './App.css'
 
 initSettings();
 
