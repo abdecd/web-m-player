@@ -2,7 +2,8 @@ import { useEffect, useRef } from "react";
 
 var scrollTops={};
 
-export default function useScrollRecorder(name,elemRef,canScroll=true) {
+function setRecord(name,num) { scrollTops[name]=num }
+function useScrollRecorder(name,elemRef,canScroll=true) {
     var scrollTop = useRef(0);
     var firstLoad = useRef(true);
 
@@ -25,3 +26,8 @@ export default function useScrollRecorder(name,elemRef,canScroll=true) {
         return () => elemRef.current?.removeEventListener("scroll",handler);
     },[canScroll]);
 }
+
+export {
+    useScrollRecorder as default,
+    setRecord
+};

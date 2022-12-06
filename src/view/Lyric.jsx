@@ -2,9 +2,12 @@ import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import LoadingBlock from '../component/LoadingBlock';
 import musicAjax from '../js/nativeBridge/musicAjax';
-import useScrollRecoder from '../js/reactHooks/useScrollRecoder';
+import useScrollRecoder, { setRecord } from '../js/reactHooks/useScrollRecoder';
 import showTips from '../js/showTips';
 import webMusicManager from '../js/webMusicManager';
+
+// 重置滚动记录
+webMusicManager.addNameChangeListener(() => setRecord("Lyric",0));
 
 export default function Lyric() {
     var {musicId} = useParams();
