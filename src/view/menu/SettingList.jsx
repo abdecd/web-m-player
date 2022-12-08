@@ -10,7 +10,7 @@ import settings, { settingsStorage } from '../../js/settings';
 import requestPic from '../../js/picRequestor';
 import showTips from '../../js/showTips';
 import { ListItem, Switch, useTheme } from '@mui/material';
-import theme from '../Theme';
+import theme from '../../js/theme';
 
 function BackgroundSettingBlock() {
     const [inputValue, setInputValue] = useState("");

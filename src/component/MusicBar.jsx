@@ -149,8 +149,12 @@ export default React.memo(function MusicBar({toggleLoopBlockShown}) {
                 </LoadingBlock>
                 <div className={style.ButtonBar}>
                     <Button variant="contained" disableElevation ref={loopBtn}>{loopBtnStr}</Button>
-                    <Button variant="contained" disableElevation onClick={lFn} onDoubleClick={lDblFn}>L</Button>
-                    <Button variant="contained" disableElevation onClick={rFn} onDoubleClick={rDblFn}>R</Button>
+                    <Button variant="contained" disableElevation onClick={lFn} onDoubleClick={lDblFn}>
+                        <svg class="icon" style={{width: "1.25em",height: "1.25em",flex: "1 0 auto",verticalAlign: "middle",fill: "currentColor",overflow: "hidden"}} viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5604"><path d="M357.3 324v376c0 17.6-14.4 32-32 32s-32-14.4-32-32V324c0-17.6 14.4-32 32-32s32 14.4 32 32zM400.5 512c0 9 4.4 17.4 11.7 22.6l275.2 192.6c8.4 5.9 19.4 6.5 28.5 1.9 9.1-4.7 14.8-14.1 14.8-24.4V319.4c0-10.3-5.7-19.6-14.8-24.4-9.1-4.7-20.1-4-28.5 1.9L412.3 489.5a27.29 27.29 0 0 0-11.8 22.5z" fill="" p-id="5605"></path></svg>
+                    </Button>
+                    <Button variant="contained" disableElevation onClick={rFn} onDoubleClick={rDblFn}>
+                        <svg class="icon" style={{width: "1.25em",height: "1.25em",flex: "1 0 auto",verticalAlign: "middle",fill: "currentColor",overflow: "hidden"}} viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3747"><path d="M698.7 292c17.6 0 32 14.4 32 32v376c0 17.6-14.4 32-32 32s-32-14.4-32-32V324c0-17.6 14.4-32 32-32zM611.7 489.5L336.6 296.9c-8.4-5.9-19.4-6.6-28.5-1.9-9.1 4.8-14.8 14.1-14.8 24.4v385.3c0 10.3 5.7 19.7 14.8 24.4 9.1 4.6 20.1 4 28.5-1.9l275.2-192.6c7.3-5.2 11.7-13.6 11.7-22.6 0-9-4.4-17.4-11.8-22.5z" fill="" p-id="3748"></path></svg>
+                    </Button>
                     <Button variant="contained" disableElevation ref={playBtn}>{playBtnStr}</Button>
                 </div>
             </div>
