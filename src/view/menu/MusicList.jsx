@@ -12,7 +12,7 @@ export default function MusicList({listData,loading=false,style,innerRef}) {
     var undoSpecificListFn = undoFnContainer.value;
 
     var playMusic = useCallback(async (ev,elem) => {
-        if (await webMusicManager.load(elem.name, elem.url, elem.id)) webMusicManager.play();
+        if (await webMusicManager.loadMusicObj({name: elem.name, src: elem.url, id: elem.id})) webMusicManager.play();
     },[]);
 
     var addAheadMusic = useCallback((ev,elem) => {

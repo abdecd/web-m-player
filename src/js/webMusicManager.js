@@ -42,7 +42,6 @@ var webMusicManager = {
             errorFn = (function() {
                 this.handler.removeEventListener("canplay",fn);
                 this.handler.removeEventListener("error",errorFn);
-                showTips.info("歌曲加载失败。");
                 resolve(false);
             }).bind(this);
 
@@ -118,6 +117,7 @@ var webMusicManager = {
         if (!obj) return false;
         var loadCnt=0;
         while (++loadCnt<=3 && !await this.load(obj.name, obj.src, obj.id));
+        if (loadCnt>3) showTips.info("歌曲加载失败。");
         return loadCnt<=3;
     },
     async next() {
