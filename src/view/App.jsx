@@ -49,7 +49,7 @@ export default function App({children}) {
                 ) : (
                     <>
                     <BasicLoopBlock style={{height: "100%", width: "35%", float: "left"}}/>
-                    <div style={{height: "100%", width: "3px", background: "#22222244", float: "left"}}/>
+                    <div style={{height: "100%", width: "3px", background: "#22222244", float: "left", borderRadius: "2px"}}/>
                     </>
                 )}
                 {children}
