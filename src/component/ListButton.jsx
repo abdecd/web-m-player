@@ -15,7 +15,7 @@ var LeftItem = React.memo(({name,subName,clickFn,longClickFn,shouldHighLight}) =
     )
 });
 
-var RightBtn = React.memo(({btnText,clickFn,longClickFn}) => {
+var RightBtn = React.memo(({btnText,clickFn,longClickFn,style}) => {
     var btn = useRef();
     useEffect(() => {
         bindLongClick(btn.current,clickFn,longClickFn);
@@ -25,7 +25,7 @@ var RightBtn = React.memo(({btnText,clickFn,longClickFn}) => {
     return (
         <ListItemButton
             ref={btn}
-            style={{textAlign: "center", flex: "0.3 1 auto", color: theme.palette.text.secondary}}>
+            style={{textAlign: "center", flex: "0.06 1 auto", color: theme.palette.text.secondary, ...style}}>
             <ListItemText>{btnText}</ListItemText>
         </ListItemButton>
     )
