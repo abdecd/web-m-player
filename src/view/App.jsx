@@ -47,7 +47,10 @@ export default function App({children}) {
                 {screenWidth<MIN_PC_WIDTH ? (
                     <LoopBlock shown={loopBlockShown} setShown={setLoopBlockShown}/>
                 ) : (
-                    <BasicLoopBlock style={{height: "100%", width: "35%", float: "left", backdropFilter: "brightness(85%)"}}/>
+                    <>
+                    <BasicLoopBlock style={{height: "100%", width: "35%", float: "left"}}/>
+                    <div style={{height: "100%", width: "3px", background: "#22222244", float: "left"}}/>
+                    </>
                 )}
                 {children}
             </div>
