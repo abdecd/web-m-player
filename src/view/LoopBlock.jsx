@@ -37,7 +37,7 @@ function BasicLoopBlock({style}) {
 
     //订阅歌曲变化和filterList变化 改currentIndex
     useEffect(() => {
-        var refreshFn = () => setCurrentIndex(filterList.findIndex(elem => WebMusicList.getIdOrSrc(elem)==WebMusicList.getIdOrSrc(webMusicManager)));
+        var refreshFn = () => setCurrentIndex(filterList.findIndex(elem => WebMusicList.isEqual(elem,webMusicManager.musicObj)));
         refreshFn();
         webMusicManager.handler.addEventListener("loadstart",refreshFn);
         return () => webMusicManager.handler.removeEventListener("loadStart",refreshFn);
