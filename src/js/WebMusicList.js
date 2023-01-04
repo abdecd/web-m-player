@@ -83,7 +83,7 @@ class WebMusicList extends BasicWebMusicList {
         return obj;
     }
     confirmIndex(obj) {
-        var newIndex = this.arr.findIndex(elem => this.isEqual(elem,obj));
+        var newIndex = this.arr.findIndex(elem => WebMusicList.isEqual(elem,obj));
         if (newIndex!=-1) this.index = newIndex;
         if (this.storage) webMusicListStorage.set(this.name,this);
     }
