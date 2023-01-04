@@ -119,7 +119,7 @@ var webMusicManager = {
         var loadCnt=0;
         while (++loadCnt<=3 && !await this.load(obj.name, obj.src, obj.id));
         if (loadCnt>3) showTips.info("歌曲加载失败。");
-        return loadCnt<=3 ? {...obj} : null;
+        return loadCnt<=3 ? {name: obj.name, src: obj.src, id: obj.id} : null;
     },
     async next() {
         var obj = await this.loadMusicObj(this.aheadList.shift() || this.list.next());

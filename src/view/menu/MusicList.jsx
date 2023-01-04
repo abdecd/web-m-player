@@ -12,23 +12,23 @@ export default function MusicList({listData,loading=false,style,innerRef}) {
     var undoSpecificListFn = undoFnContainer.value;
 
     var playMusic = useCallback(async (ev,elem) => {
-        if (await webMusicManager.nextByObj({name: elem.name, src: elem.url, id: elem.id})) webMusicManager.play();
+        if (await webMusicManager.nextByObj(elem)) webMusicManager.play();
     },[]);
 
     var addAheadMusic = useCallback((ev,elem) => {
-        webMusicManager.pushAhead(elem.name,elem.url,elem.id);
+        webMusicManager.pushAhead(elem.name,elem.src,elem.id);
         showTips.info("已加入“即将播放”。",() => webMusicManager.aheadList.pop());
     },[]);
 
     var addAllToAheadList = useCallback(() => {
-        var filterList = listData.map(elem => ({name: elem.name, subName: elem.author, key: elem.id||elem.url, /*私货*/id: elem.id, url: elem.url}));
+        var filterList = listData.map(elem => ({name: elem.name, id: elem.id, src: elem.url}));
         var oldList = webMusicManager.aheadList;
         webMusicManager.aheadList = webMusicManager.aheadList.concat(filterList);
         showTips.info(filterList.length+"项已加入“即将播放”。",() => webMusicManager.aheadList = oldList);
     },[listData]);
 
     var addMusic = useCallback((ev,elem) => {
-        switch (webMusicManager.push(elem.name, elem.url, elem.id)) {
+        switch (webMusicManager.push(elem.name, elem.src, elem.id)) {
             case webMusicManager.PUSH_STATE.SUCCESS:
                 showTips.info("添加至播放列表成功。",undoSpecificListFn);
                 return webMusicManager.PUSH_STATE.SUCCESS;
@@ -58,7 +58,7 @@ export default function MusicList({listData,loading=false,style,innerRef}) {
             <BasicList innerRef={innerRef} style={style}>
             {
                 listData
-                .map(elem => ({name: elem.name, subName: elem.author, key: elem.id||elem.url, /*私货*/id: elem.id, url: elem.url}))
+                .map(elem => ({name: elem.name, subName: elem.author, key: elem.id||elem.url, /*私货*/id: elem.id, src: elem.url}))
                 .map(elem => (
                     <ListItem key={elem.key}>
                         <LeftItem name={elem.name} subName={elem.subName} clickFn={ev=>playMusic(ev,elem)}></LeftItem>
