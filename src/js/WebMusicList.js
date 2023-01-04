@@ -54,6 +54,13 @@ class WebMusicList extends BasicWebMusicList {
 
     static isValidItem(obj) { return obj && obj.name && (obj.src || obj.id); }
     static getIdOrSrc(elem) { return elem.id || elem.src; }
+    static isEqual(a,b) {
+        if (!a && !b) return true;
+        if (!a || !b) return false;
+        if (a.name!=b.name) return false;
+        if (this.getIdOrSrc(a)!=this.getIdOrSrc(b)) return false;
+        return true;
+    }
 
     setStorage(boolValue) {
         this.storage = boolValue;
@@ -61,19 +68,24 @@ class WebMusicList extends BasicWebMusicList {
     }
 
     next() {
-        var obj=super.next();
+        var obj = super.next();
         if (this.storage) webMusicListStorage.set(this.name,this);
         return obj;
     }
     before() {
-        var obj=super.before();
+        var obj = super.before();
         if (this.storage) webMusicListStorage.set(this.name,this);
         return obj;
     }
     nextRandom() {
-        var obj=super.nextRandom();
+        var obj = super.nextRandom();
         if (this.storage) webMusicListStorage.set(this.name,this);
         return obj;
+    }
+    confirmIndex(obj) {
+        var newIndex = this.arr.findIndex(elem => this.isEqual(elem,obj));
+        if (newIndex!=-1) this.index = newIndex;
+        if (this.storage) webMusicListStorage.set(this.name,this);
     }
     
     push(obj,silent=false) {

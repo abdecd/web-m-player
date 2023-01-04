@@ -28,7 +28,8 @@ export default React.memo(function MusicBar({toggleLoopBlockShown}) {
             setLoading(true);
         };
         setTitle(webMusicManager.name);
-        return webMusicManager.addNameChangeListener(refreshTitle);
+        webMusicManager.addNameChangeListener(refreshTitle);
+        return () => webMusicManager.removeNameChangeListener(refreshTitle);
     },[]);
 
     //订阅加载状态
@@ -60,7 +61,7 @@ export default React.memo(function MusicBar({toggleLoopBlockShown}) {
     var lFn = useCallback(() => webMusicManager.setCurrentTime(webMusicManager.getCurrentTime()-10),[]);
     var rFn = useCallback(() => webMusicManager.setCurrentTime(webMusicManager.getCurrentTime()+10),[]);
     var lDblFn = useCallback(async () => {
-        if (webMusicManager.list.length) {
+        if (webMusicManager.previousList.length>1) {
             await webMusicManager.before();
             webMusicManager.play();
         } else {
@@ -68,7 +69,7 @@ export default React.memo(function MusicBar({toggleLoopBlockShown}) {
         }
     },[]);
     var rDblFn = useCallback(async () => {
-        if (webMusicManager.list.length) {
+        if (webMusicManager.list.length || webMusicManager.aheadList.length) {
             await webMusicManager.nextByLoopOrder();
             webMusicManager.play();
         } else {
@@ -116,8 +117,8 @@ export default React.memo(function MusicBar({toggleLoopBlockShown}) {
         } else {
             if (!title) return;
             noLyricLocation.current.L = location.pathname+location.search;
-            if (!webMusicManager.id) webMusicManager.id = await getMusicId(webMusicManager.name).catch(e => {showTips.info("获取歌曲对应id失败，无法获取歌词。"); throw e});
-            navigate("/lyric/"+webMusicManager.id);
+            if (!webMusicManager.id) webMusicManager.musicObj.id = await getMusicId(webMusicManager.name).catch(e => {showTips.info("获取歌曲对应id失败，无法获取歌词。"); throw e});
+            navigate("/lyric/"+webMusicManager.musicObj.id);
         }
     },[title,location]);
 

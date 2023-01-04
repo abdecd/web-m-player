@@ -5,11 +5,16 @@ import WebMusicList from "./WebMusicList";
 import webMusicListStorage from "./webMusicListStorage";
 
 var webMusicManager = {
-    name: "",
-    id: "",
+    get name() { return this.musicObj.name || ""; },
+    get id() { return this.musicObj.id || ""; },
+    //handler.src受到赋值时会强制转为链接
+    get src() {return (this.handler.src==window.location.origin+"/") ? "" : this.handler.src},
+    musicObj: {},
+
     handler: new Audio(),
     list: new WebMusicList(),
     aheadList: [],
+    previousList: [],
 
     get PUSH_STATE() {return WebMusicList.PUSH_STATE},
 
@@ -19,17 +24,13 @@ var webMusicManager = {
     listChangeSub: new Subscription(),
     addListChangeListener(fn) {return this.listChangeSub.subscribe(fn)},
     removeListChangeListener(fn) {this.listChangeSub.unsubscribe(fn)},
-    
-    //handler.src受到赋值时会强制转为链接
-    get src() {return (this.handler.src==window.location.origin+"/") ? "" : this.handler.src},
 
     //name, (src or id)
     async load(name,src,id) {
         if (!WebMusicList.isValidItem({name,src,id})) return false;
 
-        this.name = name;
+        this.musicObj = {name,src,id};
         this.nameChangeSub.publish(name);
-        this.id = id ?? "";
         this.handler.src = src ?? await musicAjax.fetchSrc(id).catch(e => "") ?? "";
 
         return new Promise(resolve => {
@@ -114,20 +115,33 @@ var webMusicManager = {
     },
 
     async loadMusicObj(obj) {
-        if (!obj) return false;
+        if (!obj) return null;
         var loadCnt=0;
         while (++loadCnt<=3 && !await this.load(obj.name, obj.src, obj.id));
         if (loadCnt>3) showTips.info("歌曲加载失败。");
-        return loadCnt<=3;
+        return loadCnt<=3 ? {...obj} : null;
     },
     async next() {
-        return this.loadMusicObj(this.aheadList.shift() || this.list.next());
+        var obj = await this.loadMusicObj(this.aheadList.shift() || this.list.next());
+        if (obj && !WebMusicList.isEqual(this.previousList.at(-1),obj)) this.previousList.push(obj);
+        return !!obj;
     },
     async before() {
-        return this.loadMusicObj(this.list.before());
+        if (this.previousList.length>1) this.previousList.pop();
+        var state = !!await this.loadMusicObj(this.previousList.at(-1));
+        if (state) this.list.confirmIndex(this.previousList.at(-1));
+        return state;
     },
     async nextRandom() {
-        return this.loadMusicObj(this.aheadList.shift() || this.list.nextRandom());
+        var obj = await this.loadMusicObj(this.aheadList.shift() || this.list.nextRandom());
+        if (obj && !WebMusicList.isEqual(this.previousList.at(-1),obj)) this.previousList.push(obj);
+        return !!obj;
+    },
+    async nextByObj(needLoadObj) {
+        var obj = await this.loadMusicObj(needLoadObj);
+        if (obj && !WebMusicList.isEqual(this.previousList.at(-1),obj)) this.previousList.push(obj);
+        if (obj) this.list.confirmIndex(needLoadObj);
+        return !!obj;
     },
 
     async nextByLoopOrder() {

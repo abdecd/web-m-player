@@ -46,8 +46,8 @@ export default function Lyric() {
     useEffect(() => {
         var refreshId = async () => {
             if (!webMusicManager.name) return;
-            if (!webMusicManager.id) webMusicManager.id = await getMusicId(webMusicManager.name).catch(e => {showTips.info("获取歌曲对应id失败，无法获取歌词。"); throw e});
-            navigate("../lyric/"+webMusicManager.id);
+            if (!webMusicManager.id) webMusicManager.musicObj.id = await getMusicId(webMusicManager.name).catch(e => {showTips.info("获取歌曲对应id失败，无法获取歌词。"); throw e});
+            navigate("../lyric/"+webMusicManager.musicObj.id);
         };
         webMusicManager.handler.addEventListener("loadstart",refreshId);
         return () => webMusicManager.handler.removeEventListener("loadstart",refreshId);
