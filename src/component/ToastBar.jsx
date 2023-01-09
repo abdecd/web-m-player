@@ -8,19 +8,21 @@ import showTips from '../js/showTips';
 export default React.memo(function ToastBar() {
     const [msg, setMsg] = useState("");
     const [open, setOpen] = useState(false);
+    const openReferrer = useRef(open);
+    useEffect(() => { openReferrer.current = open; },[open]);
 
     var undoFn = useRef(null);
 
     useEffect(() => showTips.changeSub.subscribe((msg,fn) => {
         undoFn.current = fn ?? null;
-        if (open) {
+        if (openReferrer.current) {
             setOpen(false);
             setTimeout(() => { setMsg(msg); setOpen(true); },200);
         } else {
             setOpen(true);
             setMsg(msg);
         }
-    }),[open]);// todo: 减少重绑定
+    }),[]);
 
     return (
         <Snackbar

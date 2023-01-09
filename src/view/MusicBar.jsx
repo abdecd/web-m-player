@@ -8,7 +8,7 @@ import style from './MusicBar.module.css'
 import bindLongClick from '../js/click/bindLongClick'
 import musicAjax from '../js/nativeBridge/musicAjax'
 import showTips from '../js/showTips'
-import LoadingBlock from './LoadingBlock'
+import LoadingBlock from '../component/LoadingBlock'
 import undoFnContainer from '../js/reactHooks/supportUndoMusicList'
 
 export default React.memo(function MusicBar({toggleLoopBlockShown}) {
@@ -107,7 +107,7 @@ export default React.memo(function MusicBar({toggleLoopBlockShown}) {
             },
             () => toggleLoopBlockShown()
         );
-    },[loopBtnStr,toggleLoopBlockShown]);
+    },[loopBtnStr,toggleLoopBlockShown]);//todo: 重绑定
 
     var noLyricLocation = useRef({L: "/"});
     var getMusicId = useCallback(async musicName => (await musicAjax.fetchSearch(musicName))?.[0].id,[]);

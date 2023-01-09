@@ -22,7 +22,7 @@ function useScrollRecorder(name,elemRef,canScroll=true) {
     // 记录滚动位置
     useEffect(() => {
         var handler = ev => scrollTop.current = ev.target.scrollTop;
-        elemRef.current?.addEventListener("scroll",handler);
+        elemRef.current?.addEventListener("scroll",handler,{passive: true});
         return () => elemRef.current?.removeEventListener("scroll",handler);
     },[canScroll]);
 }

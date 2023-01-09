@@ -12,12 +12,10 @@ var maskCss = {
 };
 
 var backgroundImgCss = {
-    width: "auto",
-    minWidth: "100vw",
+    width: "100vw",
     height: "100vh",
-    position: "relative",
-    left: "50%",
-    transform: "translateX(-50%)"
+    objectFit: "cover",
+    objectPosition: "center center"
 };
 
 export default React.memo(function BackgroundBlock({ style, type: prop_type, src: prop_src }) {

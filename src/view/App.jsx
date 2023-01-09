@@ -4,7 +4,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 import BackgroundBlock from '../component/BackgroundBlock';
 import LoopBlock, { BasicLoopBlock } from './LoopBlock';
-import MusicBar from '../component/MusicBar'
+import MusicBar from './MusicBar'
 import ToastBar from '../component/ToastBar';
 import settings, { initSettings } from '../js/settings';
 import undoFnContainer, { useUndoableMusicList } from '../js/reactHooks/supportUndoMusicList';
@@ -57,7 +57,7 @@ function useWidthWatcher() {
             clearTimeout(td);
             td = setTimeout(() => setScreenWidth(window.innerWidth),300);
         };
-        window.addEventListener("resize",fn);
+        window.addEventListener("resize",fn,{passive: true});
         return () => window.removeEventListener("resize",fn);
     },[]);
 
