@@ -21,7 +21,11 @@ function useScrollRecorder(name,elemRef,canScroll=true) {
 
     // 记录滚动位置
     useEffect(() => {
-        var handler = ev => scrollTop.current = ev.target.scrollTop;
+        var td;
+        var handler = ev => {
+            clearTimeout(td);
+            td = setTimeout(() => scrollTop.current = ev.target.scrollTop, 200);
+        };
         elemRef.current?.addEventListener("scroll",handler,{passive: true});
         return () => elemRef.current?.removeEventListener("scroll",handler);
     },[canScroll]);
