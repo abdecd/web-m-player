@@ -8,14 +8,14 @@ import showTips from '../js/showTips';
 export default React.memo(function ToastBar() {
     const [msg, setMsg] = useState("");
     const [open, setOpen] = useState(false);
-    const openReferrer = useRef(open);
-    useEffect(() => { openReferrer.current = open; },[open]);
 
     var undoFn = useRef(null);
-
+    const openReferrer = useRef(open);
+    useEffect(() => { openReferrer.current = open; },[open]);
     useEffect(() => showTips.changeSub.subscribe((msg,fn) => {
         undoFn.current = fn ?? null;
-        if (openReferrer.current) {
+        var open = openReferrer.current;
+        if (open) {
             setOpen(false);
             setTimeout(() => { setMsg(msg); setOpen(true); },200);
         } else {

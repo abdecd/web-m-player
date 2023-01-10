@@ -87,10 +87,13 @@ export default React.memo(function MusicBar({toggleLoopBlockShown}) {
     },[]);
 
     var loopBtn = useRef();
+    const loopBtnStrReferrer = useRef(loopBtnStr);
+    useEffect(() => { loopBtnStrReferrer.current = loopBtnStr; },[loopBtnStr]);
     useEffect(() => {
         bindLongClick(
             loopBtn.current,
             () => {
+                var loopBtnStr = loopBtnStrReferrer.current;
                 if (loopBtnStr=="⇌") {
                     webMusicManager.loopMode = "repeat";
                     setLoopBtnStr("↸");
@@ -105,42 +108,43 @@ export default React.memo(function MusicBar({toggleLoopBlockShown}) {
                     showTips.info("列表循环");
                 }
             },
-            () => toggleLoopBlockShown()
+            toggleLoopBlockShown
         );
-    },[loopBtnStr,toggleLoopBlockShown]);//todo: 重绑定
+    },[toggleLoopBlockShown]);
 
-    var noLyricLocation = useRef({L: "/"});
+    var noLyricLocation = useRef("/");
     var getMusicId = useCallback(async musicName => (await musicAjax.fetchSearch(musicName))?.[0].id,[]);
-    var toggleLyric = useCallback(async () => {
-        if (location.pathname.startsWith("/lyric")) {
-            navigate(noLyricLocation.current.L);
-        } else {
-            if (!title) return;
-            noLyricLocation.current.L = location.pathname+location.search;
-            if (!webMusicManager.id) webMusicManager.musicObj.id = await getMusicId(webMusicManager.name).catch(e => {showTips.info("获取歌曲对应id失败，无法获取歌词。"); throw e});
-            navigate("/lyric/"+webMusicManager.musicObj.id);
-        }
-    },[title,location]);
-
     var undoSpecificListFn = undoFnContainer.value;
-
     var titleBlock = useRef();
     useEffect(() => {
+        var toggleLyric = async () => {
+            if (location.pathname.startsWith("/lyric")) {
+                navigate(noLyricLocation.current);
+            } else {
+                if (!title) return;
+                noLyricLocation.current = location.pathname+location.search;
+                if (!webMusicManager.id) webMusicManager.musicObj.id = await getMusicId(webMusicManager.name).catch(e => {showTips.info("获取歌曲对应id失败，无法获取歌词。"); throw e});
+                navigate("/lyric/"+webMusicManager.musicObj.id);
+            }
+        };
+
+        var addCurrentMusic = () => {
+            switch (webMusicManager.push(webMusicManager.name, webMusicManager.src, webMusicManager.id)) {
+                case webMusicManager.PUSH_STATE.SUCCESS:
+                    return showTips.info("添加至播放列表成功。",undoSpecificListFn);
+                case webMusicManager.PUSH_STATE.EXISTS:
+                    return showTips.info("该项目已存在。");
+                case webMusicManager.PUSH_STATE.FAILED:
+                    return showTips.info("添加至播放列表失败。");
+            }
+        };
+
         bindLongClick(
             titleBlock.current,
             toggleLyric,
-            () => {
-                switch (webMusicManager.push(webMusicManager.name, webMusicManager.handler.src, webMusicManager.id)) {
-                    case webMusicManager.PUSH_STATE.SUCCESS:
-                        return showTips.info("添加至播放列表成功。",undoSpecificListFn);
-                    case webMusicManager.PUSH_STATE.EXISTS:
-                        return showTips.info("该项目已存在。");
-                    case webMusicManager.PUSH_STATE.FAILED:
-                        return showTips.info("添加至播放列表失败。");
-                }
-            }
+            addCurrentMusic
         )
-    },[toggleLyric]);
+    },[title,location]);
 
     return (
         <div className={style.MusicBar}>

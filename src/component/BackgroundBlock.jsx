@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import settings from '../js/settings';
 import LoadingBlock from './LoadingBlock'
 
 var maskCss = {
