@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useDeferredValue } from 'react'
 import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import PinyinEngine from 'pinyin-engine';
 
 export default function Filter({listData,setFilterList,style,inputStyle}) {
     const [searchWord, setSearchWord] = useState("");
+    const deferredSearchWord = useDeferredValue(searchWord);
     const [pinyinDir, setPinyinDir] = useState({query(){return []}});
     const initLoad = useRef({ "setFilterList": false });
 
@@ -14,8 +15,8 @@ export default function Filter({listData,setFilterList,style,inputStyle}) {
 
     useEffect(() => {
         if (!initLoad.current["setFilterList"]) { initLoad.current["setFilterList"] = true; return; }
-        setFilterList(pinyinDir.query(searchWord));
-    },[pinyinDir,searchWord]);
+        setFilterList(pinyinDir.query(deferredSearchWord));
+    },[pinyinDir,deferredSearchWord]);
 
     return (
         <form style={{marginLeft: "10px", marginRight: "10px", ...style}} onSubmit={ev => { ev.preventDefault(); ev.target.childNodes[0].querySelector("input").blur(); }}>

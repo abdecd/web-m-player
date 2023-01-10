@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
@@ -22,6 +22,7 @@ export default function App({children}) {
     const MIN_PC_WIDTH = 600;
 
     const [loopBlockShown, setLoopBlockShown] = useState(false);
+    const toggleLoopBlockShown = useCallback(() => setLoopBlockShown(shown => !shown),[]);
     undoFnContainer.value = useUndoableMusicList();
 
     return (
@@ -43,7 +44,7 @@ export default function App({children}) {
             <ToastBar/>
             
             {/* height: 60px */}
-            <MusicBar toggleLoopBlockShown={() => setLoopBlockShown(!loopBlockShown)}/>
+            <MusicBar toggleLoopBlockShown={toggleLoopBlockShown}/>
         </ThemeProvider>
     )
 }
