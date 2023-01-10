@@ -10,6 +10,7 @@ import musicAjax from '../js/nativeBridge/musicAjax'
 import showTips from '../js/showTips'
 import LoadingBlock from '../component/LoadingBlock'
 import undoFnContainer from '../js/reactHooks/supportUndoMusicList'
+import useStateReferrer from '../js/reactHooks/useStateReferrer'
 
 export default React.memo(function MusicBar({toggleLoopBlockShown}) {
     const [title, setTitle] = useState("");
@@ -19,7 +20,6 @@ export default React.memo(function MusicBar({toggleLoopBlockShown}) {
     const [loading, setLoading] = useState(true);
 
     var navigate = useNavigate();
-    var location = useLocation();
 
     //订阅title
     useEffect(() => {
@@ -87,8 +87,7 @@ export default React.memo(function MusicBar({toggleLoopBlockShown}) {
     },[]);
 
     var loopBtn = useRef();
-    const loopBtnStrReferrer = useRef(loopBtnStr);
-    useEffect(() => { loopBtnStrReferrer.current = loopBtnStr; },[loopBtnStr]);
+    const loopBtnStrReferrer = useStateReferrer(loopBtnStr);
     useEffect(() => {
         bindLongClick(
             loopBtn.current,
@@ -113,14 +112,18 @@ export default React.memo(function MusicBar({toggleLoopBlockShown}) {
     },[toggleLoopBlockShown]);
 
     var noLyricLocation = useRef("/");
-    var getMusicId = useCallback(async musicName => (await musicAjax.fetchSearch(musicName))?.[0].id,[]);
     var undoSpecificListFn = undoFnContainer.value;
+    var titleReferrer = useStateReferrer(title);
+    var locationReferrer = useStateReferrer(useLocation());
     var titleBlock = useRef();
     useEffect(() => {
+        var getMusicId = async musicName => (await musicAjax.fetchSearch(musicName))?.[0].id;
         var toggleLyric = async () => {
+            var location = locationReferrer.current;
             if (location.pathname.startsWith("/lyric")) {
                 navigate(noLyricLocation.current);
             } else {
+                var title = titleReferrer.current;
                 if (!title) return;
                 noLyricLocation.current = location.pathname+location.search;
                 if (!webMusicManager.id) webMusicManager.musicObj.id = await getMusicId(webMusicManager.name).catch(e => {showTips.info("获取歌曲对应id失败，无法获取歌词。"); throw e});
@@ -144,7 +147,7 @@ export default React.memo(function MusicBar({toggleLoopBlockShown}) {
             toggleLyric,
             addCurrentMusic
         )
-    },[title,location]);
+    },[]);
 
     return (
         <div className={style.MusicBar}>

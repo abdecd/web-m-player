@@ -2,6 +2,7 @@ import Button from '@mui/material/Button';
 import Fade from '@mui/material/Fade';
 import Snackbar from '@mui/material/Snackbar';
 import React, { useEffect, useRef, useState } from 'react'
+import useStateReferrer from '../js/reactHooks/useStateReferrer';
 
 import showTips from '../js/showTips';
 
@@ -10,8 +11,7 @@ export default React.memo(function ToastBar() {
     const [open, setOpen] = useState(false);
 
     var undoFn = useRef(null);
-    const openReferrer = useRef(open);
-    useEffect(() => { openReferrer.current = open; },[open]);
+    const openReferrer = useStateReferrer(open);
     useEffect(() => showTips.changeSub.subscribe((msg,fn) => {
         undoFn.current = fn ?? null;
         var open = openReferrer.current;
