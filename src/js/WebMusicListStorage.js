@@ -21,7 +21,7 @@ var webMusicListStorage = {
         // data: {index, arr}
         if (!this.names.includes(name)) {
             this.names.push(name);
-            this.changeSub.publish(this.names.slice(0));
+            this.namesChangeSub.publish(this.names.slice(0));
             localStorage.setItem("wmlsNames",JSON.stringify(this.names));
         }
         localStorage.setItem(`wmls-${name}`,JSON.stringify({index: data.index, arr: data.arr}));
@@ -29,7 +29,7 @@ var webMusicListStorage = {
     remove(name) {
         if (this.names.indexOf(name)==-1) return;
         this.names.splice(this.names.indexOf(name),1);
-        this.changeSub.publish(this.names.slice(0));
+        this.namesChangeSub.publish(this.names.slice(0));
         localStorage.setItem("wmlsNames",JSON.stringify(this.names));
         localStorage.removeItem(`wmls-${name}`);
     },
@@ -54,7 +54,7 @@ var webMusicListStorage = {
         this.names[oldNameIndex] = this.names[newNameIndex];
         this.names[newNameIndex] = oldName;
 
-        this.changeSub.publish(this.names.slice(0));
+        this.namesChangeSub.publish(this.names.slice(0));
         localStorage.setItem("wmlsNames",JSON.stringify(this.names));
     },
     setCurrentNameIndex(index) {
