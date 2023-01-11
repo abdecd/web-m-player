@@ -2,12 +2,16 @@ import Subscription from "./Subscription";
 
 var webMusicListStorage = {
     names: [],
-    changeSub: new Subscription(),// 回调参数: names
+    currentNameIndex: 0,
+    namesChangeSub: new Subscription(),// 回调参数: names
+
+    addNamesChangeListener(fn) { return this.namesChangeSub.subscribe(fn); },//不包括currentNameIndex
+    removeNamesChangeListener(fn) { this.namesChangeSub.unsubscribe(fn); },
 
     init() {
         if (!window.localStorage) return false;
         this.names = JSON.parse(localStorage.getItem("wmlsNames")) || [];
-        this.changeSub.publish(this.names.slice(0));
+        this.currentNameIndex = localStorage.getItem("wmlsNameIndex") || 0;
         return true;
     },
     get(name) {
@@ -17,7 +21,7 @@ var webMusicListStorage = {
         // data: {index, arr}
         if (!this.names.includes(name)) {
             this.names.push(name);
-            this.changeSub.publish(this.names.slice(0));
+            this.namesChangeSub.bindedPublish();
             localStorage.setItem("wmlsNames",JSON.stringify(this.names));
         }
         localStorage.setItem(`wmls-${name}`,JSON.stringify({index: data.index, arr: data.arr}));
@@ -25,15 +29,14 @@ var webMusicListStorage = {
     remove(name) {
         if (this.names.indexOf(name)==-1) return;
         this.names.splice(this.names.indexOf(name),1);
+        this.namesChangeSub.bindedPublish();
         localStorage.setItem("wmlsNames",JSON.stringify(this.names));
         localStorage.removeItem(`wmls-${name}`);
-        this.changeSub.publish(this.names.slice(0));
     },
     removeAll() {
         for (var name of this.names) localStorage.removeItem(`wmls-${name}`);
         this.names = [];
         localStorage.setItem("wmlsNames",JSON.stringify(this.names));
-        this.changeSub.publish(this.names.slice(0));
     },
     loadAll() {
         return this.names.map(name => {
@@ -51,13 +54,21 @@ var webMusicListStorage = {
         this.names[oldNameIndex] = this.names[newNameIndex];
         this.names[newNameIndex] = oldName;
 
-        this.changeSub.publish(this.names.slice(0));
+        this.namesChangeSub.bindedPublish();
         localStorage.setItem("wmlsNames",JSON.stringify(this.names));
     },
-
-    addChangeListener(fn) { return this.changeSub.subscribe(fn); },
-    removeChangeListener(fn) { this.changeSub.unsubscribe(fn); },
+    setCurrentNameIndex(index) {
+        if (index<0 || index>=this.names.length) return false;
+        this.currentNameIndex = index;
+        localStorage.setItem("wmlsNameIndex",index);
+        return true;
+    }
 };
+webMusicListStorage.namesChangeSub.bindProperty(
+    webMusicListStorage,
+    "names",
+    names => names.slice(0)
+);
 
 webMusicListStorage.init();
 

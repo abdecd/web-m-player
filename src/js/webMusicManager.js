@@ -21,7 +21,7 @@ var webMusicManager = {
     nameChangeSub: new Subscription(),
     addNameChangeListener(fn) {return this.nameChangeSub.subscribe(fn)},
     removeNameChangeListener(fn) {this.nameChangeSub.unsubscribe(fn)},
-    listChangeSub: new Subscription(),
+    listChangeSub: new Subscription(),//回调无参数
     addListChangeListener(fn) {return this.listChangeSub.subscribe(fn)},
     removeListChangeListener(fn) {this.listChangeSub.unsubscribe(fn)},
 
@@ -156,14 +156,17 @@ var webMusicManager = {
         return false;
     },
 };
+webMusicManager.listChangeSub.bindProperty(
+    webMusicManager,
+    "list",
+    () => null
+);
 
 if (webMusicListStorage.names.length==0) {
     webMusicManager.list = new WebMusicList(null,null,true);
-    webMusicManager.listChangeSub.publish();
 } else  {
-    var name = webMusicListStorage.names[0];
+    var name = webMusicListStorage.names[webMusicListStorage.currentNameIndex];
     webMusicManager.list = new WebMusicList(name,webMusicListStorage.get(name),true);
-    webMusicManager.listChangeSub.publish();
     webMusicManager.next();// load to the MusicBar
 }
 

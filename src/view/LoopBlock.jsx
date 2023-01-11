@@ -34,8 +34,8 @@ function BasicLoopBlock({style}) {
     useEffect(() => {
         var refreshFn = names => setNameList(names.map(elem => ({name: elem, key: elem})));
         refreshFn(webMusicListStorage.names);
-        webMusicListStorage.addChangeListener(refreshFn);
-        return () => webMusicListStorage.removeChangeListener(refreshFn);
+        webMusicListStorage.addNamesChangeListener(refreshFn);
+        return () => webMusicListStorage.removeNamesChangeListener(refreshFn);
     },[]);
 
     //订阅歌曲变化和filterList变化 改currentIndex
@@ -48,13 +48,17 @@ function BasicLoopBlock({style}) {
 
     //订阅list和names的改变 改currentListIndex
     useEffect(() => {
-        var refreshFn = () => setCurrentListIndex(webMusicListStorage.names.indexOf(webMusicManager.list?.name));
+        var refreshFn = () => {
+            var index = webMusicListStorage.names.indexOf(webMusicManager.list?.name);
+            setCurrentListIndex(index);
+            webMusicListStorage.setCurrentNameIndex(index);//todo: 可能有更好的方式
+        };
         refreshFn();
         webMusicManager.addListChangeListener(refreshFn);
-        webMusicListStorage.addChangeListener(refreshFn);
+        webMusicListStorage.addNamesChangeListener(refreshFn);
         return () => {
             webMusicManager.removeListChangeListener(refreshFn);
-            webMusicListStorage.removeChangeListener(refreshFn);
+            webMusicListStorage.removeNamesChangeListener(refreshFn);
         };
     },[]);
 
@@ -109,8 +113,11 @@ function BasicLoopBlock({style}) {
     },[]);
 
     var selectList = useCallback((ev,elem) => {
+        if (webMusicManager.list.name==elem.name) {
+            setManageListState(false);
+            return;
+        }
         webMusicManager.list = new WebMusicList(elem.name,webMusicListStorage.get(elem.name),true);
-        webMusicManager.listChangeSub.publish();
         setManageListState(false);
     },[]);
 
@@ -129,7 +136,6 @@ function BasicLoopBlock({style}) {
                 var name = webMusicListStorage.names[0];
                 webMusicManager.list = new WebMusicList(name,webMusicListStorage.get(name),true);
             }
-            webMusicManager.listChangeSub.publish();
         }
         showTips.info("删除列表成功。");
     },[]);
@@ -138,7 +144,6 @@ function BasicLoopBlock({style}) {
         if (!showTips.confirm("该操作不可撤销。是否继续？")) return;
         webMusicListStorage.removeAll();
         webMusicManager.list = new WebMusicList(null,null,true);
-        webMusicManager.listChangeSub.publish();
         showTips.info("所有列表已删除。");
     },[]);
 

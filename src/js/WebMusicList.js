@@ -40,7 +40,7 @@ class WebMusicList extends BasicWebMusicList {
         super();
         this.name = name || "defaultList";
         this.storage = storage;
-        if (data?.index) this.index = data.index-1;// then use next() to load
+        if (data?.index) this.index = data.index-1;// then use next() to load; todo: 反复载入列表会偏移
         if (data?.arr) for (let i=0,L=data.arr.length;i<L;i++) if (WebMusicList.isValidItem(data.arr[i])) this.arr.push(data.arr[i]);
         if (this.storage) webMusicListStorage.set(this.name,this);
     }

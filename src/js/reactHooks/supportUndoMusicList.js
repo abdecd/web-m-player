@@ -26,7 +26,6 @@ function useUndoableMusicList() {
         var oldList = oldSpecificList.current.cloneWithNoStorage();
         oldList.setStorage(true);
         webMusicManager.list = oldList;
-        webMusicManager.listChangeSub.publish();
     },[]);
 
     return undoSpecificListFn;
