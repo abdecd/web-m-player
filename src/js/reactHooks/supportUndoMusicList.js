@@ -6,6 +6,11 @@ function useUndoableMusicList() {
     const specificList = useRef(new WebMusicList());
     const oldSpecificList = useRef(new WebMusicList());
 
+    //初始化
+    useEffect(() => {
+        oldSpecificList.current = specificList.current = webMusicManager.list.cloneWithNoStorage();
+    },[]);
+
     //订阅specificList
     useEffect(() => {
         var refreshFn = () => {
@@ -13,10 +18,11 @@ function useUndoableMusicList() {
             var newCloneList = webMusicManager.list.cloneWithNoStorage();
             specificList.current = newCloneList;
         };
-        return webMusicManager.addListChangeListener(() => {
+        var unsubscribe = webMusicManager.addListChangeListener(() => {
             refreshFn();
             webMusicManager.list.addChangeListener(refreshFn);
         });
+        return unsubscribe;
     },[]);
 
     //撤销specificList函数
