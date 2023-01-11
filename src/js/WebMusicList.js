@@ -30,7 +30,7 @@ class WebMusicList extends BasicWebMusicList {
     static _PUSH_STATE = Object.freeze({SUCCESS: Symbol(), EXISTS: Symbol(), FAILED: Symbol()});
     static get PUSH_STATE() { return WebMusicList._PUSH_STATE; }
 
-    addChangeListener(fn) { return this.changeSub.subscribe(fn); }
+    addChangeListener(fn) { return this.changeSub.subscribe(fn); }//arr内容改变时
     removeChangeListener(fn) { this.changeSub.unsubscribe(fn); }
     
     get length() { return this.arr.length; }

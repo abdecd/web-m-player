@@ -42,13 +42,13 @@ export default function Lyric() {
     },[musicId]);
 
     //订阅歌曲变化
-    var getMusicId = useCallback(async musicName => (await musicAjax.fetchSearch(musicName))?.[0].id,[]);
     useEffect(() => {
+        var getMusicId = async musicName => (await musicAjax.fetchSearch(musicName))?.[0].id;
         var refreshId = async () => {
             if (!webMusicManager.name) return;
             if (!webMusicManager.id) webMusicManager.musicObj.id = await getMusicId(webMusicManager.name).catch(e => {showTips.info("获取歌曲对应id失败，无法获取歌词。"); throw e});
             navigate("../lyric/"+webMusicManager.musicObj.id);
-        };
+        };//仅变化时执行
         webMusicManager.handler.addEventListener("loadstart",refreshId);
         return () => webMusicManager.handler.removeEventListener("loadstart",refreshId);
     },[]);

@@ -1,15 +1,9 @@
 import { useRef, useEffect, useCallback } from 'react';
-import WebMusicList from '../WebMusicList';
 import webMusicManager from '../webMusicManager';
 
 function useUndoableMusicList() {
-    const specificList = useRef(new WebMusicList());
-    const oldSpecificList = useRef(new WebMusicList());
-
-    //初始化
-    useEffect(() => {
-        oldSpecificList.current = specificList.current = webMusicManager.list.cloneWithNoStorage();
-    },[]);
+    const specificList = useRef(webMusicManager.list.cloneWithNoStorage());
+    const oldSpecificList = useRef(webMusicManager.list.cloneWithNoStorage());
 
     //订阅specificList
     useEffect(() => {
@@ -18,11 +12,13 @@ function useUndoableMusicList() {
             var newCloneList = webMusicManager.list.cloneWithNoStorage();
             specificList.current = newCloneList;
         };
-        var unsubscribe = webMusicManager.addListChangeListener(() => {
+        var listChangeHandler = () => {
             refreshFn();
             webMusicManager.list.addChangeListener(refreshFn);
-        });
-        return unsubscribe;
+        };
+        listChangeHandler();
+        webMusicManager.addListChangeListener(listChangeHandler);
+        return () => webMusicManager.removeListChangeListener(listChangeHandler);
     },[]);
 
     //撤销specificList函数

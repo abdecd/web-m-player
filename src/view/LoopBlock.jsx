@@ -21,18 +21,21 @@ function BasicLoopBlock({style}) {
     //订阅specificList
     useEffect(() => {
         var refreshFn = () => setSpecificList(webMusicManager.list.cloneWithNoStorage().arr.map(elem => ({name: elem.name, key: elem.id||elem.src, /*私货*/id: elem.id, src: elem.src})));
-        refreshFn();
-        return webMusicManager.addListChangeListener(() => {
+        var listChangeHandler = () => {
             refreshFn();
             webMusicManager.list.addChangeListener(refreshFn);
-        });
+        };
+        listChangeHandler();
+        webMusicManager.addListChangeListener(listChangeHandler);
+        return () => webMusicManager.removeListChangeListener(listChangeHandler);
     },[]);
 
     //订阅nameList
     useEffect(() => {
         var refreshFn = names => setNameList(names.map(elem => ({name: elem, key: elem})));
         refreshFn(webMusicListStorage.names);
-        return webMusicListStorage.addChangeListener(refreshFn);
+        webMusicListStorage.addChangeListener(refreshFn);
+        return () => webMusicListStorage.removeChangeListener(refreshFn);
     },[]);
 
     //订阅歌曲变化和filterList变化 改currentIndex
@@ -207,16 +210,12 @@ function BasicLoopBlock({style}) {
 var RenameSpecificListBar = React.memo(() => {
     const [specificListTempName, setSpecificListTempName] = useState("");
 
-    //订阅specificList
+    //订阅specificList.name
     useEffect(() => {
         var refreshFn = () => setSpecificListTempName(webMusicManager.list.name);
-        var topFn = () => {
-            refreshFn();
-            webMusicManager.list.addChangeListener(refreshFn);
-        };
-        topFn();
-        webMusicManager.addListChangeListener(topFn);
-        return () => webMusicManager.removeListChangeListener(topFn);
+        refreshFn();
+        webMusicManager.addListChangeListener(refreshFn);
+        return () => webMusicManager.removeListChangeListener(refreshFn);
     },[]);
 
     return (
