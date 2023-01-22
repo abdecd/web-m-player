@@ -10,7 +10,7 @@ import undoFnContainer from '../js/reactHooks/supportUndoMusicList'
 import ListItemFilter from '../component/ListItemFilter'
 import { LeftItem, RightBtn } from '../component/ListButton'
 
-function LoopBlockListnameList({listData,currentListIndex,setManageListState}) {
+function LoopBlockListnameList({shown,listData,currentListIndex,setManageListState}) {
     // listData: [{name,subName,...}]
     var selectList = useCallback((ev,elem) => {
         if (webMusicManager.list.name==elem.name) {
@@ -55,7 +55,7 @@ function LoopBlockListnameList({listData,currentListIndex,setManageListState}) {
         showTips.info("复制成功。");
     },[]);
 
-    return <BasicList>
+    return <BasicList style={{display: shown ? "block" : "none"}}>
         { listData.map((elem,index) => (
             <ListItem key={elem.key}>
                 <LeftItem
@@ -78,7 +78,7 @@ function LoopBlockListnameList({listData,currentListIndex,setManageListState}) {
     </BasicList>
 }
 
-function LoopBlockMusicList({listData,currentIndex,undoSpecificListFn}) {
+function LoopBlockMusicList({shown,listData,currentIndex,undoSpecificListFn}) {
     // listData: [{name,subName,...}]
     var selectAndPlayMusic = useCallback(async (ev,elem) => {
         var index = webMusicManager.list.search(elem.id || elem.src);
@@ -120,7 +120,7 @@ function LoopBlockMusicList({listData,currentIndex,undoSpecificListFn}) {
         showTips.info(`已成功删除${len}项。`,undoSpecificListFn);
     },[listData]);
 
-    return <BasicList>
+    return <BasicList style={{display: shown ? "block" : "none"}}>
         { listData.map((elem,index) => (
             <ListItem key={elem.key}>
                 <LeftItem
@@ -268,10 +268,8 @@ function BasicLoopBlock({style}) {
             {!manageListState && <ListItemFilter listData={specificList} setFilterList={setFilterList} inputStyle={{height: "1.6em"}}/>}
 
             <div style={{height: "calc(100% - 60px - 1.6em)"}}>
-                { manageListState
-                    ? <LoopBlockListnameList listData={nameList} currentListIndex={currentListIndex} setManageListState={setManageListState}/>
-                    : <LoopBlockMusicList listData={filterList} currentIndex={currentIndex} undoSpecificListFn={undoSpecificListFn}/>
-                }
+                <LoopBlockListnameList shown={manageListState} listData={nameList} currentListIndex={currentListIndex} setManageListState={setManageListState}/>
+                <LoopBlockMusicList shown={!manageListState} listData={filterList} currentIndex={currentIndex} undoSpecificListFn={undoSpecificListFn}/>
             </div>
         </div>
     )

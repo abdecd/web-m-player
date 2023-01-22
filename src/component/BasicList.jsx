@@ -5,6 +5,7 @@ export default function BasicList({children,style,innerRef}) {
     //listData <==> [{name,subName?,key},...]
     var theme = useTheme();
 
+    // todo: 长列表优化
     return (
         <div ref={innerRef} style={{height: "100%", textAlign: "center", overflow: "auto", ...style}}>
         {(!children.length) ? (
