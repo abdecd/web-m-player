@@ -10,5 +10,8 @@ export default defineConfig({
             '/api': 'http://music.163.com',
             '/discover': 'https://music.163.com'
         }
+    },
+    build: {
+        target: "es2018",
     }
 })
