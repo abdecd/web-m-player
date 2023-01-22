@@ -85,7 +85,7 @@ function LoopBlockListnameList({shown,listData,currentListIndex,setManageListSta
 function LoopBlockMusicList({shown,listData,currentIndex,undoSpecificListFn}) {
     // listData: [{name,subName,...}]
     const root = useRef();
-    useEffect(() => {if (shown) root.current.scrollTop = 0},[shown]);
+    useEffect(() => webMusicManager.addListChangeListener(() => root.current.scrollTop = 0),[]);
 
     var selectAndPlayMusic = useCallback(async (ev,elem) => {
         var index = webMusicManager.list.search(elem.id || elem.src);
