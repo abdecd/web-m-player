@@ -9,8 +9,10 @@ import ToastBar from '../component/ToastBar';
 import settings, { initSettings } from '../js/settings';
 import undoFnContainer, { useUndoableMusicList } from '../js/reactHooks/supportUndoMusicList';
 import theme from '../js/theme';
+import ApplyPolyfills from '../js/applyPolyfills';
 import './App.css'
 
+ApplyPolyfills();
 initSettings();
 
 export default function App({children}) {
