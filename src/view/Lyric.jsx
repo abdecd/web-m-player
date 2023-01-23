@@ -54,7 +54,8 @@ export default function Lyric() {
     },[]);
 
     return (
-        <LoadingBlock innerRef={lyricElem} loading={loading} style={{textAlign: "center", height: "100%", overflow: "auto"}}>
+        // 留MusicBar位置
+        <LoadingBlock innerRef={lyricElem} loading={loading} style={{textAlign: "center", height: "100%", paddingBottom: "60px", overflow: "auto"}}>
             <div>
             {
                 lyric?.trim().split("\n").map((elem,index) => <p key={index+elem}>{elem}</p>)

@@ -11,7 +11,7 @@ import ListItemFilter from '../component/ListItemFilter'
 import { LeftItem, RightBtn } from '../component/ListButton'
 import { useRef } from 'react'
 
-function LoopBlockListnameList({shown,listData,currentListIndex,setManageListState}) {
+function LoopBlockListnameList({shown,listData,currentListIndex,setManageListState,style}) {
     // listData: [{name,subName,...}]
     var selectList = useCallback((ev,elem) => {
         if (webMusicManager.list.name==elem.name) {
@@ -56,7 +56,7 @@ function LoopBlockListnameList({shown,listData,currentListIndex,setManageListSta
         showTips.info("复制成功。");
     },[]);
 
-    return <BasicList style={{display: shown ? "block" : "none"}}>
+    return <BasicList style={{display: shown ? "block" : "none", ...style}}>
         { listData.map((elem,index) => (
             <ListItem key={elem.key}>
                 <LeftItem
@@ -79,7 +79,7 @@ function LoopBlockListnameList({shown,listData,currentListIndex,setManageListSta
     </BasicList>
 }
 
-function LoopBlockMusicList({shown,listData,currentIndex,undoSpecificListFn}) {
+function LoopBlockMusicList({shown,listData,currentIndex,undoSpecificListFn,style}) {
     // listData: [{name,subName,...}]
     const root = useRef();
     const needScroll = useRef(false);
@@ -131,7 +131,7 @@ function LoopBlockMusicList({shown,listData,currentIndex,undoSpecificListFn}) {
         showTips.info(`已成功删除${len}项。`,undoSpecificListFn);
     },[listData]);
 
-    return <BasicList innerRef={root} style={{display: shown ? "block" : "none"}}>
+    return <BasicList innerRef={root} style={{display: shown ? "block" : "none", ...style}}>
         { listData.map((elem,index) => (
             <ListItem key={elem.key}>
                 <LeftItem
@@ -205,7 +205,7 @@ var TopBar = React.memo(({manageListState,setManageListState,manageComponent,unM
     )
 });
 
-function BasicLoopBlock({style}) {
+function BasicLoopBlock({style,needRemainSpace=false}) {
     const [specificList, setSpecificList] = useState([]);
     const [filterList, setFilterList] = useState([]);
     const [nameList, setNameList] = useState([]);
@@ -279,8 +279,8 @@ function BasicLoopBlock({style}) {
             {!manageListState && <ListItemFilter listData={specificList} setFilterList={setFilterList} inputStyle={{height: "1.6em"}}/>}
 
             <div style={{height: "calc(100% - 60px - 1.6em)"}}>
-                <LoopBlockListnameList shown={manageListState} listData={nameList} currentListIndex={currentListIndex} setManageListState={setManageListState}/>
-                <LoopBlockMusicList shown={!manageListState} listData={filterList} currentIndex={currentIndex} undoSpecificListFn={undoSpecificListFn}/>
+                <LoopBlockListnameList shown={manageListState} listData={nameList} currentListIndex={currentListIndex} setManageListState={setManageListState} style={needRemainSpace ? {paddingBottom: '60px'} : {}}/>
+                <LoopBlockMusicList shown={!manageListState} listData={filterList} currentIndex={currentIndex} undoSpecificListFn={undoSpecificListFn} style={needRemainSpace ? {paddingBottom: '60px'} : {}}/>
             </div>
         </div>
     )
@@ -302,7 +302,7 @@ function LoopBlock({shown,setShown}) {
                 bottom: (shown ? "60px" : "20px"),
                 zIndex: 1
             }}>
-                <BasicLoopBlock style={{width: "70vw", height: "68vh", boxShadow: "0px 0px 20px 0px rgba(0,0,0,0.2)"}}/>
+                <BasicLoopBlock style={{width: "70vw", height: "68vh", boxShadow: "0px 0px 20px 0px rgba(0,0,0,0.2)", borderRadius: "10px 10px 0 0" }}/>
             </div>
         </>
     )
