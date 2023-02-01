@@ -8,6 +8,7 @@ var maskCss = {
     width: "100vw",
     height: "100vh",
     zIndex: "-2",
+    filter: "contrast(0.8) brightness(0.8)"
 };
 
 var backgroundImgCss = {
