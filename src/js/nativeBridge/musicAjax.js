@@ -5,14 +5,14 @@ export default {
         var obj = await fetchWithTimeout(`/api/song/lyric?os=pc&id=${musicId}&lv=-1&tv=-1`,{timeout: 3000}).then(x => x.json());
         var lrcGot;
         if (obj?.tlyric?.lyric) {
-            var lrc = obj?.lrc?.lyric?.split(/\[[^\]]+\]/).map(x => x.trim()+'\n').filter(x => x!='\n');
-            var tLrc = obj.tlyric.lyric.split(/\[[^\]]+\]/).map(x => x.trim()+'\n').filter(x => x!='\n');
-            var lrcArr = [];
-            while (lrc.length || tLrc.length) {
-                if (tLrc.length) lrcArr.unshift(tLrc.pop());
-                if (lrc.length) lrcArr.unshift(lrc.pop());
+            var lrc = new Map(obj?.lrc?.lyric?.trim().split("\n").filter(line => line.match(/\[[^\]]+/g)?.length==1).map(line => line.trim().split("]",2)));
+            var tLrc = new Map(obj.tlyric.lyric.trim().split("\n").filter(line => line.match(/\[[^\]]+/g)?.length==1).map(line => line.trim().split("]",2)));
+            for (let key of lrc.keys()) {
+                if (!tLrc.has(key)) continue;
+                lrc.set(key,lrc.get(key)+"\n"+tLrc.get(key));
             }
-            lrcGot = lrcArr.join("");
+            lrcGot = "";
+            for (let value of  lrc.values()) lrcGot+=value+"\n";
         } else {
             lrcGot = obj?.lrc?.lyric?.replace(/\[[^\]]+\]/g,"");
         }
