@@ -165,7 +165,30 @@ class WebMusicList extends BasicWebMusicList {
         this.arr[oldIndex] = this.arr[newIndex];
         this.arr[newIndex] = swap;
 
+        if (oldIndex==this.index) this.index = newIndex;
+        else if (newIndex==this.index) this.index = oldIndex;
+
         this.randomList = [];
+        this.changeSub.publish();
+        if (this.storage) webMusicListStorage.set(this.name,this);
+        return true;
+    }
+
+    move(oldIndex,newIndex) {
+        if (oldIndex<0 || oldIndex>=this.arr.length) return false;
+        if (newIndex<0 || newIndex>=this.arr.length) return false;
+
+        if (newIndex>oldIndex) {
+            this.arr.splice(newIndex+1,0,this.arr[oldIndex]);
+            this.arr.splice(oldIndex,1);
+        } else if (newIndex<oldIndex) {
+            this.arr.splice(newIndex,0,this.arr[oldIndex]);
+            this.arr.splice(oldIndex+1,1);
+        }
+        if (oldIndex==this.index) this.index = newIndex;
+        else if (oldIndex<this.index && newIndex>=this.index) this.index--;
+        else if (oldIndex>this.index && newIndex<=this.index) this.index++;
+
         this.changeSub.publish();
         if (this.storage) webMusicListStorage.set(this.name,this);
         return true;

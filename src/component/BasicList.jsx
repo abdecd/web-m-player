@@ -11,12 +11,15 @@ export default function BasicList({children,style,innerRef}) {
         {(!children.length) ? (
             <p>当前列表为空。</p>
         ) : (
+            <>
             <List sx={{'& .MuiListItem-root': {padding: "0px",alignItems: "stretch"}}}>
                 { children }
-                <ListItem style={{textAlign: "center", color: theme.palette.text.secondary}}>
-                    <ListItemText>共{children.length}项</ListItemText>
-                </ListItem>
+                
             </List>
+            <ListItem style={{textAlign: "center", color: theme.palette.text.secondary}}>
+                <ListItemText>共{children.length}项</ListItemText>
+            </ListItem>
+            </>
         )}
         </div>
     )
