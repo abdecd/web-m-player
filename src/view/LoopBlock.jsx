@@ -101,7 +101,7 @@ function BasicLoopBlock({style,needRemainSpace=false}) {
                 manageComponent={<Button variant='outlined' onClick={createList}>new</Button>}
                 unManageComponent={<RenameSpecificListBar/>}/>
 
-            {/* todo */}
+            {/* todo flex元素基本高度问题(已解决但不知原因) */}
             <div style={{ flex: "1 1 0" }}>
                 {/* 留MusicBar位置 */}
                 <MusicList shown={!manageListState} listData={specificList} undoSpecificListFn={undoSpecificListFn} innerStyle={needRemainSpace ? {paddingBottom: '60px'} : {}}/>
