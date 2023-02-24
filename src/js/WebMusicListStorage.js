@@ -44,16 +44,21 @@ var webMusicListStorage = {
             };
         }) || [];
     },
-    swapToFront(itemName) {
-        if (this.names.length<=1) return;
-        var newNameIndex = this.names.indexOf(itemName), oldNameIndex = 0;
-        if (newNameIndex<1) return;
-        
-        var newNames = this.names.slice();
+    move(oldIndex,newIndex) {
+        if (oldIndex<0 || oldIndex>=this.names.length) return false;
+        if (newIndex<0 || newIndex>=this.names.length) return false;
 
-        var oldName = newNames[oldNameIndex];
-        newNames[oldNameIndex] = newNames[newNameIndex];
-        newNames[newNameIndex] = oldName;
+        var newNames = this.names.slice();
+        if (newIndex>oldIndex) {
+            newNames.splice(newIndex+1,0,newNames[oldIndex]);
+            newNames.splice(oldIndex,1);
+        } else if (newIndex<oldIndex) {
+            newNames.splice(newIndex,0,newNames[oldIndex]);
+            newNames.splice(oldIndex+1,1);
+        }
+        if (oldIndex==this.currentNameIndex) this.setCurrentNameIndex(newIndex);
+        else if (oldIndex<this.currentNameIndex && newIndex>=this.currentNameIndex) this.setCurrentNameIndex(this.currentNameIndex-1);
+        else if (oldIndex>this.currentNameIndex && newIndex<=this.currentNameIndex) this.setCurrentNameIndex(this.currentNameIndex+1);
 
         this.names = newNames;
         localStorage.setItem("wmlsNames",JSON.stringify(this.names));

@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Button, Input } from '@mui/material'
-
 import webMusicManager from '../js/webMusicManager'
 import webMusicListStorage from '../js/webMusicListStorage'
 import WebMusicList from '../js/WebMusicList'
@@ -105,8 +104,8 @@ function BasicLoopBlock({style,needRemainSpace=false}) {
             {/* todo */}
             <div style={{ flex: "1 1 0" }}>
                 {/* 留MusicBar位置 */}
-                <MusicList shown={!manageListState} listData={specificList} undoSpecificListFn={undoSpecificListFn} style={needRemainSpace ? {paddingBottom: '60px'} : {}}/>
-                <ListNameList shown={manageListState} listData={nameList} setManageListState={setManageListState} style={needRemainSpace ? {paddingBottom: '60px'} : {}}/>
+                <MusicList shown={!manageListState} listData={specificList} undoSpecificListFn={undoSpecificListFn} innerStyle={needRemainSpace ? {paddingBottom: '60px'} : {}}/>
+                <ListNameList shown={manageListState} listData={nameList} setManageListState={setManageListState} innerStyle={needRemainSpace ? {paddingBottom: '60px'} : {}}/>
             </div>
         </div>
     )

@@ -1,12 +1,15 @@
-import { ListItem } from '@mui/material';
-import { useCallback, useEffect, useState } from 'react';
+import { Button, ListItem } from '@mui/material';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import BasicList from '../../component/BasicList'
 import { LeftItem, RightBtn } from '../../component/ListButton'
+import Draggable from '../../js/Draggable';
+import WebMusicList from '../../js/WebMusicList';
 import webMusicListStorage from '../../js/webMusicListStorage';
 import webMusicManager from '../../js/webMusicManager';
 
-function ListNameList({shown,listData,setManageListState,style}) {
-    // listData: [{name,subName,...}]
+function ListNameList(props) {
+    // props = {shown,listData,setManageListState,style}
+    const [isEditing, setIsEditing] = useState(false);
     const [currentListIndex, setCurrentListIndex] = useState(-1);
 
     //订阅list和names的改变 改currentListIndex
@@ -25,6 +28,32 @@ function ListNameList({shown,listData,setManageListState,style}) {
         };
     },[]);
 
+    //隐藏时退出编辑
+    useEffect(() => {
+        if (!props.shown) setIsEditing(false);
+    },[props.shown]);
+
+    return <div style={{display: props.shown ? "block" : "none", height: "100%", ...props.style}}>
+        { isEditing
+            ? <EditList
+                {...props}
+                shown={undefined}
+                style={{}}
+                currentListIndex={currentListIndex}
+                setIsEditing={setIsEditing}/>
+            : <NormalList
+                {...props}
+                shown={undefined}
+                style={{}}
+                currentListIndex={currentListIndex}
+                setIsEditing={setIsEditing}/>
+        }
+    </div>
+}
+
+function NormalList({listData,setManageListState,currentListIndex,setIsEditing}) {
+    // listData: [{name,subName,...}]
+
     var selectList = useCallback((ev,elem) => {
         if (webMusicManager.list.name==elem.name) {
             setManageListState(false);
@@ -32,11 +61,6 @@ function ListNameList({shown,listData,setManageListState,style}) {
         }
         webMusicManager.list = new WebMusicList(elem.name,webMusicListStorage.get(elem.name),true);
         setManageListState(false);
-    },[]);
-
-    var swapListToFront = useCallback((ev,elem) => {
-        webMusicListStorage.swapToFront(elem.name);
-        showTips.info("与首项交换成功。");
     },[]);
 
     var deleteList = useCallback((ev,elem) => {
@@ -68,14 +92,14 @@ function ListNameList({shown,listData,setManageListState,style}) {
         showTips.info("复制成功。");
     },[]);
 
-    return <BasicList style={{display: shown ? "block" : "none", ...style}}>
+    return <BasicList>
         { listData.map((elem,index) => (
             <ListItem key={elem.key}>
                 <LeftItem
                     name={elem.name}
                     subName={elem.subName}
                     clickFn={ev=>selectList(ev,elem)}
-                    longClickFn={ev=>swapListToFront(ev,elem)}
+                    longClickFn={ev=>setIsEditing(true)}
                     shouldHighLight={index==currentListIndex}/>
                 <RightBtn
                     btnText={<svg style={{position: "relative",left:"-4px",width: "1em",height: "1em",verticalAlign: "middle",fill: "currentColor",overflow: "hidden"}} viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2679"><path d="M720 192h-544A80.096 80.096 0 0 0 96 272v608C96 924.128 131.904 960 176 960h544c44.128 0 80-35.872 80-80v-608C800 227.904 764.128 192 720 192z m16 688c0 8.8-7.2 16-16 16h-544a16 16 0 0 1-16-16v-608a16 16 0 0 1 16-16h544a16 16 0 0 1 16 16v608z" p-id="2680"></path><path d="M848 64h-544a32 32 0 0 0 0 64h544a16 16 0 0 1 16 16v608a32 32 0 1 0 64 0v-608C928 99.904 892.128 64 848 64z" p-id="2681"></path><path d="M608 360H288a32 32 0 0 0 0 64h320a32 32 0 1 0 0-64zM608 520H288a32 32 0 1 0 0 64h320a32 32 0 1 0 0-64zM480 678.656H288a32 32 0 1 0 0 64h192a32 32 0 1 0 0-64z" p-id="2682"></path></svg>}
@@ -89,6 +113,50 @@ function ListNameList({shown,listData,setManageListState,style}) {
             </ListItem>
         ))}
     </BasicList>
+}
+
+function EditList({listData,currentListIndex,setIsEditing}) {
+    const root = useRef();
+
+    //添加draggable支持
+    useEffect(() => {
+        var d = new Draggable({
+            wrapper: root.current.children[0],
+            view: root.current,
+            cb: draggable => {
+                var { firstIndex, currentIndex, wrapper, dragElem } = draggable;
+                webMusicListStorage.move(firstIndex,currentIndex);
+                var beforeIndex = currentIndex+(currentIndex>firstIndex ? 1 : 0);
+                wrapper.insertBefore(dragElem,wrapper.children[beforeIndex]);
+            }
+        });
+        return () => d.terminate();
+    },[listData]);
+
+    return (
+        <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+            <TopBar setIsEditing={setIsEditing}/>
+            <BasicList innerRef={root} style={{flex: "1 1 0"}}>
+                { listData.map((elem,index) => (
+                    <ListItem key={elem.key}>
+                        <LeftItem
+                            name={elem.name}
+                            subName={elem.subName}
+                            shouldHighLight={index==currentListIndex}/>
+                        <RightBtn
+                            className="holder"
+                            disableRipple
+                            btnText={<svg style={{position: "relative",left:"-4px",width: "1em",height: "1em",verticalAlign: "middle",fill: "currentColor",overflow: "hidden"}} viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5826"><path d="M64.1 194v89.6h896.1V194H64.1z m0 358.4h896.1v-89.6H64.1v89.6z m0 268.9h896.1v-89.6H64.1v89.6z" fill="#383838" p-id="5827"></path></svg>}
+                            style={{flexBasis: "40px"}}/>
+                    </ListItem>
+                ))}
+            </BasicList>
+        </div>
+    )
+}
+
+function TopBar({setIsEditing}) {
+    return <Button onClick={ev => setIsEditing(false)}>退出编辑</Button>
 }
 
 export default ListNameList;

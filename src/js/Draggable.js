@@ -39,12 +39,12 @@ class Draggable {
         this.onPointerUpListener = this.onPointerUp.bind(this);
     }
     bindWrapperListener() {
-        this.wrapper.querySelectorAll("."+this.holderClassName).forEach(elem => elem.addEventListener('pointerdown',this.onPointerDownListener));
+        this.view.addEventListener('pointerdown',this.onPointerDownListener);
         document.documentElement.addEventListener('pointermove',this.onPointerMoveListener);
         document.documentElement.addEventListener('pointerup',this.onPointerUpListener);
     }
     revokeWrapperListener() {
-        this.wrapper.querySelectorAll("."+this.holderClassName).forEach(elem => elem.removeEventListener('pointerdown',this.onPointerDownListener));
+        this.view.removeEventListener('pointerdown',this.onPointerDownListener);
         document.documentElement.removeEventListener('pointermove',this.onPointerMoveListener);
         document.documentElement.removeEventListener('pointerup',this.onPointerUpListener);
     }
@@ -56,10 +56,28 @@ class Draggable {
         }
     }
 
+    getDragElem(ev) {
+        var temp = ev.target;
+        while (
+            temp.tagName.toLowerCase()!="body"
+            && temp!=this.view
+            && !temp.classList.contains(this.holderClassName)
+        ) temp = temp.parentNode;
+        if (temp==this.view || temp.tagName.toLowerCase()=="body") return null;
+        while (
+            temp.tagName.toLowerCase()!="body"
+            && !Array.prototype.includes.call(this.wrapper.children,temp)
+        ) temp = temp.parentNode;
+        if (temp.tagName.toLowerCase()=="body") return null;
+
+        return temp;
+    }
     onPointerDown(ev) {
-        this.wrapper.style.touchAction = "none";
+        this.dragElem = this.getDragElem(ev);
+        if (!this.dragElem) return;
+        this.view.style.touchAction = "none";
         this.getRectList();
-        this.cloneNodeToDrag(ev);
+        this.cloneNodeToDrag();
         this.isDragging = true;
         this.lastDraggingPos = { y: ev.clientY };
         this.lastScrollPos = { top: this.view.scrollTop };
@@ -67,11 +85,6 @@ class Draggable {
         for (let elem of this.wrapper.children) elem.style.transition = "transform 0.2s";
     }
     
-    isInParentTree(parent,child) {
-        var temp = child;
-        while (temp.tagName.toLowerCase()!="body" && temp!=parent) temp = temp.parentNode;
-        return temp==parent;
-    }
     cloneStyle(obj={s,d}) {
         var children = [obj];
         while (children.length) {
@@ -86,8 +99,7 @@ class Draggable {
             for (var i=0;i<d.children.length;i++) children.push({s: s.children[i], d: d.children[i]});
         }
     }
-    cloneNodeToDrag(ev) {
-        this.dragElem = Array.prototype.find.call(this.wrapper.children,elem => this.isInParentTree(elem,ev.target));
+    cloneNodeToDrag() {
         this.dragElem.classList.add('active');
         this.clone.element = this.dragElem.cloneNode(true);
         this.cloneStyle({s: this.dragElem, d: this.clone.element});
@@ -185,7 +197,7 @@ class Draggable {
     onPointerUp(ev) {
         if (!this.isDragging) return;
         this.isDragging = false;
-        this.wrapper.style.touchAction = "";
+        this.view.style.touchAction = "";
 
         this.cb(this);
 
