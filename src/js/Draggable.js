@@ -1,5 +1,6 @@
 class Draggable {
     wrapper = null;
+    view = null;
     rectList = [];
     firstIndex = -1;
     currentIndex = -1;
@@ -11,6 +12,7 @@ class Draggable {
 
     constructor({
         wrapper,
+        view,
         holderClassName = "holder",
         cb = draggable => {
             var beforeIndex = this.currentIndex+(this.currentIndex>this.firstIndex ? 1 : 0);
@@ -18,6 +20,7 @@ class Draggable {
         }
     }) {
         this.wrapper = wrapper;
+        this.view = view || wrapper;
         this.holderClassName = holderClassName;
         this.cb = cb;
 
@@ -59,7 +62,7 @@ class Draggable {
         this.cloneNodeToDrag(ev);
         this.isDragging = true;
         this.lastDraggingPos = { y: ev.clientY };
-        this.lastScrollPos = { top: this.wrapper.scrollTop };
+        this.lastScrollPos = { top: this.view.scrollTop };
         this.dragElem.style.opacity = 0;
         for (let elem of this.wrapper.children) elem.style.transition = "transform 0.2s";
     }
@@ -130,8 +133,8 @@ class Draggable {
         for (let i = 0; i < this.rectList.length; i++) {
             if (
                 i != this.currentIndex
-                && ev.clientY > this.rectList[i].top-(this.wrapper.scrollTop-this.lastScrollPos.top)
-                && ev.clientY < this.rectList[i].bottom-(this.wrapper.scrollTop-this.lastScrollPos.top)
+                && ev.clientY > this.rectList[i].top-(this.view.scrollTop-this.lastScrollPos.top)
+                && ev.clientY < this.rectList[i].bottom-(this.view.scrollTop-this.lastScrollPos.top)
             ) {
                 // 碰到了第 i 个元素
                 newIndex = this.currentIndex = i;
@@ -162,20 +165,20 @@ class Draggable {
     }
 
     initHandleScroll() {
-        this.wrapperRect = this.wrapper.getBoundingClientRect();
-        this.scrollMaskHeight = (this.wrapperRect.bottom - this.wrapperRect.top) / 4;
-        this.maxV = 5;
+        this.viewRect = this.view.getBoundingClientRect();
+        this.scrollMaskHeight = (this.viewRect.bottom - this.viewRect.top) / 4;
+        this.maxV = 8;
     }
     handleScroll(ev) {
         var clientY = ev.clientY;
-        if (clientY > this.wrapperRect.bottom - this.scrollMaskHeight) {
-            var pace = (clientY - this.wrapperRect.bottom + this.scrollMaskHeight) / this.scrollMaskHeight * this.maxV;
+        if (clientY > this.viewRect.bottom - this.scrollMaskHeight) {
+            var pace = (clientY - this.viewRect.bottom + this.scrollMaskHeight) / this.scrollMaskHeight * this.maxV;
             if (pace > this.maxV) pace = this.maxV;
-            this.wrapper.scrollTop += pace;
-        } else if (clientY < this.wrapperRect.top + this.scrollMaskHeight) {
-            var pace = (this.wrapperRect.top + this.scrollMaskHeight - clientY) / this.scrollMaskHeight * this.maxV;
+            this.view.scrollTop += pace;
+        } else if (clientY < this.viewRect.top + this.scrollMaskHeight) {
+            var pace = (this.viewRect.top + this.scrollMaskHeight - clientY) / this.scrollMaskHeight * this.maxV;
             if (pace > this.maxV) pace = this.maxV;
-            this.wrapper.scrollTop -= pace;
+            this.view.scrollTop -= pace;
         }
     }
 
