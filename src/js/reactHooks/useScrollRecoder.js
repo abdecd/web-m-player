@@ -7,11 +7,13 @@ function useScrollRecorder(name,elemRef,canScroll=true) {
     var scrollTop = useRef(0);
     var firstLoad = useRef(true);
 
+    // 恢复记录与最后保存
     useEffect(() => {
         scrollTop.current = scrollTops[name] || elemRef.current?.scrollTop;
         return () => scrollTops[name] = scrollTop.current;
     },[]);
 
+    // 恢复上次位置
     useEffect(() => {
         if (firstLoad.current && canScroll) {
             firstLoad.current = false;

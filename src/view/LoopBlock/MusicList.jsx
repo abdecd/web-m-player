@@ -8,6 +8,7 @@ import Draggable from '../../js/Draggable'
 import WebMusicList from '../../js/WebMusicList'
 import webMusicManager from '../../js/webMusicManager'
 import showTips from '../../js/showTips'
+import useScrollRecoder, { setRecord } from '../../js/reactHooks/useScrollRecoder'
 
 function MusicList(props) {
     // props = {shown,listData,undoSpecificListFn,style,innerStyle}
@@ -65,8 +66,11 @@ function NormalList({listData,currentIndex,setIsEditing,undoSpecificListFn,style
         if (needScroll.current) {
             needScroll.current = false;
             root.current.scrollTop = 0;
+            setRecord("LoopBlock_MusicList",0);
         }
     });
+
+    useScrollRecoder("LoopBlock_MusicList",root);
 
     var selectAndPlayMusic = useCallback(async (ev,elem) => {
         var index = webMusicManager.list.search(elem.id || elem.src);
@@ -128,6 +132,8 @@ function NormalList({listData,currentIndex,setIsEditing,undoSpecificListFn,style
 
 function EditList({listData,currentIndex,setIsEditing,isFiltered,undoSpecificListFn,style,innerStyle}) {
     const root = useRef();
+
+    useScrollRecoder("LoopBlock_MusicList",root);
 
     //添加draggable支持
     useEffect(() => {
