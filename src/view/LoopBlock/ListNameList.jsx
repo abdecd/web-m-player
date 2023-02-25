@@ -7,6 +7,7 @@ import WebMusicList from '../../js/WebMusicList';
 import webMusicListStorage from '../../js/webMusicListStorage';
 import webMusicManager from '../../js/webMusicManager';
 import showTips from '../../js/showTips'
+import useScrollRecoder from '../../js/reactHooks/useScrollRecoder';
 
 function ListNameList(props) {
     // props = {shown,listData,setManageListState,style}
@@ -54,6 +55,8 @@ function ListNameList(props) {
 
 function NormalList({listData,setManageListState,currentListIndex,setIsEditing}) {
     // listData: [{name,subName,...}]
+    const root = useRef();
+    useScrollRecoder("LoopBlock_ListNameList",root);
 
     var selectList = useCallback((ev,elem) => {
         if (webMusicManager.list.name==elem.name) {
@@ -93,7 +96,7 @@ function NormalList({listData,setManageListState,currentListIndex,setIsEditing})
         showTips.info("复制成功。");
     },[]);
 
-    return <BasicList>
+    return <BasicList innerRef={root}>
         { listData.map((elem,index) => (
             <ListItem key={elem.key}>
                 <LeftItem
@@ -118,6 +121,8 @@ function NormalList({listData,setManageListState,currentListIndex,setIsEditing})
 
 function EditList({listData,currentListIndex,setIsEditing}) {
     const root = useRef();
+    
+    useScrollRecoder("LoopBlock_ListNameList",root);
 
     //添加draggable支持
     useEffect(() => {
