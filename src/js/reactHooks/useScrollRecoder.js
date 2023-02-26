@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 
 var scrollTops={};
 
@@ -8,13 +8,13 @@ function useScrollRecorder(name,elemRef,canScroll=true) {
     var firstLoad = useRef(true);
 
     // 恢复记录与最后保存
-    useEffect(() => {
+    useLayoutEffect(() => {
         scrollTop.current = scrollTops[name] || elemRef.current?.scrollTop;
         return () => scrollTops[name] = scrollTop.current;
     },[]);
 
     // 恢复上次位置
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (firstLoad.current && canScroll) {
             firstLoad.current = false;
             if (elemRef.current) elemRef.current.scrollTop = scrollTop.current;
