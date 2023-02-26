@@ -10,7 +10,11 @@ var LeftItem = React.memo(({name,subName,clickFn,longClickFn,shouldHighLight,...
 
     return (
         <ListItemButton ref={btn} style={{flex: 9}} {...otherProps}>
-            <ListItemText primary={name} secondary={subName} sx={shouldHighLight ? {"span": {color: "#1976d2"}} : null}/>
+            <ListItemText
+                primary={name}
+                secondary={subName}
+                className="SingleLine"
+                sx={shouldHighLight ? {"span": {color: "#1976d2"}} : null}/>
         </ListItemButton>
     )
 });

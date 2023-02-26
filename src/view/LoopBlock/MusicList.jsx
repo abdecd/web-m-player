@@ -33,7 +33,7 @@ function MusicList(props) {
 
     return (
         <div style={{display: props.shown ? "flex" : "none", flexDirection: "column", height: "100%", ...props.style}}>
-            <ListItemFilter listData={props.listData} setFilterList={setFilterList} inputStyle={{height: "1.6em"}} style={{display: isEditing ? "none" : "block"}}/>
+            <ListItemFilter listData={props.listData} setFilterList={setFilterList} inputStyle={{height: "28px"}} style={{display: isEditing ? "none" : "block"}}/>
             { isEditing
                 ? <EditList
                     {...props}
@@ -173,7 +173,7 @@ function EditList({listData,currentIndex,setIsEditing,isFiltered,undoSpecificLis
 }
 
 function TopBar({setIsEditing}) {
-    return <Button onClick={ev => setIsEditing(false)}>退出编辑</Button>
+    return <Button style={{height: "28px",padding: 0}} onClick={ev => setIsEditing(false)}>退出编辑</Button>
 }
 
 export default MusicList;
