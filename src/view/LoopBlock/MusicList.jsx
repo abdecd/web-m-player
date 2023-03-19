@@ -3,12 +3,14 @@ import ListItemFilter from '../../component/ListItemFilter'
 import { LeftItem, RightBtn } from '../../component/ListButton'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import useStateReferrer from '../../js/reactHooks/useStateReferrer'
-import { Button, ListItem } from '@mui/material'
+import { Button, Checkbox, ListItem } from '@mui/material'
 import Draggable from '../../js/Draggable'
 import WebMusicList from '../../js/WebMusicList'
 import webMusicManager from '../../js/webMusicManager'
 import showTips from '../../js/showTips'
 import useScrollRecoder, { setRecord } from '../../js/reactHooks/useScrollRecoder'
+import Immutable from 'immutable'
+import MusicCopyPopup from './MusicCopyPopup'
 
 function MusicList(props) {
     // props = {shown,listData,undoSpecificListFn,style,innerStyle}
@@ -132,6 +134,7 @@ function NormalList({listData,currentIndex,setIsEditing,undoSpecificListFn,style
 
 function EditList({listData,currentIndex,setIsEditing,isFiltered,undoSpecificListFn,style,innerStyle}) {
     const root = useRef();
+    const [selectArr, setSelectArr] = useState(Immutable.fromJS(new Array(listData.length).fill(false)));
 
     useScrollRecoder("LoopBlock_MusicList",root);
 
@@ -152,10 +155,13 @@ function EditList({listData,currentIndex,setIsEditing,isFiltered,undoSpecificLis
 
     return (
         <div style={{ display: "flex", flexDirection: "column", height: "100%", ...style }}>
-            <TopBar setIsEditing={setIsEditing}/>
+            <TopBar setIsEditing={setIsEditing} selectArr={selectArr.toJS()} setSelectArr={setSelectArr} listData={listData} undoSpecificListFn={undoSpecificListFn}/>
             <BasicList innerRef={root} style={{flex: "1 1 0", ...innerStyle}}>
                 { listData.map((elem,index) => (
                     <ListItem key={elem.key}>
+                        <Checkbox
+                            onClick={() => setSelectArr(old => old.set(index,!old.get(index)))}
+                            checked={selectArr.get(index)}/>
                         <LeftItem
                             name={elem.name}
                             subName={elem.subName}
@@ -172,8 +178,38 @@ function EditList({listData,currentIndex,setIsEditing,isFiltered,undoSpecificLis
     )
 }
 
-function TopBar({setIsEditing}) {
-    return <Button style={{height: "28px",padding: 0}} onClick={ev => setIsEditing(false)}>退出编辑</Button>
+function TopBar({setIsEditing,selectArr,setSelectArr,listData,undoSpecificListFn}) {
+    const [musicCopyPopupShown, setMusicCopyPopupShown] = useState(false);
+
+    var getSelectMusicObjs = useCallback(() => 
+        selectArr.map((x,index) => x && listData[index]).filter(x => !!x)
+    ,[selectArr,listData]);
+
+    var deleteSomeElem = useCallback(() => {
+        return webMusicManager.list.deleteSomeElem(getSelectMusicObjs());
+    },[getSelectMusicObjs]);
+
+    return (
+        <div style={{height: "28px",padding: 0,display: "flex"}}>
+            <Button style={{flex: "1"}} onClick={() => setIsEditing(false)}>退出编辑</Button>
+            <Button
+                style={{minWidth: "0"}}
+                onClick={() => selectArr.includes(false) ? setSelectArr(iArr => iArr.map(() => true)) : setSelectArr(iArr => iArr.map(() => false))}>
+                全选
+            </Button>
+            <Button style={{minWidth: "0"}} onClick={() => setMusicCopyPopupShown(true)}>复制</Button>
+            <Button
+                style={{minWidth: "0"}}
+                onClick={() => {
+                    var cnt = deleteSomeElem().length;
+                    setSelectArr(iArr => iArr.map(() => false));
+                    showTips.info(`成功删除${cnt}项。`,undoSpecificListFn);
+                }}>
+                删除
+            </Button>
+            <MusicCopyPopup shown={musicCopyPopupShown} setShown={setMusicCopyPopupShown} musicObjs={getSelectMusicObjs()}/>
+        </div>
+    )
 }
 
 export default MusicList;

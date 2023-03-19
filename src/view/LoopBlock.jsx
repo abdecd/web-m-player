@@ -101,7 +101,7 @@ function BasicLoopBlock({style,needRemainSpace=false}) {
                 manageComponent={<Button variant='outlined' onClick={createList}>new</Button>}
                 unManageComponent={<RenameSpecificListBar/>}/>
 
-            {/* todo flex元素基本高度问题(已解决但不知原因) */}
+            {/* todo flex元素基本高度问题(已解决但不完全知道原因) */}
             <div style={{ flex: "1 1 0" }}>
                 {/* 留MusicBar位置 */}
                 <MusicList shown={!manageListState} listData={specificList} undoSpecificListFn={undoSpecificListFn} innerStyle={needRemainSpace ? {paddingBottom: '60px'} : {}}/>
@@ -112,10 +112,20 @@ function BasicLoopBlock({style,needRemainSpace=false}) {
 }
 
 function LoopBlock({shown,setShown}) {
+    const zIndex = 1;
+    var maskStyle = {
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
+        zIndex
+    };
+
     return (
         <>
             {/* mask */}
-            {shown && <div style={{position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", zIndex: 1}} onClick={() => setShown(false)}></div>}
+            {shown && <div style={maskStyle} onClick={() => setShown(false)}/>}
             
             <div style={{
                 backdropFilter: "blur(6px)",
@@ -125,7 +135,7 @@ function LoopBlock({shown,setShown}) {
                 position: "fixed",
                 right: "3vw",
                 bottom: (shown ? "60px" : "20px"),
-                zIndex: 1
+                zIndex
             }}>
                 <BasicLoopBlock style={{width: "70vw", height: "68vh", boxShadow: "0px 0px 20px 0px rgba(0,0,0,0.2)", borderRadius: "10px 10px 0 0" }}/>
             </div>
