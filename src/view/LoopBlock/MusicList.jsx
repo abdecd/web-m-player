@@ -214,7 +214,7 @@ function TopBar({setIsEditing,selectArr,setSelectArr,listData,undoSpecificListFn
                 onClick={() => {
                     var cnt = deleteSomeElem().length;
                     setSelectArr(iArr => iArr.map(() => false));
-                    showTips.info(`成功删除${cnt}项。`,undoSpecificListFn);
+                    showTips.info(`已成功删除${cnt}项。`,undoSpecificListFn);
                 }}>
                 删除
             </Button>

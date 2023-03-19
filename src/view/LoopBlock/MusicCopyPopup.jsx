@@ -69,7 +69,7 @@ export default function MusicCopyPopup({shown,setShown,musicObjs}) {
                             var {successCnt, existsCnt, failCnt} =  copyToList(x.name);
 
                             var strs = [];
-                            strs.push(`${successCnt}项成功复制`);
+                            strs.push(`${successCnt}项复制成功`);
                             if (existsCnt) strs.push(`${existsCnt}项已存在`);
                             if (failCnt) strs.push(`${failCnt}项失败`);
                             showTips.info(strs.join("，")+"。");
