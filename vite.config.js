@@ -13,5 +13,6 @@ export default defineConfig({
     },
     build: {
         target: "es2018",// chrome63
+        chunkSizeWarningLimit: "1000"
     }
 })
