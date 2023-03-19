@@ -53,7 +53,7 @@ function ListNameList(props) {
     </div>
 }
 
-function NormalList({listData,setManageListState,currentListIndex,setIsEditing}) {
+function NormalList({listData,setManageListState,currentListIndex,setIsEditing,innerStyle}) {
     // listData: [{name,subName,...}]
     const root = useRef();
     useScrollRecoder("LoopBlock_ListNameList",root);
@@ -96,7 +96,7 @@ function NormalList({listData,setManageListState,currentListIndex,setIsEditing})
         showTips.info("复制成功。");
     },[]);
 
-    return <BasicList innerRef={root}>
+    return <BasicList innerRef={root} style={{ ...innerStyle }}>
         { listData.map((elem,index) => (
             <ListItem key={elem.key}>
                 <LeftItem
@@ -119,7 +119,7 @@ function NormalList({listData,setManageListState,currentListIndex,setIsEditing})
     </BasicList>
 }
 
-function EditList({listData,currentListIndex,setIsEditing}) {
+function EditList({listData,currentListIndex,setIsEditing,innerStyle}) {
     const root = useRef();
     
     useScrollRecoder("LoopBlock_ListNameList",root);
@@ -142,7 +142,7 @@ function EditList({listData,currentListIndex,setIsEditing}) {
     return (
         <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
             <TopBar setIsEditing={setIsEditing}/>
-            <BasicList innerRef={root} style={{flex: "1 1 0"}}>
+            <BasicList innerRef={root} style={{ flex: "1 1 0", ...innerStyle }}>
                 { listData.map((elem,index) => (
                     <ListItem key={elem.key}>
                         <LeftItem
