@@ -3,7 +3,7 @@ import ListItemFilter from '../../component/ListItemFilter'
 import { LeftItem, RightBtn } from '../../component/ListButton'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import useStateReferrer from '../../js/reactHooks/useStateReferrer'
-import { Button, Checkbox, ListItem } from '@mui/material'
+import { Button, Checkbox, ListItem, ListItemButton, ListItemText } from '@mui/material'
 import Draggable from '../../js/Draggable'
 import WebMusicList from '../../js/WebMusicList'
 import webMusicManager from '../../js/webMusicManager'
@@ -148,6 +148,14 @@ function EditList({listData,currentIndex,setIsEditing,isFiltered,undoSpecificLis
                 if (!isFiltered) webMusicManager.list.move(firstIndex,currentIndex);
                 var beforeIndex = currentIndex+(currentIndex>firstIndex ? 1 : 0);
                 wrapper.insertBefore(dragElem,wrapper.children[beforeIndex]);
+                setSelectArr(old => {
+                    var newIndex = currentIndex, oldIndex = firstIndex;
+                    if (newIndex>oldIndex) {
+                        return old.splice(newIndex+1,0,old.get(oldIndex)).splice(oldIndex,1);
+                    } else if (newIndex<oldIndex) {
+                        return old.splice(newIndex,0,old.get(oldIndex)).splice(oldIndex+1,1);
+                    } else return old;
+                })
             }
         });
         return () => d.terminate();
@@ -159,13 +167,16 @@ function EditList({listData,currentIndex,setIsEditing,isFiltered,undoSpecificLis
             <BasicList innerRef={root} style={{flex: "1 1 0", ...innerStyle}}>
                 { listData.map((elem,index) => (
                     <ListItem key={elem.key}>
-                        <Checkbox
-                            onClick={() => setSelectArr(old => old.set(index,!old.get(index)))}
-                            checked={selectArr.get(index)}/>
-                        <LeftItem
-                            name={elem.name}
-                            subName={elem.subName}
-                            shouldHighLight={index==currentIndex}/>
+                        <ListItemButton style={{flex: 9}} onClick={() => setSelectArr(old => old.set(index,!old.get(index)))}>
+                            <Checkbox
+                                style={{paddingTop: 0, paddingBottom: 0, paddingLeft: 0}}
+                                checked={selectArr.get(index)}/>
+                            <ListItemText
+                                primary={elem.name}
+                                secondary={elem.subName}
+                                className="SingleLine"
+                                sx={index==currentIndex ? {"span": {color: "#1976d2"}} : null}/>
+                        </ListItemButton>
                         <RightBtn
                             className="holder"
                             disableRipple
