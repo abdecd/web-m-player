@@ -26,8 +26,8 @@ export default function ListnameListPopup({shown,setShown,titleBlock,onItemClick
         transform: "translate(-50%,-50%)",
         zIndex,
 
-        width: "60vw",
-        height: "80vh",
+        width: "80vw",
+        height: "70vh",
         borderRadius: "5px",
         backdropFilter: "blur(6px) brightness(1.2)",
         boxShadow: "0px 0px 20px 0px rgba(0,0,0,0.2)",

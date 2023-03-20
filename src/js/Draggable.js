@@ -14,15 +14,12 @@ class Draggable {
         wrapper,
         view,
         holderClassName = "holder",
-        cb = draggable => {
-            var beforeIndex = this.currentIndex+(this.currentIndex>this.firstIndex ? 1 : 0);
-            this.wrapper.insertBefore(this.dragElem,this.wrapper.children[beforeIndex]);
-        }
+        cb
     }) {
         this.wrapper = wrapper;
         this.view = view || wrapper;
         this.holderClassName = holderClassName;
-        this.cb = cb;
+        this.cb = cb || this.defaultCb;
 
         this.initHandleScroll();
         this.initListeners();
@@ -32,6 +29,11 @@ class Draggable {
     terminate() {
         this.revokeWrapperListener();
     }
+
+    defaultCb = draggable => {
+        var beforeIndex = this.currentIndex+(this.currentIndex>this.firstIndex ? 1 : 0);
+        this.wrapper.insertBefore(this.dragElem,this.wrapper.children[beforeIndex]);
+    };
     
     initListeners() {
         this.onPointerDownListener = this.onPointerDown.bind(this);

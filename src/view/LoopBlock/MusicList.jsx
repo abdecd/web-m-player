@@ -1,7 +1,7 @@
 import BasicList from '../../component/BasicList'
 import ListItemFilter from '../../component/ListItemFilter'
 import { LeftItem, RightBtn } from '../../component/ListButton'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import useStateReferrer from '../../js/reactHooks/useStateReferrer'
 import { Button, Checkbox, ListItem, ListItemButton, ListItemText } from '@mui/material'
 import Draggable from '../../js/Draggable'
@@ -9,7 +9,6 @@ import WebMusicList from '../../js/WebMusicList'
 import webMusicManager from '../../js/webMusicManager'
 import showTips from '../../js/showTips'
 import useScrollRecoder, { setRecord } from '../../js/reactHooks/useScrollRecoder'
-import Immutable from 'immutable'
 import MusicCopyPopup from './MusicCopyPopup'
 
 function MusicList(props) {
@@ -26,13 +25,16 @@ function MusicList(props) {
         webMusicManager.handler.addEventListener("loadstart",refreshFn);
         return () => webMusicManager.handler.removeEventListener("loadStart",refreshFn);
     },[]);
-    useEffect(() => { setCurrentIndex(filterListReferrer.current.findIndex(elem => WebMusicList.isEqual(elem,webMusicManager.musicObj))); },[filterList]);
+    useLayoutEffect(() => {
+        setCurrentIndex(filterList.findIndex(elem => WebMusicList.isEqual(elem,webMusicManager.musicObj)));
+    },[filterList]);
 
     //隐藏时退出编辑
     useEffect(() => {
         if (!props.shown) setIsEditing(false);
     },[props.shown]);
 
+    const fillRemainStyle = useMemo(() => ({ flex: "1 1 0" }),[]);
     return (
         <div style={{display: props.shown ? "flex" : "none", flexDirection: "column", height: "100%", ...props.style}}>
             <ListItemFilter listData={props.listData} setFilterList={setFilterList} inputStyle={{height: "28px"}} style={{display: isEditing ? "none" : "block"}}/>
@@ -40,7 +42,7 @@ function MusicList(props) {
                 ? <EditList
                     {...props}
                     shown={undefined}
-                    style={{ flex: "1 1 0" }}
+                    style={fillRemainStyle}
                     listData={filterList}
                     currentIndex={currentIndex}
                     setIsEditing={setIsEditing}
@@ -48,7 +50,7 @@ function MusicList(props) {
                 : <NormalList
                     {...props}
                     shown={undefined}
-                    style={{ flex: "1 1 0" }}
+                    style={fillRemainStyle}
                     listData={filterList}
                     currentIndex={currentIndex}
                     setIsEditing={setIsEditing}/>
@@ -134,9 +136,28 @@ function NormalList({listData,currentIndex,setIsEditing,undoSpecificListFn,style
 
 function EditList({listData,currentIndex,setIsEditing,isFiltered,undoSpecificListFn,style,innerStyle}) {
     const root = useRef();
-    const [selectArr, setSelectArr] = useState(Immutable.fromJS(new Array(listData.length).fill(false)));
+    const [selectArr, setSelectArr] = useState(new Array(listData.length).fill(false));
 
     useScrollRecoder("LoopBlock_MusicList",root);
+
+    // 监听listData 改selectArr
+    var selectArrFt = useRef([]);
+    useLayoutEffect(() => {
+        if (!selectArrFt.current.length) return;
+        setSelectArr(old => {
+            var newIndex = selectArrFt.current[1], oldIndex = selectArrFt.current[0];
+            var newL = old.slice();
+            if (newIndex>oldIndex) {
+                newL.splice(newIndex+1,0,old[oldIndex]);
+                newL.splice(oldIndex,1);
+            } else if (newIndex<oldIndex) {
+                newL.splice(newIndex,0,old[oldIndex]);
+                newL.splice(oldIndex+1,1);
+            }
+            return newL;
+        });
+        selectArrFt.current = [];
+    },[listData])
 
     //添加draggable支持
     useEffect(() => {
@@ -144,18 +165,10 @@ function EditList({listData,currentIndex,setIsEditing,isFiltered,undoSpecificLis
             wrapper: root.current.children[0],
             view: root.current,
             cb: draggable => {
-                var { firstIndex, currentIndex, wrapper, dragElem } = draggable;
-                if (!isFiltered) webMusicManager.list.move(firstIndex,currentIndex);
-                var beforeIndex = currentIndex+(currentIndex>firstIndex ? 1 : 0);
-                wrapper.insertBefore(dragElem,wrapper.children[beforeIndex]);
-                setSelectArr(old => {
-                    var newIndex = currentIndex, oldIndex = firstIndex;
-                    if (newIndex>oldIndex) {
-                        return old.splice(newIndex+1,0,old.get(oldIndex)).splice(oldIndex,1);
-                    } else if (newIndex<oldIndex) {
-                        return old.splice(newIndex,0,old.get(oldIndex)).splice(oldIndex+1,1);
-                    } else return old;
-                })
+                var { firstIndex, currentIndex } = draggable;
+                draggable.defaultCb();
+                if (!isFiltered && firstIndex!=currentIndex) webMusicManager.list.move(firstIndex,currentIndex);
+                selectArrFt.current = [firstIndex, currentIndex];
             }
         });
         return () => d.terminate();
@@ -163,14 +176,14 @@ function EditList({listData,currentIndex,setIsEditing,isFiltered,undoSpecificLis
 
     return (
         <div style={{ display: "flex", flexDirection: "column", height: "100%", ...style }}>
-            <TopBar setIsEditing={setIsEditing} selectArr={selectArr.toJS()} setSelectArr={setSelectArr} listData={listData} undoSpecificListFn={undoSpecificListFn}/>
+            <TopBar setIsEditing={setIsEditing} selectArr={selectArr} setSelectArr={setSelectArr} listData={listData} undoSpecificListFn={undoSpecificListFn}/>
             <BasicList innerRef={root} style={{flex: "1 1 0", ...innerStyle}}>
                 { listData.map((elem,index) => (
                     <ListItem key={elem.key}>
-                        <ListItemButton style={{flex: 9}} onClick={() => setSelectArr(old => old.set(index,!old.get(index)))}>
+                        <ListItemButton style={{flex: 9}} onClick={() => setSelectArr(old => old.map((x,i) => index==i ? !x : x))}>
                             <Checkbox
-                                style={{paddingTop: 0, paddingBottom: 0, paddingLeft: 0}}
-                                checked={selectArr.get(index)}/>
+                                style={{padding: 0, marginRight: "10px"}}
+                                checked={selectArr[index]}/>
                             <ListItemText
                                 primary={elem.name}
                                 secondary={elem.subName}
