@@ -130,10 +130,9 @@ function EditList({listData,currentListIndex,setIsEditing,innerStyle}) {
             wrapper: root.current.children[0],
             view: root.current,
             cb: draggable => {
-                var { firstIndex, currentIndex, wrapper, dragElem } = draggable;
+                var { firstIndex, currentIndex } = draggable;
                 webMusicListStorage.move(firstIndex,currentIndex);
-                var beforeIndex = currentIndex+(currentIndex>firstIndex ? 1 : 0);
-                wrapper.insertBefore(dragElem,wrapper.children[beforeIndex]);
+                draggable.defaultCb();
             }
         });
         return () => d.terminate();

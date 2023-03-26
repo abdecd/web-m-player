@@ -7,17 +7,14 @@ import { LeftItem } from "./ListButton";
 
 export default function ListnameListPopup({shown,setShown,titleBlock,onItemClick}) {
     const [nameList, setNameList] = useState([]);
+    const delayTime = 300;
+    var { exist, shouldRender } = useRenderTimeRemainer(shown,delayTime);
     
     //订阅nameList
     useEffect(() => {
-        var refreshFn = names => setNameList(names.map(elem => ({name: elem, key: elem})));
-        refreshFn(webMusicListStorage.names);
-        webMusicListStorage.addNamesChangeListener(refreshFn);
-        return () => webMusicListStorage.removeNamesChangeListener(refreshFn);
-    },[]);
+        if (exist) setNameList(webMusicListStorage.names.map(elem => ({name: elem, key: elem})));
+    },[exist]);
     
-    const delayTime = 300;
-    var { exist, shouldRender } = useRenderTimeRemainer(shown,delayTime);
     const zIndex = 2;
     var divStyle = {
         position: "absolute",
