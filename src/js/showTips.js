@@ -6,7 +6,7 @@ var showTips = {
     unSubscribe(fn) { this.changeSub.unsubscribe(fn); },
 
     info(msg,fn) { this.changeSub.publish(msg,fn) },
-    prompt(...sth) { return window.prompt(...sth); },
+    prompt(...sth) { return (console.log(...sth),window.prompt(...sth)); },
     confirm(tip) { return window.confirm(tip); },
 };
 

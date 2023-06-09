@@ -82,7 +82,7 @@ export default React.memo(function MusicBar({toggleLoopBlockShown}) {
         bindLongClick(
             playBtn.current,
             () => webMusicManager.playPause(),
-            () => showTips.prompt("path: ",webMusicManager.src)
+            () => showTips.prompt("name and path: ",webMusicManager.name+" "+webMusicManager.src)
         );
     },[]);
 
