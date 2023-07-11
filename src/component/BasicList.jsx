@@ -14,7 +14,6 @@ export default function BasicList({children,style,innerRef}) {
             <>
             <List sx={{'& .MuiListItem-root': {padding: "0px",alignItems: "stretch"}}}>
                 { children }
-                
             </List>
             <ListItem style={{textAlign: "center", color: theme.palette.text.secondary}}>
                 <ListItemText>共{children.length}项</ListItemText>

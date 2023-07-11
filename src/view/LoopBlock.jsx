@@ -26,7 +26,7 @@ var RenameSpecificListBar = React.memo(() => {
                 if (specificListTempName && !webMusicListStorage.names.includes(specificListTempName)) {
                     webMusicListStorage.remove(webMusicManager.list.name);
                     webMusicManager.list.name = specificListTempName;
-                    webMusicListStorage.set(specificListTempName,webMusicManager.list);
+                    webMusicListStorage.save(specificListTempName,webMusicManager.list);
                 } else if (!specificListTempName) {
                     setSpecificListTempName(webMusicManager.list.name);
                 } else {

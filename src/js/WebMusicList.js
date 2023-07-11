@@ -42,7 +42,7 @@ class WebMusicList extends BasicWebMusicList {
         this.storage = storage;
         if (data?.index && data.index>=0) this.index = data.index;
         if (data?.arr) for (let i=0,L=data.arr.length;i<L;i++) if (WebMusicList.isValidItem(data.arr[i])) this.arr.push(data.arr[i]);
-        if (this.storage) webMusicListStorage.set(this.name,this);
+        if (this.storage) webMusicListStorage.save(this.name,this);
     }
 
     cloneWithNoStorage() {
@@ -64,7 +64,7 @@ class WebMusicList extends BasicWebMusicList {
 
     setStorage(boolValue) {
         this.storage = boolValue;
-        if (this.storage) webMusicListStorage.set(this.name,this);
+        if (this.storage) webMusicListStorage.save(this.name,this);
     }
 
     current() {
@@ -72,23 +72,23 @@ class WebMusicList extends BasicWebMusicList {
     }
     next() {
         var obj = super.next();
-        if (this.storage) webMusicListStorage.set(this.name,this);
+        if (this.storage) webMusicListStorage.save(this.name,this);
         return obj;
     }
     before() {
         var obj = super.before();
-        if (this.storage) webMusicListStorage.set(this.name,this);
+        if (this.storage) webMusicListStorage.save(this.name,this);
         return obj;
     }
     nextRandom() {
         var obj = super.nextRandom();
-        if (this.storage) webMusicListStorage.set(this.name,this);
+        if (this.storage) webMusicListStorage.save(this.name,this);
         return obj;
     }
     confirmIndex(obj) {
         var newIndex = this.arr.findIndex(elem => WebMusicList.isEqual(elem,obj));
         if (newIndex!=-1) this.index = newIndex;
-        if (this.storage) webMusicListStorage.set(this.name,this);
+        if (this.storage) webMusicListStorage.save(this.name,this);
     }
     
     push(obj,silent=false) {
@@ -100,7 +100,7 @@ class WebMusicList extends BasicWebMusicList {
         this.arr.push(obj);
         this.randomList = [];
         if (!silent) this.changeSub.publish();
-        if (this.storage) webMusicListStorage.set(this.name,this);
+        if (this.storage) webMusicListStorage.save(this.name,this);
         return WebMusicList.PUSH_STATE.SUCCESS;
     }
     pop(silent=false) {
@@ -108,7 +108,7 @@ class WebMusicList extends BasicWebMusicList {
         if (this.index==this.arr.length) this.index--;
         this.randomList = [];
         if (!silent) this.changeSub.publish();
-        if (this.storage) webMusicListStorage.set(this.name,this);
+        if (this.storage) webMusicListStorage.save(this.name,this);
         return ans;
     }
     delete(index,silent=false) {
@@ -117,7 +117,7 @@ class WebMusicList extends BasicWebMusicList {
         if (index<=this.index) this.index--;
         this.randomList = [];
         if (!silent) this.changeSub.publish();
-        if (this.storage) webMusicListStorage.set(this.name,this);
+        if (this.storage) webMusicListStorage.save(this.name,this);
         return ans;
     }
     pushSomeElem(objArr,silent=false) {
@@ -176,7 +176,7 @@ class WebMusicList extends BasicWebMusicList {
         else if (oldIndex>this.index && newIndex<=this.index) this.index++;
 
         this.changeSub.publish();
-        if (this.storage) webMusicListStorage.set(this.name,this);
+        if (this.storage) webMusicListStorage.save(this.name,this);
         return true;
     }
 }

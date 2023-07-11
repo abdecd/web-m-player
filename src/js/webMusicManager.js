@@ -25,13 +25,15 @@ var webMusicManager = {
     addListChangeListener(fn) {return this.listChangeSub.subscribe(fn)},
     removeListChangeListener(fn) {this.listChangeSub.unsubscribe(fn)},
 
-    //name, (src or id)
-    async load(name,src,id) {
-        if (!WebMusicList.isValidItem({name,src,id})) return false;
+    // {name, (src or id)}
+    async load(obj) {
+        if (!WebMusicList.isValidItem(obj)) return false;
 
-        this.musicObj = {name,src,id};
-        this.nameChangeSub.publish(name);
-        this.handler.src = src ?? await musicAjax.fetchSrc(id).catch(e => "") ?? "";
+        this.musicObj = obj;
+        this.nameChangeSub.publish(this.musicObj.name);
+        this.handler.src = this.musicObj.src
+            || (this.musicObj.src = await musicAjax.fetchSrc(this.musicObj.id).catch(e => ""))
+            || "";
 
         return new Promise(resolve => {
             var fn, errorFn;
@@ -117,7 +119,7 @@ var webMusicManager = {
     async loadMusicObj(obj) {
         if (!obj) return null;
         var loadCnt=0;
-        while (++loadCnt<=3 && !await this.load(obj.name, obj.src, obj.id));
+        while (++loadCnt<=3 && !await this.load(obj));
         if (loadCnt>3) showTips.info("歌曲加载失败。");
         return loadCnt<=3 ? obj : null;
     },

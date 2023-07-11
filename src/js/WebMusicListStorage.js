@@ -17,8 +17,22 @@ var webMusicListStorage = {
     get(name) {
         return JSON.parse(localStorage.getItem(`wmls-${name}`));
     },
-    set(name,data) {
+    save(name,data) {
         // data: {index, arr}
+        data.arr = data.arr.map(musicObj=>{
+            var {name,id,src} = musicObj;
+            var newOne = {};
+            if (name) newOne.name = name;
+            if (id) newOne.id = id;
+            if (src) newOne.src = src;
+            // 不保存临时链接
+            if (newOne.src) {
+                if (newOne.src.startsWith("http")) delete newOne.src;
+            }
+            // 不保存本地获取的临时id
+            if (newOne.src) delete newOne.id;
+            return newOne;
+        });
         if (!this.names.includes(name)) {
             this.names = this.names.concat(name);
             localStorage.setItem("wmlsNames",JSON.stringify(this.names));
