@@ -31,9 +31,10 @@ var webMusicManager = {
 
         this.musicObj = obj;
         this.nameChangeSub.publish(this.musicObj.name);
-        this.handler.src = this.musicObj.src
-            || (this.musicObj.src = await musicAjax.fetchSrc(this.musicObj.id).catch(e => ""))
-            || "";
+        if (!this.musicObj.src) {
+            this.musicObj.src = await musicAjax.fetchSrc(this.musicObj.id).catch(e => "");
+        }
+        this.handler.src = this.musicObj.src;
 
         return new Promise(resolve => {
             var fn, errorFn;

@@ -19,6 +19,7 @@ var webMusicListStorage = {
     },
     save(name,data) {
         // data: {index, arr}
+        data = {...data};
         data.arr = data.arr.map(musicObj=>{
             var {name,id,src} = musicObj;
             var newOne = {};
