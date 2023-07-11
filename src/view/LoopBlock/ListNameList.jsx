@@ -64,6 +64,7 @@ function NormalList({listData,setManageListState,currentListIndex,setIsEditing,i
             return;
         }
         webMusicManager.list = new WebMusicList(elem.name,webMusicListStorage.get(elem.name),true);
+        webMusicManager.list.index-=1;
         setManageListState(false);
     },[]);
 
