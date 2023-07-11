@@ -5,6 +5,18 @@ import LoadingBlock from '../../component/LoadingBlock';
 import musicAjax from '../../js/nativeBridge/musicAjax';
 import showTips from '../../js/showTips';
 import MusicList from './MusicList';
+import { styled } from 'styled-components';
+
+const StyledSearchList = styled.div`
+    height: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    > :nth-child(2) {
+        flex: 1 1;
+        overflow: auto;
+    }
+`
 
 export default function SearchList() {
     var [searchParams,setSearchParams] = useSearchParams({word: ""});
@@ -31,7 +43,7 @@ export default function SearchList() {
     },[]);
 
     return (
-        <div style={{textAlign: "center", height: "100%"}}>
+        <StyledSearchList>
             <form
                 style={{marginLeft: "10px", marginRight: "10px"}}
                 onSubmit={ev => {
@@ -47,9 +59,9 @@ export default function SearchList() {
                     value={searchWord}
                     onChange={ev => setSearchWord(ev.target.value)}/>
             </form>
-            <LoadingBlock loading={loading} setLoading={setLoading} style={{height: "calc(100% - 2em)", overflow: "auto"}}>
+            <LoadingBlock loading={loading} setLoading={setLoading}>
                 <MusicList listData={searchData} loading={loading}/>
             </LoadingBlock>
-        </div>
+        </StyledSearchList>
     )
 }

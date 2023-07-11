@@ -1,12 +1,11 @@
 import React from 'react'
-import { Button, useTheme } from '@mui/material'
+import { Button } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 
-import style from '../css/LinearBar.module.css'
+import { styled } from 'styled-components';
 
 var SettingsBtn = React.memo(({style}) => {
     var navigate = useNavigate();
-    var theme = useTheme();
     return (
         <Button
             style={{minWidth: "30px", height:"30px", ...style}}
@@ -16,23 +15,43 @@ var SettingsBtn = React.memo(({style}) => {
     );
 });
 
+const StyledMenu = styled.div`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    > :nth-child(1) {
+        display: flex;
+        height: 30px;
+    }
+    > :nth-child(2) {
+        flex: 1 1;
+        overflow: auto;
+    }
+`
+
+const StyledBtnBar = styled.div`
+    display: flex;
+    flex: 1;
+    Button {
+        flex: 1
+    }
+`
+
 export default function Menu({children}) {
     var navigate = useNavigate();
 
     return (
-        <div style={{height: "100%"}}>
-            <div style={{display: "flex"}}>
+        <StyledMenu>
+            <div>
                 <SettingsBtn/>
-                <div className={style.LinearBar} style={{height: "30px", flex: "1"}}>
+                <StyledBtnBar>
                     <Button onClick={() => navigate("localList")}>本地</Button>
                     <Button onClick={() => navigate("onlineList")}>网络</Button>
                     <Button onClick={() => navigate("search")}>搜索</Button>
-                </div>
+                </StyledBtnBar>
             </div>
 
-            <div style={{height: "calc(100% - 30px)", overflow: "auto"}}>
-                {children}
-            </div>
-        </div>
+            <div>{children}</div>
+        </StyledMenu>
     )
 }

@@ -50,6 +50,6 @@ export default {
             name: elem.name.match(/(.+?)\.[^\.]+$/)?.[1],
             url: elem.path,
             author: "",
-        }));
+        })) || [];
     },
 };

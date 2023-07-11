@@ -3,13 +3,32 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Button from '@mui/material/Button';
 
 import MusicList from "./MusicList"
-import style from "../../css/LinearBar.module.css"
 
 import dataCache from "../../js/OnlineListCache";
 import musicAjax from '../../js/nativeBridge/musicAjax';
 import LoadingBlock from '../../component/LoadingBlock';
 import showTips from '../../js/showTips';
 import useScrollRecoder from '../../js/reactHooks/useScrollRecoder';
+import { styled } from 'styled-components';
+
+const StyledOnlineList = styled.div`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    > :nth-child(2) {
+        flex: 1 1;
+        overflow: auto;
+    }
+`
+
+const StyledBtnBar = styled.div`
+    display: flex;
+    height: 25px;
+    Button {
+        flex: 1
+    }
+`
 
 export default function OnlineList() {
     //确定list参数
@@ -55,15 +74,15 @@ export default function OnlineList() {
     },[listId]);
 
     return (
-        <div style={{height: "100%"}}>
-            <div className={style.LinearBar} style={{height: "25px"}}>
+        <StyledOnlineList>
+            <StyledBtnBar>
                 <Button onClick={() => navigate("../onlineList/0")} style={idIndex==0 ? {color: "#16a091"} : null}>飙升榜</Button>
                 <Button onClick={() => navigate("../onlineList/1")} style={idIndex==1 ? {color: "#16a091"} : null}>新歌榜</Button>
                 <Button onClick={() => navigate("../onlineList/2")} style={idIndex==2 ? {color: "#16a091"} : null}>原创榜</Button>
-            </div>
-            <LoadingBlock loading={loading} style={{height: "calc(100% - 25px)", overflow: "auto"}}>
+            </StyledBtnBar>
+            <LoadingBlock loading={loading}>
                 <MusicList innerRef={topBlockRef} listData={listData} loading={loading}/>
             </LoadingBlock>
-        </div>
+        </StyledOnlineList>
     )
 }
