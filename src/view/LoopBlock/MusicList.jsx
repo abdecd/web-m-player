@@ -187,7 +187,7 @@ function EditList({listData,currentIndex,setIsEditing,isFiltered,undoSpecificLis
                             <ListItemText
                                 primary={elem.name}
                                 secondary={elem.subName}
-                                className="SingleLine"
+                                className="single-line"
                                 sx={index==currentIndex ? {"span": {color: "#1976d2"}} : null}/>
                         </ListItemButton>
                         <RightBtn

@@ -56,7 +56,7 @@ export default function MusicList({listData,loading=false,style,innerRef}) {
             <p style={{textAlign: "center"}}>refreshing...</p>
         ) : (
             // 留MusicBar位置
-            <BasicList innerRef={innerRef} style={{ paddingBottom: '60px', ...style}}>
+            <BasicList innerRef={innerRef} style={{ paddingBottom: 'calc(var(--musicbar-height) + 10px)', ...style}}>
             {
                 listData
                 .map(elem => ({name: elem.name, subName: elem.author, key: elem.id||elem.url, /*私货*/id: elem.id, src: elem.url}))

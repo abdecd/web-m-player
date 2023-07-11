@@ -15,6 +15,11 @@ const StyledLocalList = styled(LoadingBlock)`
     overflow: hidden;
 `
 
+const StyledMusicListWrapper = styled(LoadingBlock)`
+    flex: 1 1;
+    overflow: auto;
+`
+
 export default function LocalList() {
     const [listData, setListData] = useState([]);
     const [filterList, setFilterList] = useState([]);
@@ -52,9 +57,9 @@ export default function LocalList() {
                         setFilterList={handleFilter}
                         inputStyle={{height: "1.6em"}}
                     />
-                    <LoadingBlock loading={filterloading}>
+                    <StyledMusicListWrapper loading={filterloading}>
                         <MusicList innerRef={topBlockRef} listData={filterList}/>
-                    </LoadingBlock>
+                    </StyledMusicListWrapper>
                 </>
             } else {
                 return <>

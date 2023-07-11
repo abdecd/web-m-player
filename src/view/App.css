@@ -7,13 +7,17 @@
     border-radius: 2px;
 }
 
-.SingleLine {
+.single-line {
     white-space: nowrap;
     overflow-x: auto;
     scrollbar-width: none;
 }
 
-.SingleLine::-webkit-scrollbar {
+.single-line::-webkit-scrollbar {
     width: 0;
     height: 0;
+}
+
+:root {
+    --musicbar-height: 60px;
 }

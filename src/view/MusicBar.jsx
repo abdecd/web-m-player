@@ -19,7 +19,7 @@ const StyledMusicBar = styled.div`
     bottom: 0px;
     z-index: 1;
     width: 100%;
-    height: 60px;
+    height: var(--musicbar-height);
     display: flex;
     flex-direction: column;
 `
