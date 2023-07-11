@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
-import { Button, LinearProgress } from '@mui/material'
+import { Button, Slider } from '@mui/material'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import webMusicManager from '../js/webMusicManager'
 
-import style from './MusicBar.module.css'
+import cssStyle from './MusicBar.module.css'
 import bindLongClick from '../js/click/bindLongClick'
 import musicAjax from '../js/nativeBridge/musicAjax'
 import showTips from '../js/showTips'
@@ -39,9 +39,10 @@ export default React.memo(function MusicBar({toggleLoopBlockShown}) {
         return () => webMusicManager.handler.removeEventListener("canplay",loadFn);
     },[]);
 
+    const progressModifying = useRef(false);
     //订阅秒数变化
     useEffect(() => {
-        var refreshProgress = () => setProgressValue(webMusicManager.getCurrentTime()/webMusicManager.getMaxTime()*100);
+        var refreshProgress = () => !progressModifying.current && setProgressValue(webMusicManager.getCurrentTime());
         webMusicManager.handler.addEventListener("timeupdate",refreshProgress);
         return () => webMusicManager.handler.removeEventListener("timeupdate",refreshProgress);
     },[]);
@@ -150,12 +151,29 @@ export default React.memo(function MusicBar({toggleLoopBlockShown}) {
     },[]);
 
     return (
-        <div className={style.MusicBar}>
-            <div className={style.LinearFlex}>
-                <LoadingBlock loading={loading} className={style.TitleBar}>
+        <div className={cssStyle.MusicBar}>
+            <Slider
+                size='small'
+                value={progressValue}
+                min={0}
+                max={webMusicManager.getMaxTime()}
+                valueLabelDisplay='auto'
+                valueLabelFormat={n=>`${~~(n/60)}:`+`${~~(n%60)}`.padStart(2,'0')}
+                onChange={(_,value)=>{
+                    progressModifying.current = true;
+                    setProgressValue(value);
+                }}
+                onChangeCommitted={(_,value)=>{
+                    webMusicManager.setCurrentTime(value)
+                    progressModifying.current = false;
+                }}
+                sx={{'&':{ padding: 0 }}}
+            />
+            <div className={cssStyle.ContentBar}>
+                <LoadingBlock loading={loading} className={cssStyle.Title}>
                     <p ref={titleBlock}>{title}</p>
                 </LoadingBlock>
-                <div className={style.ButtonBar}>
+                <div className={cssStyle.ButtonBar}>
                     <Button variant="contained" disableElevation ref={loopBtn}>{loopBtnStr}</Button>
                     <Button variant="contained" disableElevation onClick={lFn} onDoubleClick={lDblFn}>
                         <svg style={{width: "1.25em",height: "1.25em",flex: "1 0 auto",verticalAlign: "middle",fill: "currentColor",overflow: "hidden"}} viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5604"><path d="M357.3 324v376c0 17.6-14.4 32-32 32s-32-14.4-32-32V324c0-17.6 14.4-32 32-32s32 14.4 32 32zM400.5 512c0 9 4.4 17.4 11.7 22.6l275.2 192.6c8.4 5.9 19.4 6.5 28.5 1.9 9.1-4.7 14.8-14.1 14.8-24.4V319.4c0-10.3-5.7-19.6-14.8-24.4-9.1-4.7-20.1-4-28.5 1.9L412.3 489.5a27.29 27.29 0 0 0-11.8 22.5z" fill="" p-id="5605"></path></svg>
@@ -166,7 +184,6 @@ export default React.memo(function MusicBar({toggleLoopBlockShown}) {
                     <Button variant="contained" disableElevation ref={playBtn}>{playBtnStr}</Button>
                 </div>
             </div>
-            <LinearProgress variant='determinate' value={progressValue}/>
         </div>
     )
 })
