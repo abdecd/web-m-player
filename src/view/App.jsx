@@ -10,8 +10,24 @@ import settings, { initSettings } from '../js/settings';
 import undoFnContainer, { useUndoableMusicList } from '../js/reactHooks/supportUndoMusicList';
 import theme from '../js/theme';
 import './App.css'
+import { styled } from 'styled-components';
 
 initSettings();
+
+const StyledContent = styled.div`
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    > :nth-last-child(1) {
+        flex: 1 1;
+        overflow: auto;
+    }
+`
+
+const StyledLoopBlockWrapper = styled.div`
+    height: 100%;
+    width: 35%;
+`
 
 export default function App({children}) {
     const [currentTheme, setCurrentTheme] = useState(theme.value);
@@ -28,21 +44,23 @@ export default function App({children}) {
     return (
         <ThemeProvider theme={currentTheme}>
             <CssBaseline/>
-            <div style={{height: "100vh", overflow: "hidden"}}>
+            <StyledContent>
                 {screenWidth<MIN_PC_WIDTH ? (
                     <LoopBlock shown={loopBlockShown} setShown={setLoopBlockShown}/>
                 ) : (
                     <>
-                    <BasicLoopBlock style={{height: "100%", width: "35%", background: "rgba(0,0,0,0.08)", float: "left"}} needRemainSpace/>
+                        <StyledLoopBlockWrapper>
+                            <BasicLoopBlock needRemainSpace/>
+                        </StyledLoopBlockWrapper>
+                        <div style={{width: "1px", flex: "0 0 auto", height: "100vh", backgroundColor: "#00000026", alignSelf: "center"}}></div>
                     </>
                 )}
                 {children}
-            </div>
+            </StyledContent>
 
             <BackgroundBlock type={backgroundType} src={backgroundSrc}/>
             <ToastBar/>
             
-            {/* height: 60px */}
             <MusicBar toggleLoopBlockShown={toggleLoopBlockShown}/>
         </ThemeProvider>
     )
