@@ -36,8 +36,7 @@ function MusicList({shown,style,listStyle}) {
     useEffect(() => {
         var refreshFn = () => setCurrentIndex(filterListReferrer.current.findIndex(elem => WebMusicList.isEqual(elem,webMusicManager.musicObj)));
         refreshFn();
-        webMusicManager.handler.addEventListener("loadstart",refreshFn);
-        return () => webMusicManager.handler.removeEventListener("loadStart",refreshFn);
+        return webMusicManager.musicNameChangeSub.subscribe(refreshFn);
     },[]);
     useLayoutEffect(() => {
         setCurrentIndex(filterList.findIndex(elem => WebMusicList.isEqual(elem,webMusicManager.musicObj)));
