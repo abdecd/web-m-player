@@ -5,26 +5,29 @@ import Subscription from "./Subscription";
 const lightTheme = createTheme();
 const darkTheme = createTheme({ palette: { mode: 'dark' } });
 
-var theme = {
-    value: settingsStorage.get("isDarkMode") ? darkTheme : lightTheme,
+var themeManager = {
+    _themeObj,
     changeSub: new Subscription(),//回调无参数
 
+    getThemeObj() { return this._themeObj; },
     getThemeType() {
-        if (this.value==lightTheme) {
+        if (this._themeObj==lightTheme) {
             return "light";
-        } else if (this.value==darkTheme) {
+        } else if (this._themeObj==darkTheme) {
             return "dark";
         }
         return null;
     },
     setThemeType(type) {
         if (type=="light") {
-            this.value = lightTheme;
+            this._themeObj = lightTheme;
         } else {
-            this.value = darkTheme;
+            this._themeObj = darkTheme;
         }
         this.changeSub.publish();
     }
 };
 
-export default theme;
+themeManager._themeObj = settingsStorage.getSetting("isDarkMode") ? darkTheme : lightTheme;
+
+export default themeManager;

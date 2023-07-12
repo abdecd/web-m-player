@@ -2,10 +2,11 @@ import Subscription from './Subscription'
 import webMusicListStorage from './webMusicListStorage';
 
 class BasicWebMusicList {
-    index = -1;
+    index = 0;
     arr = [];
     randomList = [];
 
+    current() { return this.arr?.[this.index]; }
     next() { return this.arr.length==0 ? null : this.arr[this.index = (this.index>=this.arr.length-1 ? 0 : this.index+1)]; }
     before() { return this.arr.length==0 ? null : this.arr[this.index = (this.index<=0 ? (this.arr.length-1) : this.index-1)]; }
     nextRandom() {
@@ -67,9 +68,6 @@ class WebMusicList extends BasicWebMusicList {
         if (this.storage) webMusicListStorage.save(this.name,this);
     }
 
-    current() {
-        return this.arr?.[this.index];
-    }
     next() {
         var obj = super.next();
         if (this.storage) webMusicListStorage.save(this.name,this);

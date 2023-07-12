@@ -7,12 +7,13 @@ var settingsStorage = {
         background: "#eee",
         isDarkMode: false
     }),
-    settingList: JSON.parse(localStorage.getItem("settingList")),
+    _settingListKey: "settingList",
+    settingList: {},
 
-    get(name) {
+    getSetting(name) {
         return this.settingList[name];
     },
-    set(name,value) {
+    setSetting(name,value) {
         this.settingList[name] = value;
         this._saveSettingList();
     },
@@ -25,10 +26,11 @@ var settingsStorage = {
     },
 
     _saveSettingList() {
-        localStorage.setItem("settingList",JSON.stringify(this.settingList));
+        localStorage.setItem(this._settingListKey,JSON.stringify(this.settingList));
     }
 };
 
+settingsStorage.settingList = JSON.parse(localStorage.getItem(this._settingListKey));
 if (!settingsStorage.settingList) {
     settingsStorage.settingList = {...settingsStorage.defaultSettings};
     settingsStorage._saveSettingList();
@@ -38,9 +40,9 @@ var settings = {
     backgroundSub: new Subscription(),//publish: type, url
     async getBackground() {
         // return: { type, value }
-        var type = settingsStorage.get("backgroundType");
+        var type = settingsStorage.getSetting("backgroundType");
         if (type=="basic") {
-            return { type, value: settingsStorage.get("background") };
+            return { type, value: settingsStorage.getSetting("background") };
         } else {
             return await settingsStorage.getFromDb("backgroundData");
         }
@@ -49,21 +51,21 @@ var settings = {
         // type: "basic", "image", "video"
         // value: String | Blob
         if (type=="basic") {
-            settingsStorage.set("backgroundType",type);
+            settingsStorage.setSetting("backgroundType",type);
 
             document.body.style.background = value;
             this.backgroundSub.publish(type,value);
 
-            settingsStorage.set("background",value);
+            settingsStorage.setSetting("background",value);
             await settingsStorage.setToDb("backgroundData",null);
         } else if (type=="image" || type=="video") {
-            settingsStorage.set("backgroundType",type);
+            settingsStorage.setSetting("backgroundType",type);
 
             var url = URL.createObjectURL(value);
             this.backgroundSub.publish(type,url);
             setTimeout(() => URL.revokeObjectURL(url),5000);
 
-            settingsStorage.set("background",null);
+            settingsStorage.setSetting("background",null);
             await settingsStorage.setToDb("backgroundData",{type,value});
         }
     }
@@ -74,7 +76,7 @@ window.settingsStorage = settingsStorage;
 async function initSettings() {
     var background = await settings.getBackground();
     if (background.type=="basic") {
-        settings.setBackground("basic",settingsStorage.get("background"));
+        settings.setBackground("basic",settingsStorage.getSetting("background"));
     } else {
         settings.setBackground(background.type,background.value);
     }

@@ -3,7 +3,7 @@ import ListItemText from '@mui/material/ListItemText';
 
 import { settingsStorage } from '../../../js/settings';
 import { ListItem, Switch } from '@mui/material';
-import theme from '../../../js/theme';
+import theme from '../../../js/themeManager';
 
 export default function ThemeSettingItem() {
     const [isDarkMode, setIsDarkMode] = useState(theme.getThemeType()=="dark");

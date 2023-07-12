@@ -8,7 +8,7 @@ import MusicBar from './MusicBar'
 import ToastBar from '../component/ToastBar';
 import settings, { initSettings } from '../js/settings';
 import undoFnContainer, { useUndoableMusicList } from '../js/reactHooks/supportUndoMusicList';
-import theme from '../js/theme';
+import themeManager from '../js/themeManager';
 import './App.css'
 import { styled } from 'styled-components';
 
@@ -30,8 +30,8 @@ const StyledLoopBlockWrapper = styled.div`
 `
 
 export default function App({children}) {
-    const [currentTheme, setCurrentTheme] = useState(theme.value);
-    useEffect(() => theme.changeSub.subscribe(() => setCurrentTheme(theme.value)),[]);
+    const [currentTheme, setCurrentTheme] = useState(themeManager.getThemeObj());
+    useEffect(() => themeManager.changeSub.subscribe(() => setCurrentTheme(themeManager.getThemeObj())),[]);
 
     const [backgroundType, backgroundSrc] = useBackgroundListerner();
     const [screenWidth] = useWidthWatcher();
