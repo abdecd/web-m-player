@@ -9,7 +9,7 @@ import webMusicManager from '../../js/webMusicManager';
 import showTips from '../../js/showTips'
 import useScrollRecoder from '../../js/reactHooks/useScrollRecoder';
 
-function ListNameList({shown,setManageListState,style,listStyle}) {
+function ListNameList({shown,setManaging,setMusicListLoading,style,listStyle}) {
     const [isEditing, setIsEditing] = useState(false);
     const [currentListIndex, setCurrentListIndex] = useState(0);
     const [nameList, setNameList] = useState([]);
@@ -42,7 +42,8 @@ function ListNameList({shown,setManageListState,style,listStyle}) {
                 setIsEditing={setIsEditing}/>
             : <NormalList
                 listData={nameList}
-                setManageListState={setManageListState}
+                setManaging={setManaging}
+                setMusicListLoading={setMusicListLoading}
                 currentListIndex={currentListIndex}
                 listStyle={listStyle}
                 setIsEditing={setIsEditing}/>
@@ -50,20 +51,21 @@ function ListNameList({shown,setManageListState,style,listStyle}) {
     </div>
 }
 
-function NormalList({listData,setManageListState,currentListIndex,setIsEditing,listStyle}) {
+function NormalList({listData,setManaging,setMusicListLoading,currentListIndex,setIsEditing,listStyle}) {
     // listData: [{name,subName,...}]
     const root = useRef();
     useScrollRecoder("LoopBlock_ListNameList",root);
 
     var selectList = useCallback((_,elem,index) => {
         if (webMusicManager.list.name==elem.name) {
-            setManageListState(false);
+            setManaging(false);
             return;
         }
         webMusicListStorage.setCurrentNameIndex(index)
         webMusicManager.list = new WebMusicList(elem.name,webMusicListStorage.get(elem.name),true);
         webMusicManager.list.index-=1;
-        setManageListState(false);
+        setMusicListLoading(true);
+        setManaging(false);
     },[]);
 
     var deleteList = useCallback((_,elem,index) => {

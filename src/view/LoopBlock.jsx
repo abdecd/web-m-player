@@ -41,23 +41,24 @@ var RenameSpecificListBar = React.memo(() => {
     )
 });
 
-var TopBar = React.memo(({manageListState,setManageListState,manageComponent,unManageComponent}) => {
+var TopBar = React.memo(({managing,setManaging,manageComponent,unManageComponent}) => {
     return (
         <div style={{display: "flex", justifyContent: "space-between", margin: "10px", height: "36px"}}>
             <Button
-                variant={manageListState ? 'contained' : 'outlined'}
+                variant={managing ? 'contained' : 'outlined'}
                 disableElevation disableRipple
-                onClick={() => setManageListState(!manageListState)}>
+                onClick={() => setManaging(!managing)}>
                 列表管理
             </Button>
 
-            {manageListState ? manageComponent : unManageComponent}
+            {managing ? manageComponent : unManageComponent}
         </div>
     )
 });
 
 function BasicLoopBlock({style,needRemainSpace=false}) {
-    const [manageListState, setManageListState] = useState(false);
+    const [managing, setManaging] = useState(false);
+    const [musicListLoading, setMusicListLoading] = useState(true);
 
     var createList = useCallback(() => {
         var name = showTips.prompt("name: ");
@@ -70,15 +71,25 @@ function BasicLoopBlock({style,needRemainSpace=false}) {
     return (
         <div style={{ display: "flex", flexDirection: "column", height: "100%", ...style }}>
             <TopBar
-                manageListState={manageListState}
-                setManageListState={setManageListState}
+                managing={managing}
+                setManaging={setManaging}
                 manageComponent={<Button variant='outlined' onClick={createList}>new</Button>}
                 unManageComponent={<RenameSpecificListBar/>}/>
 
             <div style={{ flex: "1 1 0", minHeight: 0 }}>
                 {/* 留MusicBar位置 */}
-                <MusicList shown={!manageListState} listStyle={needRemainSpace ? {paddingBottom: 'calc(var(--musicbar-height) + 10px)'} : {}}/>
-                <ListNameList shown={manageListState} setManageListState={setManageListState} listStyle={needRemainSpace ? {paddingBottom: 'calc(var(--musicbar-height) + 10px)'} : {}}/>
+                <MusicList
+                    shown={!managing}
+                    loading={musicListLoading}
+                    setLoading={setMusicListLoading}
+                    listStyle={needRemainSpace ? {paddingBottom: 'calc(var(--musicbar-height) + 10px)'} : {}}
+                />
+                <ListNameList
+                    shown={managing}
+                    setManaging={setManaging}
+                    setMusicListLoading={setMusicListLoading}
+                    listStyle={needRemainSpace ? {paddingBottom: 'calc(var(--musicbar-height) + 10px)'} : {}}
+                />
             </div>
         </div>
     )
