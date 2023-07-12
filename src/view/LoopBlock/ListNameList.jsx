@@ -23,8 +23,8 @@ function ListNameList({shown,setManageListState,style,listStyle}) {
 
     //订阅currentNameIndex
     useEffect(() => {
-        var refreshFn = () => setCurrentListIndex(webMusicListStorage.currentNameIndex);
-        refreshFn();
+        var refreshFn = index => setCurrentListIndex(index);
+        refreshFn(webMusicListStorage.currentNameIndex);
         return webMusicListStorage.currentNameIndexSub.subscribe(refreshFn);
     },[]);
 
