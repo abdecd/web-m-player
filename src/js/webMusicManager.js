@@ -34,9 +34,22 @@ var webMusicManager = {
         this.handler.src = this.musicObj.src;
 
         return new Promise(resolve => {
+            var fn, errFn;
+            var revoker = () => {
+                this.handler.removeEventListener("canplay",fn);
+                this.handler.removeEventListener("error",errFn);
+            };
+            fn = () => {
+                revoker();
+                resolve(true);
+            };
+            errFn = () => {
+                revoker();
+                resolve(false);
+            }
             //设置监听
-            this.handler.addEventListener("canplay",()=>resolve(true),{once: true});
-            this.handler.addEventListener("error",()=>resolve(false),{once: true});// todo
+            this.handler.addEventListener("canplay",fn);
+            this.handler.addEventListener("error",errFn);
         });
     },
     // get _VOLUME_TIME_PER_BLOCK() { return 30; },
