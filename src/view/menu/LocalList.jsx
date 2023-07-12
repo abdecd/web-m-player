@@ -5,7 +5,7 @@ import musicAjax from '../../js/nativeBridge/musicAjax'
 import LoadingBlock from '../../component/LoadingBlock';
 import ListItemFilter from '../../component/ListItemFilter';
 import useScrollRecorder from '../../js/reactHooks/useScrollRecoder';
-import { styled } from 'styled-components';
+import { StyleSheetManager, styled } from 'styled-components';
 
 const StyledLocalList = styled(LoadingBlock)`
     height: 100%;
@@ -46,7 +46,7 @@ export default function LocalList() {
     useEffect(() => { fetchLocalList(); },[]);
 
     return (
-        <StyledLocalList $loading={loading} $textHint='refreshing...'>
+        <StyledLocalList loading={loading} textHint='refreshing...'>
         { (listData.length)
             ? <>
                 <ListItemFilter
@@ -54,7 +54,7 @@ export default function LocalList() {
                     setFilterList={handleFilter}
                     inputStyle={{height: "1.6em"}}
                 />
-                <StyledMusicListWrapper $loading={filterloading} $textHint='loading...'>
+                <StyledMusicListWrapper loading={filterloading} textHint='loading...'>
                     <MusicList innerRef={topBlockRef} listData={filterList}/>
                 </StyledMusicListWrapper>
             </>
