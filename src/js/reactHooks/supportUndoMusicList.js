@@ -14,7 +14,7 @@ function useUndoableMusicList() {
         };
         var listChangeHandler = () => {
             refreshFn();
-            webMusicManager.list.addChangeListener(refreshFn);
+            webMusicManager.list.changeSub.subscribe(refreshFn);// todo
         };
         listChangeHandler();
         return webMusicManager.listChangeSub.subscribe(listChangeHandler);
