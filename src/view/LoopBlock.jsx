@@ -77,8 +77,7 @@ function BasicLoopBlock({style,needRemainSpace=false}) {
     useEffect(() => {
         var refreshFn = names => setNameList(names.map(elem => ({name: elem, key: elem})));
         refreshFn(webMusicListStorage.names);
-        webMusicListStorage.addNamesChangeListener(refreshFn);
-        return () => webMusicListStorage.removeNamesChangeListener(refreshFn);
+        return webMusicListStorage.namesChangeSub.subscribe(refreshFn);
     },[]);
 
     var undoSpecificListFn = undoFnContainer.value;

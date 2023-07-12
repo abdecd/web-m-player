@@ -5,9 +5,6 @@ var webMusicListStorage = {
     currentNameIndex: 0,
     namesChangeSub: new Subscription(),// 回调参数: names
 
-    addNamesChangeListener(fn) { return this.namesChangeSub.subscribe(fn); },//不包括currentNameIndex
-    removeNamesChangeListener(fn) { this.namesChangeSub.unsubscribe(fn); },
-
     init() {
         if (!window.localStorage) return false;
         this.names = JSON.parse(localStorage.getItem("wmlsNames")) || [];
@@ -59,7 +56,7 @@ var webMusicListStorage = {
             };
         }) || [];
     },
-    move(oldIndex,newIndex) {
+    namesMove(oldIndex,newIndex) {
         if (oldIndex<0 || oldIndex>=this.names.length) return false;
         if (newIndex<0 || newIndex>=this.names.length) return false;
 

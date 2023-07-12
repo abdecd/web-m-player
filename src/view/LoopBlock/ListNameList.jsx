@@ -23,10 +23,10 @@ function ListNameList(props) {
         };
         refreshFn();
         webMusicManager.listChangeSub.subscribe(refreshFn);
-        webMusicListStorage.addNamesChangeListener(refreshFn);
+        webMusicListStorage.namesChangeSub.subscribe(refreshFn);
         return () => {
             webMusicManager.listChangeSub.unsubscribe(refreshFn);
-            webMusicListStorage.removeNamesChangeListener(refreshFn);
+            webMusicListStorage.namesChangeSub.unsubscribe(refreshFn);
         };
     },[]);
 
@@ -132,7 +132,7 @@ function EditList({listData,currentListIndex,setIsEditing,innerStyle}) {
             view: root.current,
             cb: draggable => {
                 var { firstIndex, currentIndex } = draggable;
-                webMusicListStorage.move(firstIndex,currentIndex);
+                webMusicListStorage.namesMove(firstIndex,currentIndex);
                 draggable.defaultCb();
             }
         });
