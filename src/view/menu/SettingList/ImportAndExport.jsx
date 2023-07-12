@@ -15,7 +15,7 @@ function CollapseBlock() {
 
         if (webMusicListStorage.names.includes(name)) name += " I";
         while (webMusicListStorage.names.includes(name)) name += "I";
-        webMusicListStorage.set(name,JSON.parse(text));
+        webMusicListStorage.save(name,JSON.parse(text));
         showTips.info(`已成功导入"${name}"。`);
     },[]);
 
