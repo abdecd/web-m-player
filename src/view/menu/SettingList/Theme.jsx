@@ -12,11 +12,11 @@ export default function ThemeSettingItem() {
         if (checked) {
             theme.setThemeType("dark");
             setIsDarkMode(true);
-            settingsStorage.set("isDarkMode",true);
+            settingsStorage.setSetting("isDarkMode",true);
         } else {
             theme.setThemeType("light");
             setIsDarkMode(false);
-            settingsStorage.set("isDarkMode",false);
+            settingsStorage.setSetting("isDarkMode",false);
         }
     },[]);
 

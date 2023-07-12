@@ -30,7 +30,7 @@ var settingsStorage = {
     }
 };
 
-settingsStorage.settingList = JSON.parse(localStorage.getItem(this._settingListKey));
+settingsStorage.settingList = JSON.parse(localStorage.getItem(settingsStorage._settingListKey));
 if (!settingsStorage.settingList) {
     settingsStorage.settingList = {...settingsStorage.defaultSettings};
     settingsStorage._saveSettingList();

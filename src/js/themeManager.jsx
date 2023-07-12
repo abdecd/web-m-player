@@ -6,7 +6,7 @@ const lightTheme = createTheme();
 const darkTheme = createTheme({ palette: { mode: 'dark' } });
 
 var themeManager = {
-    _themeObj,
+    _themeObj: null,
     changeSub: new Subscription(),//回调无参数
 
     getThemeObj() { return this._themeObj; },
