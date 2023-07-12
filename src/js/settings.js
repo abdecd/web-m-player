@@ -4,7 +4,7 @@ import Subscription from "./utils/Subscription";
 var settingsStorage = {
     defaultSettings: Object.freeze({
         backgroundType: "basic",
-        background: "#eee",
+        background: "rgb(218,232,232)",
         isDarkMode: false
     }),
     _settingListKey: "settingList",
