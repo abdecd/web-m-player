@@ -7,7 +7,7 @@ import showTips from '../js/showTips';
 import webMusicManager from '../js/webMusicManager';
 
 // 重置滚动记录
-webMusicManager.addNameChangeListener(() => setRecord("Lyric",0));
+webMusicManager.musicNameChangeSub.subscribe(() => setRecord("Lyric",0));
 
 export default function Lyric() {
     var {musicId} = useParams();

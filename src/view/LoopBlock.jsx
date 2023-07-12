@@ -15,8 +15,7 @@ var RenameSpecificListBar = React.memo(() => {
     useEffect(() => {
         var refreshFn = () => setSpecificListTempName(webMusicManager.list.name);
         refreshFn();
-        webMusicManager.addListChangeListener(refreshFn);
-        return () => webMusicManager.removeListChangeListener(refreshFn);
+        return webMusicManager.listChangeSub.subscribe(refreshFn);
     },[]);
 
     return (
@@ -71,8 +70,7 @@ function BasicLoopBlock({style,needRemainSpace=false}) {
             webMusicManager.list.addChangeListener(refreshFn);
         };
         listChangeHandler();
-        webMusicManager.addListChangeListener(listChangeHandler);
-        return () => webMusicManager.removeListChangeListener(listChangeHandler);
+        return webMusicManager.listChangeSub.subscribe(listChangeHandler);
     },[]);
 
     //订阅nameList

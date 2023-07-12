@@ -27,7 +27,7 @@ class Subscription {
     // 为特定对象的属性 生成对应的关联实例并写入
     static createSubscriptions(rootObj,propertyNames,changeSetvalueToPublishes) {
         for (let i=0;i<propertyNames.length;i++) {
-            var subscribeName = propertyNames[i]+"Subscription";
+            var subscribeName = propertyNames[i]+"Sub";
             if (!rootObj[subscribeName] instanceof Subscription) rootObj[subscribeName] = new Subscription();
             rootObj[subscribeName].bindProperty(rootObj,propertyNames[i],changeSetvalueToPublishes?.[i]);
         }

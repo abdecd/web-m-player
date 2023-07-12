@@ -65,7 +65,7 @@ function NormalList({listData,currentIndex,setIsEditing,undoSpecificListFn,style
     // 列表更换时滚动到顶部
     const root = useRef();
     const needScroll = useRef(false);
-    useEffect(() => webMusicManager.addListChangeListener(() => { needScroll.current = true; }),[]);
+    useEffect(() => webMusicManager.listChangeSub.subscribe(() => { needScroll.current = true; }),[]);
     useEffect(() => {
         if (needScroll.current) {
             needScroll.current = false;

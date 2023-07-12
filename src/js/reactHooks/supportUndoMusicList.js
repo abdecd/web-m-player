@@ -17,8 +17,7 @@ function useUndoableMusicList() {
             webMusicManager.list.addChangeListener(refreshFn);
         };
         listChangeHandler();
-        webMusicManager.addListChangeListener(listChangeHandler);
-        return () => webMusicManager.removeListChangeListener(listChangeHandler);
+        return webMusicManager.listChangeSub.subscribe(listChangeHandler);
     },[]);
 
     //撤销specificList函数

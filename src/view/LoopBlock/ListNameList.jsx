@@ -22,10 +22,10 @@ function ListNameList(props) {
             webMusicListStorage.setCurrentNameIndex(index);//todo: 可能有更好的方式
         };
         refreshFn();
-        webMusicManager.addListChangeListener(refreshFn);
+        webMusicManager.listChangeSub.subscribe(refreshFn);
         webMusicListStorage.addNamesChangeListener(refreshFn);
         return () => {
-            webMusicManager.removeListChangeListener(refreshFn);
+            webMusicManager.listChangeSub.unsubscribe(refreshFn);
             webMusicListStorage.removeNamesChangeListener(refreshFn);
         };
     },[]);

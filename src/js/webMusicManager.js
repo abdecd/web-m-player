@@ -18,40 +18,25 @@ var webMusicManager = {
 
     get PUSH_STATE() {return WebMusicList.PUSH_STATE},
 
-    nameChangeSub: new Subscription(),
-    addNameChangeListener(fn) {return this.nameChangeSub.subscribe(fn)},
-    removeNameChangeListener(fn) {this.nameChangeSub.unsubscribe(fn)},
+    musicNameChangeSub: new Subscription(),
     listChangeSub: new Subscription(),//回调无参数
-    addListChangeListener(fn) {return this.listChangeSub.subscribe(fn)},
-    removeListChangeListener(fn) {this.listChangeSub.unsubscribe(fn)},
 
     // {name, (src or id)}
     async load(obj) {
         if (!WebMusicList.isValidItem(obj)) return false;
 
         this.musicObj = obj;
-        this.nameChangeSub.publish(this.musicObj.name);
+        this.musicNameChangeSub.publish(this.musicObj.name);
+        // 获取链接
         if (!this.musicObj.src) {
             this.musicObj.src = await musicAjax.fetchSrc(this.musicObj.id).catch(e => "");
         }
         this.handler.src = this.musicObj.src;
 
         return new Promise(resolve => {
-            var fn, errorFn;
-            fn = (function() {
-                this.handler.removeEventListener("canplay",fn);
-                this.handler.removeEventListener("error",errorFn);
-                resolve(true);
-            }).bind(this);
-            errorFn = (function() {
-                this.handler.removeEventListener("canplay",fn);
-                this.handler.removeEventListener("error",errorFn);
-                resolve(false);
-            }).bind(this);
-
             //设置监听
-            this.handler.addEventListener("canplay",fn);
-            this.handler.addEventListener("error",errorFn);
+            this.handler.addEventListener("canplay",()=>resolve(true),{once: true});
+            this.handler.addEventListener("error",()=>resolve(false),{once: true});// todo
         });
     },
     // get _VOLUME_TIME_PER_BLOCK() { return 30; },
@@ -165,6 +150,7 @@ webMusicManager.listChangeSub.bindProperty(
     () => null
 );
 
+// 载入列表
 if (webMusicListStorage.names.length==0) {
     webMusicManager.list = new WebMusicList(null,null,true);
 } else  {
@@ -173,7 +159,6 @@ if (webMusicListStorage.names.length==0) {
     webMusicManager.nextByObj(webMusicManager.list.current());// load to the MusicBar
 }
 
-webMusicManager._loopFn = (async function() { if (await this.next()) this.play() }).bind(webMusicManager);
-webMusicManager.handler.addEventListener("ended",webMusicManager._loopFn);
+webMusicManager.loopMode = "next";
 
 export default webMusicManager;
