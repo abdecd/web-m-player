@@ -59,7 +59,7 @@ export default function SearchList() {
                     value={searchWord}
                     onChange={ev => setSearchWord(ev.target.value)}/>
             </form>
-            <LoadingBlock loading={loading} setLoading={setLoading}>
+            <LoadingBlock loading={loading}>
                 <MusicList listData={searchData} loading={loading}/>
             </LoadingBlock>
         </StyledSearchList>
