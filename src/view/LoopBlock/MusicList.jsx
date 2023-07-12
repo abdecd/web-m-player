@@ -70,7 +70,7 @@ function MusicList({shown,style,listStyle}) {
                     listData={filterList}
                     currentIndex={currentIndex}
                     setIsEditing={setIsEditing}
-                    isFiltered={filterList.length!=props.listData.length}/>
+                    isFiltered={filterList.length!=specificList.length}/>
                 : <LoadingBlock
                     style={{flex: "1 1 0", overflow: "auto"}}
                     loading={loading}
