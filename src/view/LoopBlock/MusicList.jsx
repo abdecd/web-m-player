@@ -11,18 +11,23 @@ import showTips from '../../js/showTips'
 import useScrollRecoder, { setRecord } from '../../js/reactHooks/useScrollRecoder'
 import MusicCopyPopup from './MusicCopyPopup'
 import undoFnContainer from '../../js/reactHooks/supportUndoMusicList'
+import LoadingBlock from '../../component/LoadingBlock'
 
 function MusicList({shown,style,listStyle}) {
     const [isEditing, setIsEditing] = useState(false);
     const [specificList, setSpecificList] = useState([]);
     const [filterList, setFilterList] = useState(specificList);
     const [currentIndex, setCurrentIndex] = useState(-1);
+    const [loading, setLoading] = useState(true);
 
     const undo = undoFnContainer.value;
 
     //订阅specificList
     useEffect(() => {
-        var refreshFn = () => setSpecificList(webMusicManager.list.cloneWithNoStorage().arr.map(elem => ({name: elem.name, key: elem.id||elem.src, /*私货*/id: elem.id, src: elem.src})));
+        var refreshFn = () => {
+            setLoading(true);
+            setSpecificList(webMusicManager.list.cloneWithNoStorage().arr.map(elem => ({name: elem.name, key: elem.id||elem.src, /*私货*/id: elem.id, src: elem.src})));
+        };
         var revoker = ()=>{};
         var listChangeHandler = () => {
             revoker();
@@ -31,6 +36,11 @@ function MusicList({shown,style,listStyle}) {
         };
         listChangeHandler();
         return webMusicManager.listChangeSub.subscribe(listChangeHandler);
+    },[]);
+
+    const handleSpecificListChange = useCallback(list=>{
+        setFilterList(list);
+        setLoading(false);
     },[]);
 
     //订阅歌曲变化和filterList变化 改currentIndex
@@ -51,7 +61,7 @@ function MusicList({shown,style,listStyle}) {
 
     return (
         <div style={{display: shown ? "flex" : "none", flexDirection: "column", height: "100%", ...style}}>
-            <ListItemFilter listData={specificList} setFilterList={setFilterList} inputStyle={{height: "28px"}} style={{display: isEditing ? "none" : "block"}}/>
+            <ListItemFilter listData={specificList} setFilterList={handleSpecificListChange} inputStyle={{height: "28px"}} style={{display: isEditing ? "none" : "block"}}/>
             { isEditing
                 ? <EditList
                     undoSpecificListFn={undo}
@@ -61,12 +71,14 @@ function MusicList({shown,style,listStyle}) {
                     currentIndex={currentIndex}
                     setIsEditing={setIsEditing}
                     isFiltered={filterList.length!=props.listData.length}/>
-                : <NormalList
-                    undoSpecificListFn={undo}
-                    style={{flex: "1 1 0", ...listStyle}}
-                    listData={filterList}
-                    currentIndex={currentIndex}
-                    setIsEditing={setIsEditing}/>
+                : <LoadingBlock loading={loading} textHint='Loading...'>
+                    <NormalList
+                        undoSpecificListFn={undo}
+                        style={{flex: "1 1 0", ...listStyle}}
+                        listData={filterList}
+                        currentIndex={currentIndex}
+                        setIsEditing={setIsEditing}/>
+                </LoadingBlock>
             }
         </div>
     )
