@@ -217,7 +217,7 @@ export default React.memo(function MusicBar({toggleLoopBlockShown}) {
                 sx={{'&':{ padding: 0 }}}
             />
             <StyledContentBar>
-                <StyledTitle loading={loading}>
+                <StyledTitle $loading={loading}>
                     <p ref={titleBlock}>{title}</p>
                 </StyledTitle>
                 <StyledButtonBar>

@@ -46,7 +46,7 @@ export default function LocalList() {
     useEffect(() => { fetchLocalList(); },[]);
 
     return (
-        <StyledLocalList loading={loading} textHint='refreshing...'>
+        <StyledLocalList $loading={loading} $textHint='refreshing...'>
         { (listData.length)
             ? <>
                 <ListItemFilter
@@ -54,7 +54,7 @@ export default function LocalList() {
                     setFilterList={handleFilter}
                     inputStyle={{height: "1.6em"}}
                 />
-                <StyledMusicListWrapper loading={filterloading} textHint='loading...'>
+                <StyledMusicListWrapper $loading={filterloading} $textHint='loading...'>
                     <MusicList innerRef={topBlockRef} listData={filterList}/>
                 </StyledMusicListWrapper>
             </>
