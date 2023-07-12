@@ -65,16 +65,19 @@ function MusicList({shown,style,listStyle}) {
             { isEditing
                 ? <EditList
                     undoSpecificListFn={undo}
-                    style={{flex: "1 1 0"}}
+                    style={{flex: "1 1 0", overflow: "auto"}}
                     listStyle={listStyle}
                     listData={filterList}
                     currentIndex={currentIndex}
                     setIsEditing={setIsEditing}
                     isFiltered={filterList.length!=props.listData.length}/>
-                : <LoadingBlock loading={loading} textHint='Loading...'>
+                : <LoadingBlock
+                    style={{flex: "1 1 0", overflow: "auto"}}
+                    loading={loading}
+                    textHint='Loading...'>
                     <NormalList
                         undoSpecificListFn={undo}
-                        style={{flex: "1 1 0", ...listStyle}}
+                        style={listStyle}
                         listData={filterList}
                         currentIndex={currentIndex}
                         setIsEditing={setIsEditing}/>
