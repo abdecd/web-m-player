@@ -73,8 +73,7 @@ function MusicList({shown,style,listStyle}) {
                     isFiltered={filterList.length!=specificList.length}/>
                 : <LoadingBlock
                     style={{flex: "1 1 0", overflow: "auto"}}
-                    loading={loading}
-                    textHint=' '>
+                    loading={loading}>
                     <NormalList
                         undoSpecificListFn={undo}
                         style={listStyle}
