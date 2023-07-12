@@ -74,7 +74,7 @@ function MusicList({shown,style,listStyle}) {
                 : <LoadingBlock
                     style={{flex: "1 1 0", overflow: "auto"}}
                     loading={loading}
-                    textHint='Loading...'>
+                    textHint=' '>
                     <NormalList
                         undoSpecificListFn={undo}
                         style={listStyle}
