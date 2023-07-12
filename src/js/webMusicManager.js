@@ -1,6 +1,6 @@
 import musicAjax from "./nativeBridge/musicAjax";
 import showTips from "./showTips";
-import Subscription from "./Subscription";
+import Subscription from "./utils/Subscription";
 import WebMusicList from "./WebMusicList";
 import webMusicListStorage from "./webMusicListStorage";
 

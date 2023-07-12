@@ -1,4 +1,4 @@
-import Subscription from "./Subscription";
+import Subscription from "./utils/Subscription";
 
 var showTips = {
     changeSub: new Subscription(),//回调见下面

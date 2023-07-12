@@ -1,6 +1,6 @@
 import { createTheme } from "@mui/material";
 import { settingsStorage } from "./settings";
-import Subscription from "./Subscription";
+import Subscription from "./utils/Subscription";
 
 const lightTheme = createTheme();
 const darkTheme = createTheme({ palette: { mode: 'dark' } });

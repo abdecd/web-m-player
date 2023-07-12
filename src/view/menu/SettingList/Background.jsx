@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
 import settings, { settingsStorage } from '../../../js/settings';
-import requestFile from '../../../js/fileRequestor';
+import requestFile from '../../../js/utils/fileRequestor';
 import showTips from '../../../js/showTips';
 import { useTheme } from '@mui/material';
 

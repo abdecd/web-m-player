@@ -1,5 +1,5 @@
 import localforage from "localforage";
-import Subscription from "./Subscription";
+import Subscription from "./utils/Subscription";
 
 var settingsStorage = {
     defaultSettings: Object.freeze({

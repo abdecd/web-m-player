@@ -1,4 +1,4 @@
-import Subscription from './Subscription'
+import Subscription from './utils/Subscription'
 import webMusicListStorage from './webMusicListStorage';
 
 class BasicWebMusicList {
