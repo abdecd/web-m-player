@@ -12,9 +12,11 @@ function useUndoableMusicList() {
             var newCloneList = webMusicManager.list.cloneWithNoStorage();
             specificList.current = newCloneList;
         };
+        var revoker = ()=>{};
         var listChangeHandler = () => {
+            revoker();
             refreshFn();
-            webMusicManager.list.changeSub.subscribe(refreshFn);// todo
+            revoker = webMusicManager.list.changeSub.subscribe(refreshFn);
         };
         listChangeHandler();
         return webMusicManager.listChangeSub.subscribe(listChangeHandler);

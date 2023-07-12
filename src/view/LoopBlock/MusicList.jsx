@@ -23,9 +23,11 @@ function MusicList({shown,style,listStyle}) {
     //订阅specificList
     useEffect(() => {
         var refreshFn = () => setSpecificList(webMusicManager.list.cloneWithNoStorage().arr.map(elem => ({name: elem.name, key: elem.id||elem.src, /*私货*/id: elem.id, src: elem.src})));
+        var revoker = ()=>{};
         var listChangeHandler = () => {
+            revoker();
             refreshFn();
-            webMusicManager.list.changeSub.subscribe(refreshFn);// todo
+            revoker = webMusicManager.list.changeSub.subscribe(refreshFn);
         };
         listChangeHandler();
         return webMusicManager.listChangeSub.subscribe(listChangeHandler);
