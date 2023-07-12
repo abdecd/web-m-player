@@ -10,12 +10,26 @@ import webMusicManager from '../../js/webMusicManager'
 import showTips from '../../js/showTips'
 import useScrollRecoder, { setRecord } from '../../js/reactHooks/useScrollRecoder'
 import MusicCopyPopup from './MusicCopyPopup'
+import undoFnContainer from '../../js/reactHooks/supportUndoMusicList'
 
-function MusicList(props) {
-    // props = {shown,listData,undoSpecificListFn,style,innerStyle}
+function MusicList({shown,style,listStyle}) {
     const [isEditing, setIsEditing] = useState(false);
-    const [filterList, setFilterList] = useState(props.listData);
+    const [specificList, setSpecificList] = useState([]);
+    const [filterList, setFilterList] = useState(specificList);
     const [currentIndex, setCurrentIndex] = useState(-1);
+
+    const undo = undoFnContainer.value;
+
+    //订阅specificList
+    useEffect(() => {
+        var refreshFn = () => setSpecificList(webMusicManager.list.cloneWithNoStorage().arr.map(elem => ({name: elem.name, key: elem.id||elem.src, /*私货*/id: elem.id, src: elem.src})));
+        var listChangeHandler = () => {
+            refreshFn();
+            webMusicManager.list.addChangeListener(refreshFn);
+        };
+        listChangeHandler();
+        return webMusicManager.listChangeSub.subscribe(listChangeHandler);
+    },[]);
 
     //订阅歌曲变化和filterList变化 改currentIndex
     var filterListReferrer = useStateReferrer(filterList);
@@ -31,26 +45,24 @@ function MusicList(props) {
 
     //隐藏时退出编辑
     useEffect(() => {
-        if (!props.shown) setIsEditing(false);
-    },[props.shown]);
+        if (!shown) setIsEditing(false);
+    },[shown]);
 
-    const fillRemainStyle = useMemo(() => ({ flex: "1 1 0" }),[]);
     return (
-        <div style={{display: props.shown ? "flex" : "none", flexDirection: "column", height: "100%", ...props.style}}>
-            <ListItemFilter listData={props.listData} setFilterList={setFilterList} inputStyle={{height: "28px"}} style={{display: isEditing ? "none" : "block"}}/>
+        <div style={{display: shown ? "flex" : "none", flexDirection: "column", height: "100%", ...style}}>
+            <ListItemFilter listData={specificList} setFilterList={setFilterList} inputStyle={{height: "28px"}} style={{display: isEditing ? "none" : "block"}}/>
             { isEditing
                 ? <EditList
-                    {...props}
-                    shown={undefined}
-                    style={fillRemainStyle}
+                    undoSpecificListFn={undo}
+                    style={{flex: "1 1 0"}}
+                    listStyle={listStyle}
                     listData={filterList}
                     currentIndex={currentIndex}
                     setIsEditing={setIsEditing}
                     isFiltered={filterList.length!=props.listData.length}/>
                 : <NormalList
-                    {...props}
-                    shown={undefined}
-                    style={fillRemainStyle}
+                    undoSpecificListFn={undo}
+                    style={{flex: "1 1 0", ...listStyle}}
                     listData={filterList}
                     currentIndex={currentIndex}
                     setIsEditing={setIsEditing}/>
@@ -59,7 +71,7 @@ function MusicList(props) {
     )
 }
 
-function NormalList({listData,currentIndex,setIsEditing,undoSpecificListFn,style,innerStyle}) {
+function NormalList({listData,currentIndex,setIsEditing,undoSpecificListFn,style}) {
     // listData: [{name,subName,...}]
     
     // 列表更换时滚动到顶部
@@ -109,7 +121,7 @@ function NormalList({listData,currentIndex,setIsEditing,undoSpecificListFn,style
     },[listData]);
 
     return (
-        <BasicList innerRef={root} style={{ ...style, ...innerStyle }}>
+        <BasicList innerRef={root} style={{ ...style }}>
             { listData.map((elem,index) => (
                 <ListItem key={elem.key}>
                     <LeftItem
@@ -134,7 +146,7 @@ function NormalList({listData,currentIndex,setIsEditing,undoSpecificListFn,style
     )
 }
 
-function EditList({listData,currentIndex,setIsEditing,isFiltered,undoSpecificListFn,style,innerStyle}) {
+function EditList({listData,currentIndex,setIsEditing,isFiltered,undoSpecificListFn,style,listStyle}) {
     const root = useRef();
     const [selectArr, setSelectArr] = useState(new Array(listData.length).fill(false));
 
@@ -177,7 +189,7 @@ function EditList({listData,currentIndex,setIsEditing,isFiltered,undoSpecificLis
     return (
         <div style={{ display: "flex", flexDirection: "column", height: "100%", ...style }}>
             <TopBar setIsEditing={setIsEditing} selectArr={selectArr} setSelectArr={setSelectArr} listData={listData} undoSpecificListFn={undoSpecificListFn}/>
-            <BasicList innerRef={root} style={{flex: "1 1 0", ...innerStyle}}>
+            <BasicList innerRef={root} style={{flex: "1 1 0", ...listStyle}}>
                 { listData.map((elem,index) => (
                     <ListItem key={elem.key}>
                         <ListItemButton style={{flex: 9}} onClick={() => setSelectArr(old => old.map((x,i) => index==i ? !x : x))}>

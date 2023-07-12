@@ -4,7 +4,6 @@ import webMusicManager from '../js/webMusicManager'
 import webMusicListStorage from '../js/webMusicListStorage'
 import WebMusicList from '../js/WebMusicList'
 import showTips from '../js/showTips'
-import undoFnContainer from '../js/reactHooks/supportUndoMusicList'
 import MusicList from './LoopBlock/MusicList'
 import ListNameList from './LoopBlock/ListNameList'
 
@@ -58,29 +57,7 @@ var TopBar = React.memo(({manageListState,setManageListState,manageComponent,unM
 });
 
 function BasicLoopBlock({style,needRemainSpace=false}) {
-    const [specificList, setSpecificList] = useState([]);
-    const [nameList, setNameList] = useState([]);
     const [manageListState, setManageListState] = useState(false);
-
-    //订阅specificList
-    useEffect(() => {
-        var refreshFn = () => setSpecificList(webMusicManager.list.cloneWithNoStorage().arr.map(elem => ({name: elem.name, key: elem.id||elem.src, /*私货*/id: elem.id, src: elem.src})));
-        var listChangeHandler = () => {
-            refreshFn();
-            webMusicManager.list.addChangeListener(refreshFn);
-        };
-        listChangeHandler();
-        return webMusicManager.listChangeSub.subscribe(listChangeHandler);
-    },[]);
-
-    //订阅nameList
-    useEffect(() => {
-        var refreshFn = names => setNameList(names.map(elem => ({name: elem, key: elem})));
-        refreshFn(webMusicListStorage.names);
-        return webMusicListStorage.namesChangeSub.subscribe(refreshFn);
-    },[]);
-
-    var undoSpecificListFn = undoFnContainer.value;
 
     var createList = useCallback(() => {
         var name = showTips.prompt("name: ");
@@ -100,8 +77,8 @@ function BasicLoopBlock({style,needRemainSpace=false}) {
 
             <div style={{ flex: "1 1 0", minHeight: 0 }}>
                 {/* 留MusicBar位置 */}
-                <MusicList shown={!manageListState} listData={specificList} undoSpecificListFn={undoSpecificListFn} innerStyle={needRemainSpace ? {paddingBottom: 'calc(var(--musicbar-height) + 10px)'} : {}}/>
-                <ListNameList shown={manageListState} listData={nameList} setManageListState={setManageListState} innerStyle={needRemainSpace ? {paddingBottom: 'calc(var(--musicbar-height) + 10px)'} : {}}/>
+                <MusicList shown={!manageListState} listStyle={needRemainSpace ? {paddingBottom: 'calc(var(--musicbar-height) + 10px)'} : {}}/>
+                <ListNameList shown={manageListState} setManageListState={setManageListState} listStyle={needRemainSpace ? {paddingBottom: 'calc(var(--musicbar-height) + 10px)'} : {}}/>
             </div>
         </div>
     )

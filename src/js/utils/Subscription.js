@@ -11,7 +11,8 @@ class Subscription {
     publish(...sth) { this.fnList.forEach(fn => fn(...sth)); }
 
     // 将该实例与某个对象的属性关联
-    bindProperty(obj,propertyName,changeSetvalueToPublish=(value => value)) {
+    bindProperty(obj,propertyName,changeSetvalueToPublish) {
+        if (!changeSetvalueToPublish) changeSetvalueToPublish = (value => value);
         var privateName = Symbol(propertyName);
         obj[privateName] = obj[propertyName];
         var instance = this;
@@ -28,7 +29,7 @@ class Subscription {
     static createSubscriptions(rootObj,propertyNames,changeSetvalueToPublishes) {
         for (let i=0;i<propertyNames.length;i++) {
             var subscribeName = propertyNames[i]+"Sub";
-            if (!rootObj[subscribeName] instanceof Subscription) rootObj[subscribeName] = new Subscription();
+            if (!(rootObj[subscribeName] instanceof Subscription)) rootObj[subscribeName] = new Subscription();
             rootObj[subscribeName].bindProperty(rootObj,propertyNames[i],changeSetvalueToPublishes?.[i]);
         }
     }

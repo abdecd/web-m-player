@@ -3,7 +3,6 @@ import Subscription from "./utils/Subscription";
 var webMusicListStorage = {
     names: [],
     currentNameIndex: 0,
-    namesChangeSub: new Subscription(),// 回调参数: names
 
     init() {
         if (!window.localStorage) return false;
@@ -82,10 +81,14 @@ var webMusicListStorage = {
         return true;
     }
 };
-webMusicListStorage.namesChangeSub.bindProperty(
+
+Subscription.createSubscriptions(
     webMusicListStorage,
-    "names",
-    names => names.slice()
+    ["names","currentNameIndex"],
+    [
+        names => names.slice(),// 回调参数: names
+        null
+    ]
 );
 
 webMusicListStorage.init();
