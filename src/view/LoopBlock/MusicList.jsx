@@ -88,7 +88,7 @@ function MusicList({shown,style,listStyle}) {
 }
 
 function NormalList({listData,currentIndex,setIsEditing,undoSpecificListFn,style}) {
-    // listData: [{name,subName,...}]
+    // listData: [{name,subName,...}]; 实际 [musicObj,...]
     
     // 列表更换时滚动到顶部
     const root = useRef();
@@ -143,6 +143,7 @@ function NormalList({listData,currentIndex,setIsEditing,undoSpecificListFn,style
                     <LeftItem
                         name={elem.name}
                         subName={elem.subName}
+                        tags={elem.src?.startsWith("file")?[]:["online"]}
                         clickFn={ev=>selectAndPlayMusic(ev,elem)}
                         longClickFn={ev=>setIsEditing(true)}
                         shouldHighLight={index==currentIndex}/>
@@ -215,6 +216,7 @@ function EditList({listData,currentIndex,setIsEditing,isFiltered,undoSpecificLis
                             <ListItemText
                                 primary={elem.name}
                                 secondary={elem.subName}
+                                tags={elem.src?.startsWith("file")?[]:["online"]}
                                 className="single-line"
                                 sx={index==currentIndex ? {"span": {color: "#1976d2"}} : null}/>
                         </ListItemButton>
