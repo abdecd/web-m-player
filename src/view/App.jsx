@@ -11,8 +11,10 @@ import undoFnContainer, { useUndoableMusicList } from '../js/reactHooks/supportU
 import themeManager from '../js/themeManager';
 import './App.css'
 import { styled } from 'styled-components';
+import mediaSessionProvider from '../js/nativeBridge/mediaSessionProvider';
 
 initSettings();
+mediaSessionProvider.provide();
 
 const StyledContent = styled.div`
     height: 100vh;
