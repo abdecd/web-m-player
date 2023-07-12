@@ -46,35 +46,30 @@ export default function LocalList() {
     useEffect(() => { fetchLocalList(); },[]);
 
     return (
-        <StyledLocalList loading={loading}>
-        {(()=>{
-            if (loading) {
-                return <p>refreshing...</p>
-            } else if (listData.length) {
-                return <>
-                    <ListItemFilter
-                        listData={listData}
-                        setFilterList={handleFilter}
-                        inputStyle={{height: "1.6em"}}
-                    />
-                    <StyledMusicListWrapper loading={filterloading}>
-                        <MusicList innerRef={topBlockRef} listData={filterList}/>
-                    </StyledMusicListWrapper>
-                </>
-            } else {
-                return <>
-                    <p>Nothing in "/sdcard/Music".</p>
-                    <Button
-                        variant='outlined'
-                        disableRipple
-                        onClick={fetchLocalList}
-                        sx={{'&':{alignSelf: 'center'}}}
-                    >
-                        refresh
-                    </Button>
-                </>
-            }
-        })()}
+        <StyledLocalList loading={loading} textHint='refreshing...'>
+        { (listData.length)
+            ? <>
+                <ListItemFilter
+                    listData={listData}
+                    setFilterList={handleFilter}
+                    inputStyle={{height: "1.6em"}}
+                />
+                <StyledMusicListWrapper loading={filterloading} textHint='loading...'>
+                    <MusicList innerRef={topBlockRef} listData={filterList}/>
+                </StyledMusicListWrapper>
+            </>
+            : <>
+                <p>Nothing in "/sdcard/Music".</p>
+                <Button
+                    variant='outlined'
+                    disableRipple
+                    onClick={fetchLocalList}
+                    sx={{'&':{alignSelf: 'center'}}}
+                >
+                    refresh
+                </Button>
+            </>
+        }
         </StyledLocalList>
     )
 }
