@@ -113,6 +113,7 @@ function LoopBlock({shown,setShown}) {
             
             <div style={{
                 backdropFilter: "blur(6px)",
+                borderRadius: "10px 10px 0 0",
                 transition: "0.3s",
                 opacity: (shown ? 1 : 0),
                 pointerEvents: (shown ? "inherit" : "none"),
@@ -121,7 +122,12 @@ function LoopBlock({shown,setShown}) {
                 bottom: (shown ? "60px" : "20px"),
                 zIndex
             }}>
-                <BasicLoopBlock style={{width: "70vw", height: "68vh", boxShadow: "0px 0px 20px 0px rgba(0,0,0,0.2)", borderRadius: "10px 10px 0 0" }}/>
+                <BasicLoopBlock style={{
+                    width: "70vw",
+                    height: "68vh",
+                    boxShadow: "0px 0px 20px 0px rgba(0,0,0,0.2)",
+                    borderRadius: "inherit",
+                }}/>
             </div>
         </>
     )
