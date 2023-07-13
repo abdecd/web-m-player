@@ -31,7 +31,7 @@ const StyledContentBar = styled.div`
     flex: 1 1 0;
 `
 
-const StyledTitle = styled(LoadingBlock)`
+const StyledTitle = styled.div`
     flex: 1;
     margin-left: 10px;
     white-space: nowrap;
@@ -217,8 +217,10 @@ export default React.memo(function MusicBar({toggleLoopBlockShown}) {
                 sx={{'&':{ padding: 0 }}}
             />
             <StyledContentBar>
-                <StyledTitle loading={loading}>
-                    <p ref={titleBlock}>{title}</p>
+                <StyledTitle>
+                    <LoadingBlock innerRef={titleBlock} loading={loading}>
+                        <p>{title}</p>
+                    </LoadingBlock>
                 </StyledTitle>
                 <StyledButtonBar>
                     <Button variant="contained" disableElevation ref={loopBtn}>{loopBtnStr}</Button>

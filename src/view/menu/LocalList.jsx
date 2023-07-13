@@ -5,19 +5,17 @@ import musicAjax from '../../js/nativeBridge/musicAjax'
 import LoadingBlock from '../../component/LoadingBlock';
 import ListItemFilter from '../../component/ListItemFilter';
 import useScrollRecorder from '../../js/reactHooks/useScrollRecoder';
-import { StyleSheetManager, styled } from 'styled-components';
+import { styled } from 'styled-components';
 
-const StyledLocalList = styled(LoadingBlock)`
+const StyledLocalList = styled.div`
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    overflow: hidden;
-`
-
-const StyledMusicListWrapper = styled(LoadingBlock)`
-    flex: 1 1;
-    overflow: auto;
+    > :nth-child(1) {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        overflow: hidden;
+    }
 `
 
 export default function LocalList() {
@@ -27,7 +25,7 @@ export default function LocalList() {
     const [filterloading, setFilterLoading] = useState(true);
     const topBlockRef = useRef();
 
-    useScrollRecorder("LocalList",topBlockRef,!loading);
+    useScrollRecorder("LocalList", topBlockRef, !loading);
 
     var fetchLocalList = useCallback(async () => {
         setLoading(true);
@@ -35,41 +33,46 @@ export default function LocalList() {
         var ans = await musicAjax.loadLocalListSync();
         setListData(ans);
         setLoading(false);
-    },[]);
+    }, []);
 
     var handleFilter = useCallback(list => {
         setFilterList(list);
         setFilterLoading(false);
-    },[]);
+    }, []);
 
     //初始载入
-    useEffect(() => { fetchLocalList(); },[]);
+    useEffect(() => { fetchLocalList(); }, []);
 
     return (
-        <StyledLocalList loading={loading} textHint='refreshing...'>
-        { (listData.length)
-            ? <>
-                <ListItemFilter
-                    listData={listData}
-                    setFilterList={handleFilter}
-                    inputStyle={{height: "1.6em"}}
-                />
-                <StyledMusicListWrapper loading={filterloading} textHint='loading...'>
-                    <MusicList innerRef={topBlockRef} listData={filterList}/>
-                </StyledMusicListWrapper>
-            </>
-            : <>
-                <p>Nothing in "/sdcard/Music".</p>
-                <Button
-                    variant='outlined'
-                    disableRipple
-                    onClick={fetchLocalList}
-                    sx={{'&':{alignSelf: 'center'}}}
-                >
-                    refresh
-                </Button>
-            </>
-        }
+        <StyledLocalList>
+            <LoadingBlock loading={loading} textHint='refreshing...'>
+                {(listData.length)
+                    ? <>
+                        <ListItemFilter
+                            listData={listData}
+                            setFilterList={handleFilter}
+                            inputStyle={{ height: "1.6em" }}
+                        />
+                        <LoadingBlock
+                            loading={filterloading}
+                            textHint='loading...'
+                            style={{ flex: "1 1", overflow: "auto" }}>
+                            <MusicList innerRef={topBlockRef} listData={filterList} />
+                        </LoadingBlock>
+                    </>
+                    : <>
+                        <p>Nothing in "/sdcard/Music".</p>
+                        <Button
+                            variant='outlined'
+                            disableRipple
+                            onClick={fetchLocalList}
+                            sx={{ '&': { alignSelf: 'center' } }}
+                        >
+                            refresh
+                        </Button>
+                    </>
+                }
+            </LoadingBlock>
         </StyledLocalList>
     )
 }
