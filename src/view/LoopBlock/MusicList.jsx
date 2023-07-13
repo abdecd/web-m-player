@@ -74,6 +74,7 @@ function MusicList({shown,loading,setLoading,style,listStyle}) {
                     <NormalList
                         undoSpecificListFn={undo}
                         style={listStyle}
+                        loading={loading}
                         listData={filterList}
                         currentIndex={currentIndex}
                         setIsEditing={setIsEditing}/>
@@ -83,20 +84,17 @@ function MusicList({shown,loading,setLoading,style,listStyle}) {
     )
 }
 
-function NormalList({listData,currentIndex,setIsEditing,undoSpecificListFn,style}) {
+function NormalList({listData,currentIndex,setIsEditing,undoSpecificListFn,loading,style}) {
     // listData: [{name,subName,...}]; 实际 [musicObj,...]
     
-    // 列表更换时滚动到顶部
+    // 列表加载完成（更换）时滚动到顶部
     const root = useRef();
-    const needScroll = useRef(false);
-    useEffect(() => webMusicManager.listChangeSub.subscribe(() => { needScroll.current = true; }),[]);
     useEffect(() => {
-        if (needScroll.current) {
-            needScroll.current = false;
+        if (!loading) {
             root.current.scrollTop = 0;
             setRecord("LoopBlock_MusicList",0);
         }
-    });
+    },[loading]);
 
     useScrollRecoder("LoopBlock_MusicList",root);
 

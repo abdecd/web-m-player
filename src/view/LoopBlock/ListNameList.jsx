@@ -81,6 +81,7 @@ function NormalList({listData,setManaging,setMusicListLoading,currentListIndex,s
                 var name = webMusicListStorage.names[0];
                 webMusicManager.list = new WebMusicList(name,webMusicListStorage.get(name),true);
             }
+            setMusicListLoading(true);
         }
         showTips.info("删除列表成功。");
     },[currentListIndex]);
@@ -90,6 +91,7 @@ function NormalList({listData,setManaging,setMusicListLoading,currentListIndex,s
         webMusicListStorage.removeAll();
         webMusicListStorage.setCurrentNameIndex(0);
         webMusicManager.list = new WebMusicList(null,null,true);
+        setMusicListLoading(true);
         showTips.info("所有列表已删除。");
     },[]);
 
