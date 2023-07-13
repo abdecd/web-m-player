@@ -34,6 +34,7 @@ const StyledContentBar = styled.div`
 const StyledTitle = styled.div`
     flex: 1;
     margin-left: 10px;
+    margin-right: 10px;
     white-space: nowrap;
     overflow-x: auto;
     user-select: none;
