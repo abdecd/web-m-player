@@ -137,7 +137,7 @@ function NormalList({listData,currentIndex,setIsEditing,undoSpecificListFn,loadi
                     <LeftItem
                         name={elem.name}
                         subName={elem.subName}
-                        tags={elem.src?.startsWith("file")?[]:["online"]}
+                        tags={/^(content|file)/.test(elem.src)?[]:["online"]}
                         clickFn={ev=>selectAndPlayMusic(ev,elem)}
                         longClickFn={ev=>setIsEditing(true)}
                         shouldHighLight={index==currentIndex}/>
@@ -210,7 +210,7 @@ function EditList({listData,currentIndex,setIsEditing,isFiltered,undoSpecificLis
                             <ListItemText
                                 primary={elem.name}
                                 secondary={elem.subName}
-                                tags={elem.src?.startsWith("file")?[]:["online"]}
+                                tags={/^(content|file)/.test(elem.src)?[]:["online"]}
                                 className="single-line"
                                 sx={index==currentIndex ? {"span": {color: "#1976d2"}} : null}/>
                         </ListItemButton>
