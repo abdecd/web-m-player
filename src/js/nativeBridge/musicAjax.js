@@ -45,6 +45,7 @@ export default {
     },
 
     async getLocalListAbsolutePath() {
+        // 包括url前缀
         return await window.PhoneMusicManager?.getLocalListAbsolutePath();
     },
 
