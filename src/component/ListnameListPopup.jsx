@@ -26,7 +26,7 @@ export default function ListnameListPopup({shown,setShown,titleBlock,onItemClick
         width: "80vw",
         height: "70vh",
         borderRadius: "5px",
-        backdropFilter: "blur(12px) brightness(2)",
+        backdropFilter: "blur(12px) brightness(2)",// todo: chrome模糊
         boxShadow: "0px 0px 20px 0px rgba(0,0,0,0.5)",
         display: "flex",
         flexDirection: "column",
