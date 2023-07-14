@@ -30,7 +30,7 @@ export default function LocalList() {
     var fetchLocalList = useCallback(async () => {
         setLoading(true);
         setFilterLoading(true);
-        var ans = await musicAjax.loadLocalListSync();
+        var ans = await musicAjax.loadLocalList();
         setListData(ans);
         setLoading(false);
     }, []);

@@ -4,6 +4,7 @@ import ListnameListPopup from '../../../component/ListnameListPopup';
 import requestFile from '../../../js/utils/fileRequestor';
 import showTips from '../../../js/showTips';
 import webMusicListStorage from '../../../js/webMusicListStorage';
+import musicAjax from '../../../js/nativeBridge/musicAjax';
 
 function CollapseBlock() {
     const [shownExportList, setShownExportList] = useState(false);
@@ -11,11 +12,19 @@ function CollapseBlock() {
     var importList = useCallback(async () => {
         var file = await requestFile();
         var name = file.name.replace(/\.txt$/,"");
-        var text = await new Blob([file.arrayBuffer]).text();//todo: 本地列表路径转换
+        var text = await new Blob([file.arrayBuffer]).text();
+        var listObj = JSON.parse(text);
+
+        var pathPerfix = await musicAjax.getLocalListAbsolutePath();
+        if (pathPerfix) for (let obj of listObj.arr) {
+            if (obj.src && !obj.src.startsWith("http")) {
+                obj.src = pathPerfix+obj.src;
+            }
+        }
 
         if (webMusicListStorage.names.includes(name)) name += " I";
         while (webMusicListStorage.names.includes(name)) name += "I";
-        webMusicListStorage.save(name,JSON.parse(text));
+        webMusicListStorage.save(name,listObj);
         showTips.info(`已成功导入"${name}"。`);
     },[]);
 
@@ -28,7 +37,16 @@ function CollapseBlock() {
         document.body.removeChild(tempTextArea);
     },[]);
     var exportList = useCallback(async listName => {
-        var outStr = JSON.stringify(webMusicListStorage.get(listName));
+        var listObj = webMusicListStorage.get(listName);
+
+        var pathPerfix = await musicAjax.getLocalListAbsolutePath();
+        if (pathPerfix) for (let obj of listObj.arr) {
+            if (obj.src && !obj.src.startsWith("http")) {
+                obj.src = obj.src.replace(pathPerfix,"");
+            }
+        }
+
+        var outStr = JSON.stringify(listObj);
         copyTextToClipboard(outStr);
         showTips.info("已成功复制到剪贴板。");
     },[copyTextToClipboard]);

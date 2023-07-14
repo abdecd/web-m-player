@@ -44,7 +44,11 @@ export default {
         return ans;
     },
 
-    async loadLocalListSync() {
+    async getLocalListAbsolutePath() {
+        return await window.PhoneMusicManager?.getLocalListAbsolutePath();
+    },
+
+    async loadLocalList() {
         // native: null(no permission) or arr(may empty)
         return (await window.PhoneMusicManager?.loadFullList())?.map(elem => ({
             name: elem.name.match(/(.+?)\.[^\.]+$/)?.[1],

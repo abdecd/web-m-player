@@ -1,12 +1,12 @@
 export default function bindEarphone(webMusicManager) {
     if (!window.PhoneMusicManager) return;
     
-    PhoneMusicManager.addPlayPauseListener(() => webMusicManager.playPause());
-    PhoneMusicManager.addBeforeListener(() => {
+    PhoneMusicManager.playPauseSub.subscribe(() => webMusicManager.playPause());
+    PhoneMusicManager.beforeSub.subscribe(() => {
         webMusicManager.pause();
         setTimeout(async () => (await webMusicManager.before()) && webMusicManager.play(),1500);
     });
-    PhoneMusicManager.addNextListener(() => {
+    PhoneMusicManager.nextSub.subscribe(() => {
         webMusicManager.pause();
         setTimeout(async () => (await webMusicManager.next()) && webMusicManager.play(),1500);
     });
