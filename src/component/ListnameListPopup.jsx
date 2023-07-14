@@ -23,6 +23,7 @@ const StyledPopup = styled(CenterBlock)`
     box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.5);
     display: flex;
     flex-direction: column;
+    padding-bottom: 16px;
 `
 
 const StyledBg = styled(CenterBlock)`
