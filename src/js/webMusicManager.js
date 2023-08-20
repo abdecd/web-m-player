@@ -22,17 +22,18 @@ var webMusicManager = {
     listChangeSub: new Subscription(),//回调无参数
 
     // {name, (src or id)}
-    async load(obj) {
+    async loadOrFindUrlToAudio(obj,forceRefreshOnline=false) {
         if (!WebMusicList.isValidItem(obj)) return false;
 
         this.musicObj = obj;
         this.musicNameChangeSub.publish(this.musicObj.name);
         // 获取链接
-        if (!this.musicObj.src) {
+        if (!this.musicObj.src || forceRefreshOnline) {
             this.musicObj.src = await musicAjax.fetchSrc(this.musicObj.id).catch(e => "");
         }
         this.handler.src = this.musicObj.src;
 
+        // canplay or err时return
         return new Promise(resolve => {
             var fn, errFn;
             var revoker = () => {
@@ -52,26 +53,43 @@ var webMusicManager = {
             this.handler.addEventListener("error",errFn);
         });
     },
-    // get _VOLUME_TIME_PER_BLOCK() { return 30; },
-    // get _VOLUME_CNT() { return 15; },
+    // get VOLUME_TIME_PER_BLOCK() { return 45; },
+    // get VOLUME_CNT() { return 15; },
     async play() {
         try {
+            // this.handler.volume = 1;
             await this.handler.play();
-            // for (let i=0;i<=this._VOLUME_CNT;i++) {
-            //     setTimeout(() => this.handler.volume=i/this._VOLUME_CNT,i*this._VOLUME_TIME_PER_BLOCK+20);
-            // }
         } catch {
             showTips.info("播放失败。");
             return false;
         }
         return true;
     },
+    // _easeInOutCubic(t, b, c, d) {
+    //     /*
+    //         t = Time - 表示动画开始以来经过的时间。通常从0开始，通过游戏循环或update函数来缓慢增加。
+    //         b = Beginning value - 动画的起点，默认从0开始。
+    //         c = Change in value - 从起点到终点的差值。
+    //         d = Duration - 完成动画所需的时间
+    //     */
+    //     if ((t /= d / 2) < 1) return c / 2 * t * t * t + b;
+    //     return c / 2 * ((t -= 2) * t * t + 2) + b;
+    // },
     pause() {
         this.handler.pause();
-        // for (let i=0;i<=this._VOLUME_CNT;i++) {
-        //     setTimeout(() => this.handler.volume=(this._VOLUME_CNT-i)/this._VOLUME_CNT,i*this._VOLUME_TIME_PER_BLOCK+20);
+        // var totalTime = this.VOLUME_CNT*this.VOLUME_TIME_PER_BLOCK+20;
+        // var getCurrTime = (nowCnt,timePerBlock) => nowCnt*timePerBlock+20;
+        // for (let i=0;i<=this.VOLUME_CNT;i++) {
+        //     setTimeout(() => {
+        //         this.handler.volume=this._easeInOutCubic(
+        //             getCurrTime(i,this.VOLUME_TIME_PER_BLOCK),
+        //             1,
+        //             -1,
+        //             totalTime
+        //         )
+        //     },getCurrTime(i,this.VOLUME_TIME_PER_BLOCK));
         // }
-        // setTimeout(() => this.handler.pause(),this._VOLUME_CNT*this._VOLUME_TIME_PER_BLOCK+20);
+        // setTimeout(() => this.handler.pause(),totalTime);
     },
     async playPause() {
         if (!this.name) return showTips.info("未选择歌曲。");
@@ -117,10 +135,12 @@ var webMusicManager = {
 
     async loadMusicObj(obj) {
         if (!obj) return null;
-        var loadCnt=0;
-        while (++loadCnt<=3 && !await this.load(obj));
-        if (loadCnt>3) showTips.info("歌曲加载失败。");
-        return loadCnt<=3 ? obj : null;
+        var loadCnt=3;
+        if (!await this.loadOrFindUrlToAudio(obj)) {
+            while (--loadCnt>0 && !await this.loadOrFindUrlToAudio(obj,true));
+        }
+        if (loadCnt<=0) showTips.info("歌曲加载失败。");
+        return loadCnt>0 ? obj : null;
     },
     async next() {
         var obj = await this.loadMusicObj(this.aheadList.shift() || this.list.next());
