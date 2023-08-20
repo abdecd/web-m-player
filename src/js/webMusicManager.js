@@ -76,8 +76,8 @@ var webMusicManager = {
     },
     pause() {
         // this.handler.pause();
-        var totalTime = this.VOLUME_CNT*this.VOLUME_TIME_PER_BLOCK+20;
-        var getCurrTime = (nowCnt,timePerBlock) => nowCnt*timePerBlock+20;
+        var totalTime = this.VOLUME_CNT*this.VOLUME_TIME_PER_BLOCK;
+        var getCurrTime = (nowCnt,timePerBlock) => nowCnt*timePerBlock;
         for (let i=0;i<=this.VOLUME_CNT;i++) {
             setTimeout(() => {
                 this.handler.volume=this._easeOutCirc(
