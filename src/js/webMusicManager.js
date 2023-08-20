@@ -53,11 +53,11 @@ var webMusicManager = {
             this.handler.addEventListener("error",errFn);
         });
     },
-    // get VOLUME_TIME_PER_BLOCK() { return 45; },
-    // get VOLUME_CNT() { return 15; },
+    get VOLUME_TIME_PER_BLOCK() { return 8; },
+    get VOLUME_CNT() { return 100; },
     async play() {
         try {
-            // this.handler.volume = 1;
+            this.handler.volume = 1;
             await this.handler.play();
         } catch {
             showTips.info("播放失败。");
@@ -65,31 +65,30 @@ var webMusicManager = {
         }
         return true;
     },
-    // _easeInOutCubic(t, b, c, d) {
-    //     /*
-    //         t = Time - 表示动画开始以来经过的时间。通常从0开始，通过游戏循环或update函数来缓慢增加。
-    //         b = Beginning value - 动画的起点，默认从0开始。
-    //         c = Change in value - 从起点到终点的差值。
-    //         d = Duration - 完成动画所需的时间
-    //     */
-    //     if ((t /= d / 2) < 1) return c / 2 * t * t * t + b;
-    //     return c / 2 * ((t -= 2) * t * t + 2) + b;
-    // },
+    _easeOutCirc(t, b, c, d) {
+        /*
+            t = Time - 表示动画开始以来经过的时间。通常从0开始，通过游戏循环或update函数来缓慢增加。
+            b = Beginning value - 动画的起点，默认从0开始。
+            c = Change in value - 从起点到终点的差值。
+            d = Duration - 完成动画所需的时间
+        */
+        return c * Math.sqrt(1 - (t = t / d - 1) * t) + b;
+    },
     pause() {
-        this.handler.pause();
-        // var totalTime = this.VOLUME_CNT*this.VOLUME_TIME_PER_BLOCK+20;
-        // var getCurrTime = (nowCnt,timePerBlock) => nowCnt*timePerBlock+20;
-        // for (let i=0;i<=this.VOLUME_CNT;i++) {
-        //     setTimeout(() => {
-        //         this.handler.volume=this._easeInOutCubic(
-        //             getCurrTime(i,this.VOLUME_TIME_PER_BLOCK),
-        //             1,
-        //             -1,
-        //             totalTime
-        //         )
-        //     },getCurrTime(i,this.VOLUME_TIME_PER_BLOCK));
-        // }
-        // setTimeout(() => this.handler.pause(),totalTime);
+        // this.handler.pause();
+        var totalTime = this.VOLUME_CNT*this.VOLUME_TIME_PER_BLOCK+20;
+        var getCurrTime = (nowCnt,timePerBlock) => nowCnt*timePerBlock+20;
+        for (let i=0;i<=this.VOLUME_CNT;i++) {
+            setTimeout(() => {
+                this.handler.volume=this._easeOutCirc(
+                    getCurrTime(i,this.VOLUME_TIME_PER_BLOCK),
+                    1,
+                    -1,
+                    totalTime
+                )
+            },getCurrTime(i,this.VOLUME_TIME_PER_BLOCK));
+        }
+        setTimeout(() => this.handler.pause(),totalTime);
     },
     async playPause() {
         if (!this.name) return showTips.info("未选择歌曲。");
