@@ -1,20 +1,34 @@
 import fetchWithT from "../utils/fetchWithT";
 
 export default {
+    _parseLyric(lrcStr) {
+        return new Map(
+            lrcStr
+                ?.trim().split("\n")
+                .filter(line => line.match(/\[[^\]]+/g)?.length==1)
+                .map(line => {
+                    var newLine = line.trim().split("]",2);
+                    var temp = newLine[0].slice(1).split(":",2).map(x=>parseInt(x));
+                    var time = 60*temp[0]+temp[1];
+                    return [time,newLine[1]];
+                })
+        );
+        // new Map([[time(单位s),lyric],...])
+    },
     async fetchLyric(musicId) {
+        // new Map([[time(单位s),lyric],...])
         var obj = await fetchWithT(`/api/song/lyric?os=pc&id=${musicId}&lv=-1&tv=-1`,{timeout: 3000}).then(x => x.json());
         var lrcGot;
         if (obj?.tlyric?.lyric) {
-            var lrc = new Map(obj?.lrc?.lyric?.trim().split("\n").filter(line => line.match(/\[[^\]]+/g)?.length==1).map(line => line.trim().split("]",2)));
-            var tLrc = new Map(obj.tlyric.lyric.trim().split("\n").filter(line => line.match(/\[[^\]]+/g)?.length==1).map(line => line.trim().split("]",2)));
+            var lrc = this._parseLyric(obj?.lrc?.lyric);
+            var tLrc = this._parseLyric(obj.tlyric.lyric);
             for (let key of lrc.keys()) {
                 if (!tLrc.has(key)) continue;
                 lrc.set(key,lrc.get(key)+"\n"+tLrc.get(key));
             }
-            lrcGot = "";
-            for (let value of  lrc.values()) lrcGot+=value+"\n";
+            lrcGot = lrc;
         } else {
-            lrcGot = obj?.lrc?.lyric?.replace(/\[[^\]]+\]/g,"");
+            lrcGot = this._parseLyric(obj?.lrc?.lyric);
         }
         return lrcGot;
     },

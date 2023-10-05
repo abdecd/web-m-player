@@ -36,7 +36,7 @@ export default function Lyric() {
         (async () => {
             setLoading(true);//设置加载效果
             var lrcGot = await musicAjax.fetchLyric(musicId).catch(e => {showTips.info("获取歌词失败。"); throw e});
-            setLyric(lrcGot);
+            setLyric(Array.from(lrcGot.values()).join("\n"));
             setLoading(false);
         })();
     },[musicId]);
