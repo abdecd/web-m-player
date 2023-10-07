@@ -39,7 +39,7 @@ var RenameSpecificListBar = React.memo(() => {
 
     return (
         <form
-            style={{position: "relative", maxWidth: "60%", maxHeight: "100%"}}
+            style={{position: "relative", maxWidth: "60%", maxHeight: "100%", margin: "0 5px 0 0"}}
             onSubmit={ev => {
                 ev.preventDefault();
                 if (specificListTempName && !webMusicListStorage.names.includes(specificListTempName)) {
