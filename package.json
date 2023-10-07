@@ -6,8 +6,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "package_phone": "node ./package_tools/phone.mjs",
-    "package_win": "node ./package_tools/windows.mjs"
+    "package_phone": "node ./package_tools/phone.mjs && vite build",
+    "package_win": "node ./package_tools/windows.mjs && vite build"
   },
   "dependencies": {
     "@mui/material": "^5.9.0",
@@ -22,6 +22,7 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@vitejs/plugin-react": "^1.3.0",
-    "vite": "^3.0.9"
+    "vite": "^3.0.9",
+    "vite-plugin-singlefile": "^0.13.5"
   }
 }
