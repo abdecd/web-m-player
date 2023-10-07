@@ -8,6 +8,14 @@ import MusicList from './LoopBlock/MusicList'
 import ListNameList from './LoopBlock/ListNameList'
 import styled from 'styled-components'
 
+const StyledForm = styled.form`
+    position: relative;
+    min-width: 30px;
+    max-width: 60%;
+    max-height: 100%;
+    margin: 0 5px 0 0;
+`
+
 const StyledRenameSpan = styled.span`
     visibility: hidden;
     white-space: pre;
@@ -38,30 +46,30 @@ var RenameSpecificListBar = React.memo(() => {
     },[]);
 
     return (
-        <form
-            style={{position: "relative", maxWidth: "60%", maxHeight: "100%", margin: "0 5px 0 0"}}
+        <StyledForm
             onSubmit={ev => {
                 ev.preventDefault();
-                if (specificListTempName && !webMusicListStorage.names.includes(specificListTempName)) {
-                    var oldIndex = webMusicListStorage.names.indexOf(webMusicManager.list.name);
-                    webMusicListStorage.remove(webMusicManager.list.name);
-                    webMusicManager.list.name = specificListTempName;
-                    webMusicListStorage.save(specificListTempName,webMusicManager.list,oldIndex);
-                } else if (!specificListTempName) {
-                    setSpecificListTempName(webMusicManager.list.name);
-                } else {
-                    setSpecificListTempName(webMusicManager.list.name);
-                    showTips.info("重命名失败，与已有名称重复。");
-                }
-                ev.target.childNodes[0].querySelector("input").blur();
+                ev.target.querySelector("input").blur();
             }}>
             <StyledRenameSpan>{specificListTempName}</StyledRenameSpan>
             <StyledRenameInput>
                 <Input
                     value={specificListTempName}
-                    onChange={ev => setSpecificListTempName(ev.target.value)}/>
+                    onChange={ev => setSpecificListTempName(ev.target.value)}
+                    onBlur={() => {
+                        if (specificListTempName && !webMusicListStorage.names.includes(specificListTempName)) {
+                            var oldIndex = webMusicListStorage.names.indexOf(webMusicManager.list.name);
+                            webMusicListStorage.remove(webMusicManager.list.name);
+                            webMusicManager.list.name = specificListTempName;
+                            webMusicListStorage.save(specificListTempName,webMusicManager.list,oldIndex);
+                        } else if (!specificListTempName) {
+                            setSpecificListTempName(webMusicManager.list.name);
+                        } else {
+                            setSpecificListTempName(webMusicManager.list.name);
+                        }
+                    }}/>
             </StyledRenameInput>
-        </form>
+        </StyledForm>
     )
 });
 
