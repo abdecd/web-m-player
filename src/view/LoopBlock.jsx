@@ -22,9 +22,10 @@ var RenameSpecificListBar = React.memo(() => {
             onSubmit={ev => {
                 ev.preventDefault();
                 if (specificListTempName && !webMusicListStorage.names.includes(specificListTempName)) {
+                    var oldIndex = webMusicListStorage.names.indexOf(webMusicManager.list.name);
                     webMusicListStorage.remove(webMusicManager.list.name);
                     webMusicManager.list.name = specificListTempName;
-                    webMusicListStorage.save(specificListTempName,webMusicManager.list);
+                    webMusicListStorage.save(specificListTempName,webMusicManager.list,oldIndex);
                 } else if (!specificListTempName) {
                     setSpecificListTempName(webMusicManager.list.name);
                 } else {

@@ -13,7 +13,7 @@ var webMusicListStorage = {
     get(name) {
         return JSON.parse(localStorage.getItem(`wmls-${name}`));
     },
-    save(name,data) {
+    save(name,data,index=undefined) {
         // data: {index, arr}
         data = {...data};
         data.arr = data.arr.map(musicObj=>{
@@ -31,7 +31,13 @@ var webMusicListStorage = {
             return newOne;
         });
         if (!this.names.includes(name)) {
-            this.names = this.names.concat(name);
+            if (index===undefined || index===null) {
+                this.names = this.names.concat(name);
+            } else {
+                var newNames = this.names.slice();
+                newNames.splice(index,0,name);
+                this.names = newNames;
+            }
             localStorage.setItem("wmlsNames",JSON.stringify(this.names));
         }
         localStorage.setItem(`wmls-${name}`,JSON.stringify({index: data.index, arr: data.arr}));
