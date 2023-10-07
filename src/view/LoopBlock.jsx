@@ -6,6 +6,26 @@ import WebMusicList from '../js/WebMusicList'
 import showTips from '../js/showTips'
 import MusicList from './LoopBlock/MusicList'
 import ListNameList from './LoopBlock/ListNameList'
+import styled from 'styled-components'
+
+const StyledRenameSpan = styled.span`
+    visibility: hidden;
+    white-space: pre;
+    font-size: inherit;
+    font-family: inherit;
+`
+
+const StyledRenameInput = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: inherit;
+    font-family: inherit;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+`
 
 var RenameSpecificListBar = React.memo(() => {
     const [specificListTempName, setSpecificListTempName] = useState("");
@@ -19,6 +39,7 @@ var RenameSpecificListBar = React.memo(() => {
 
     return (
         <form
+            style={{position: "relative", maxWidth: "60%", maxHeight: "100%"}}
             onSubmit={ev => {
                 ev.preventDefault();
                 if (specificListTempName && !webMusicListStorage.names.includes(specificListTempName)) {
@@ -34,10 +55,12 @@ var RenameSpecificListBar = React.memo(() => {
                 }
                 ev.target.childNodes[0].querySelector("input").blur();
             }}>
-            <Input
-                style={{width: "5em"}}
-                value={specificListTempName}
-                onChange={ev => setSpecificListTempName(ev.target.value)}/>
+            <StyledRenameSpan>{specificListTempName}</StyledRenameSpan>
+            <StyledRenameInput>
+                <Input
+                    value={specificListTempName}
+                    onChange={ev => setSpecificListTempName(ev.target.value)}/>
+            </StyledRenameInput>
         </form>
     )
 });
