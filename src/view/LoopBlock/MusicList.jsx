@@ -105,9 +105,14 @@ function NormalList({listData,currentIndex,setIsEditing,undoSpecificListFn,loadi
         if (await webMusicManager.nextByObj(webMusicManager.list.arr[index])) webMusicManager.play();
     },[]);
 
-    var addAheadMusic = useCallback((ev,elem) => {
+    var addAheadMusic = useCallback((ev,elem,index) => {
         webMusicManager.aheadList.push(elem);
-        showTips.info("已加入“即将播放”。",() => webMusicManager.aheadList.pop());
+        var oldIndex = webMusicManager.list.index;
+        webMusicManager.list.index = index;
+        showTips.info("已加入“即将播放”。",() => {
+            webMusicManager.aheadList.pop();
+            webMusicManager.list.index = oldIndex;
+        });
     },[]);
 
     var addAllToAheadList = useCallback(() => {
@@ -143,7 +148,7 @@ function NormalList({listData,currentIndex,setIsEditing,undoSpecificListFn,loadi
                         shouldHighLight={index==currentIndex}/>
                     <RightBtn
                         btnText={<svg style={{position: "relative",left:"-4px",width: "1em",height: "1em",verticalAlign: "middle",fill: "currentColor",overflow: "hidden"}} viewBox="0 0 1000 1000" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15104"><path d="M362.57 764.226h364.149c28.44 0 51.491-23.051 51.491-51.491v-364.149c0-28.44-23.051-51.491-51.491-51.491s-51.491 23.051-51.491 51.491v239.829l-349.073-349.073c-20.119-20.119-52.711-20.119-72.831 0s-20.119 52.711 0 72.831l349.073 349.073h-239.829c-14.202-0.001-27.093 5.754-36.415 15.076s-15.094 22.195-15.076 36.415c0 28.44 23.051 51.491 51.491 51.491z" p-id="15105"></path></svg>}
-                        clickFn={ev=>addAheadMusic(ev,elem)}
+                        clickFn={ev=>addAheadMusic(ev,elem,index)}
                         longClickFn={ev=>addAllToAheadList()}
                         style={{flexBasis: "40px"}}/>
                     <RightBtn
