@@ -17,7 +17,7 @@ export default {
     },
     async fetchLyric(musicId) {
         // new Map([[time(单位s),lyric],...])
-        var obj = await fetchWithT(`/api/song/lyric?os=pc&id=${musicId}&lv=-1&tv=-1`,{timeout: 3000}).then(x => JSON.parse(x));
+        var obj = await fetchWithT(`/api/song/lyric?os=pc&id=${musicId}&lv=-1&tv=-1`,{timeout: 3000}).then(x => x.json());
         var lrcGot;
         if (obj?.tlyric?.lyric) {
             var lrc = this._parseLyric(obj?.lrc?.lyric);
@@ -34,7 +34,7 @@ export default {
     },
 
     async fetchSrc(musicId) {
-        return (await fetchWithT(`/api/song/enhance/player/url?ids=[${musicId}]&br=999000`,{timeout: 3000}).then(x => JSON.parse(x)))?.data[0].url;
+        return (await fetchWithT(`/api/song/enhance/player/url?ids=[${musicId}]&br=999000`,{timeout: 3000}).then(x => x.json()))?.data[0].url;
     },
 
     async fetchDiscover(listId) {
@@ -49,7 +49,7 @@ export default {
     },
 
     async fetchSearch(word) {
-        var ans = await fetchWithT(`/api/search/get?s=${encodeURI(word)}&type=1&limit=30`,{timeout: 5000}).then(x => JSON.parse(x));
+        var ans = await fetchWithT(`/api/search/get?s=${encodeURI(word)}&type=1&limit=30`,{timeout: 5000}).then(x => x.json());
         ans = ans?.result?.songs?.map(elem => ({
             id: elem.id,
             name: elem.name,

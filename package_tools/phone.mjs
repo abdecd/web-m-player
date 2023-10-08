@@ -18,6 +18,7 @@ txt = txt.replace(`import fetchWithT from "../utils/fetchWithT";
         .map(elem => ({ id: elem[0], name: elem[1], author: elem[2] }));
         return ans;`)
 .replaceAll(`fetchWithT(\`/api`,`PhoneMusicManager.fetchT(\`http://music.163.com/api`)
+.replaceAll(`.then(x => x.json())`,`.then(x => JSON.parse(x))`)
 fs.writeFileSync("./src/js/nativeBridge/musicAjax.js",txt);
 
 //WebMusicManager.js
