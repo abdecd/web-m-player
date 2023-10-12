@@ -13,11 +13,13 @@ export default function requestFile() {
     return new Promise(resolve => {
         var loadFn = ev => {
             fileReader.removeEventListener("load",loadFn);
-            resolve({
+            var obj = {
                 name: input.files[0]?.name,
                 type: input.files[0]?.type,
-                arrayBuffer: fileReader.result
-            });
+                arrayBuffer: fileReader.result.slice()
+            };
+            input.value = "";
+            resolve(obj);
         };
         fileReader.addEventListener("load",loadFn);
     });
