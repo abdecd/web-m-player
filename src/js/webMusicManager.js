@@ -11,6 +11,13 @@ var webMusicManager = {
     get src() {return (this.handler.src==window.location.origin+"/") ? "" : this.handler.src},
     musicObj: {},
 
+    _volume: 1,
+    get volume() { return this._volume; },
+    set volume(value) {
+        this._volume = value;
+        this.handler.volume = value;
+    },
+
     handler: new Audio(),
     list: new WebMusicList(),
     aheadList: [],
@@ -57,7 +64,7 @@ var webMusicManager = {
     get VOLUME_CNT() { return 100; },
     async play() {
         try {
-            this.handler.volume = 1;
+            this.handler.volume = this.volume;
             await this.handler.play();
         } catch {
             showTips.info("播放失败。");
@@ -82,8 +89,8 @@ var webMusicManager = {
             setTimeout(() => {
                 this.handler.volume=this._easeOutCirc(
                     getCurrTime(i,this.VOLUME_TIME_PER_BLOCK),
-                    1,
-                    -1,
+                    this.volume,
+                    -this.volume,
                     totalTime
                 )
             },getCurrTime(i,this.VOLUME_TIME_PER_BLOCK));
