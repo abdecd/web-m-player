@@ -5,7 +5,7 @@ import { settingsStorage } from '../../../js/settings';
 import { ListItem, Switch } from '@mui/material';
 import themeManager from '../../../js/themeManager';
 
-export default function ThemeSettingItem() {
+export default function ThemeSetting() {
     const [isDarkMode, setIsDarkMode] = useState(themeManager.getThemeType()=="dark");
 
     var handleChange = useCallback(checked => {
