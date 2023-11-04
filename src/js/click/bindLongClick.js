@@ -48,12 +48,15 @@ function bindLongClick(target, clickFn=(function(){}), longClickFn=(function(){}
         }
     };
 
+    // 保证重复调用时覆盖原先设置
     if (os=="pc") {
-        target.addEventListener("mousedown",startFn);
-        target.addEventListener("mouseup",endFn);
+        posHandler.clearMoveFn();
+        target.onmousedown = startFn;
+        target.onmouseup = endFn;
     } else {
-        target.addEventListener("touchstart",startFn);
-        target.addEventListener("touchend",endFn);
+        posHandler.clearMoveFn();
+        target.ontouchstart = startFn;
+        target.ontouchend = endFn;
     }
 }
 
@@ -85,6 +88,13 @@ class PosHandler {
             this.target.removeEventListener("mousemove",this.moveFn);
         } else {
             this.target.removeEventListener("touchmove",this.moveFn);
+        }
+    }
+    clearMoveFn() {
+        if (os=="pc") {
+            this.target.onmousemove = "";
+        } else {
+            this.target.ontouchmove = "";
         }
     }
 };
