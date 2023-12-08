@@ -41,14 +41,13 @@ class Draggable {
         this.onPointerUpListener = this.onPointerUp.bind(this);
     }
     bindWrapperListener() {
-        this.view.addEventListener('pointerdown',this.onPointerDownListener);
-        document.documentElement.addEventListener('pointermove',this.onPointerMoveListener);
-        document.documentElement.addEventListener('pointerup',this.onPointerUpListener);
+        this.view.addEventListener('pointerdown',this.onPointerDownListener,true);
+        Array.prototype.forEach.call(this.view.querySelectorAll("."+this.holderClassName),elem => {
+            elem.style.touchAction = "none";
+        });
     }
     revokeWrapperListener() {
-        this.view.removeEventListener('pointerdown',this.onPointerDownListener);
-        document.documentElement.removeEventListener('pointermove',this.onPointerMoveListener);
-        document.documentElement.removeEventListener('pointerup',this.onPointerUpListener);
+        this.view.removeEventListener('pointerdown',this.onPointerDownListener,true);
     }
 
     getRectList() {
@@ -77,7 +76,9 @@ class Draggable {
     onPointerDown(ev) {
         this.dragElem = this.getDragElem(ev);
         if (!this.dragElem) return;
-        this.view.style.touchAction = "none";
+        document.documentElement.addEventListener('pointermove',this.onPointerMoveListener,{capture: true, passive: true});
+        document.documentElement.addEventListener('pointerup',this.onPointerUpListener,{capture: true,once: true});
+
         this.getRectList();
         this.cloneNodeToDrag();
         this.isDragging = true;
@@ -130,7 +131,7 @@ class Draggable {
     }
 
     onPointerMove(ev) {
-        if (!this.isDragging) return false;
+        if (!this.isDragging) return;
         this.moveClone(ev);
         this.swapItem(ev);
         this.handleScroll(ev);
@@ -197,9 +198,9 @@ class Draggable {
     }
 
     onPointerUp(ev) {
+        document.documentElement.removeEventListener('pointermove',this.onPointerMoveListener,{capture: true, passive: true});
         if (!this.isDragging) return;
         this.isDragging = false;
-        this.view.style.touchAction = "";
 
         this.cb(this);
 
