@@ -22,14 +22,17 @@ function bindLongClick(target, clickFn=(function(){}), longClickFn=(function(){}
     var startFn = ev => {
         timer = setTimeout(() => { longClickFn(ev); timer = null }, longTime);
         if (os=="pc") {
-            target.addEventListener("mousemove",moveFn,{once: true, passive: true});
+            target.addEventListener("mousemove",moveFn,{passive: true});
+            target.addEventListener("mouseup",endFn);
         } else {
-            target.addEventListener("touchmove",moveFn,{once: true, passive: true});
+            target.addEventListener("touchmove",moveFn,{passive: true});
+            target.addEventListener("touchend",endFn);
         }
     };
     var moveFn = ev => {
         clearTimeout(timer);
         timer = null;
+        clearFn();
     };
     var endFn = ev => {
         if (timer) {
@@ -37,14 +40,23 @@ function bindLongClick(target, clickFn=(function(){}), longClickFn=(function(){}
             timer = null;
             clickFn(ev);
         }
+        clearFn();
     };
+
+    function clearFn() {
+        if (os=="pc") {
+            target.removeEventListener("mousemove",moveFn,{passive: true});
+            target.removeEventListener("mouseup",endFn);
+        } else {
+            target.removeEventListener("touchmove",moveFn,{passive: true});
+            target.removeEventListener("touchend",endFn);
+        }
+    }
 
     if (os=="pc") {
         target.onmousedown = startFn;
-        target.onmouseup = endFn;
     } else {
         target.ontouchstart = startFn;
-        target.ontouchend = endFn;
     }
 }
 
