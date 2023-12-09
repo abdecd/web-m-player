@@ -48,6 +48,9 @@ class Draggable {
     }
     revokeWrapperListener() {
         this.view.removeEventListener('pointerdown',this.onPointerDownListener,true);
+        Array.prototype.forEach.call(this.view.querySelectorAll("."+this.holderClassName),elem => {
+            elem.style.touchAction = "";
+        });
     }
 
     getRectList() {
