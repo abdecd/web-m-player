@@ -1,35 +1,15 @@
-var os = (function () {
-    var ua = navigator.userAgent,
-        isWindowsPhone = /(?:Windows Phone)/.test(ua),
-        isSymbian = /(?:SymbianOS)/.test(ua) || isWindowsPhone,
-        isAndroid = /(?:Android)/.test(ua),
-        isFireFox = /(?:Firefox)/.test(ua),
-        isChrome = /(?:Chrome|CriOS)/.test(ua),
-        isTablet = /(?:iPad|PlayBook)/.test(ua) || (isAndroid && !/(?:Mobile)/.test(ua)) || (isFireFox &&
-            /(?:Tablet)/.test(ua)),
-        isPhone = /(?:iPhone)/.test(ua) && !isTablet,
-        isPc = !isPhone && !isAndroid && !isSymbian;
-    if (isAndroid || isPhone || isTablet) {
-        return "phone";
-    } else {
-        return "pc";
-    }
-})();
-
 function bindLongClick(target, clickFn=(function(){}), longClickFn=(function(){})) {
     var timer = null, longTime = 400;
+    var pos = []; // for pc chrome: pointermove would be called automatically
 
     var startFn = ev => {
         timer = setTimeout(() => { longClickFn(ev); timer = null }, longTime);
-        if (os=="pc") {
-            target.addEventListener("mousemove",moveFn,{passive: true});
-            target.addEventListener("mouseup",endFn);
-        } else {
-            target.addEventListener("touchmove",moveFn,{passive: true});
-            target.addEventListener("touchend",endFn);
-        }
+        target.addEventListener("pointermove",moveFn,{passive: true});
+        target.addEventListener("pointerup",endFn);
+        pos = [ev.clientX,ev.clientY]; // for pc chrome
     };
     var moveFn = ev => {
+        if (pos[0]==ev.clientX && pos[1]==ev.clientY) return; // for pc chrome
         clearTimeout(timer);
         timer = null;
         clearFn();
@@ -44,20 +24,11 @@ function bindLongClick(target, clickFn=(function(){}), longClickFn=(function(){}
     };
 
     function clearFn() {
-        if (os=="pc") {
-            target.removeEventListener("mousemove",moveFn,{passive: true});
-            target.removeEventListener("mouseup",endFn);
-        } else {
-            target.removeEventListener("touchmove",moveFn,{passive: true});
-            target.removeEventListener("touchend",endFn);
-        }
+        target.removeEventListener("pointermove",moveFn,{passive: true});
+        target.removeEventListener("pointerup",endFn);
     }
 
-    if (os=="pc") {
-        target.onmousedown = startFn;
-    } else {
-        target.ontouchstart = startFn;
-    }
+    target.onpointerdown = startFn;
 }
 
 export default bindLongClick;

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 
 import BasicList from '../../component/BasicList';
 import webMusicManager from '../../js/webMusicManager';
@@ -9,6 +9,9 @@ import { LeftItem, RightBtn } from '../../component/ListButton';
 
 export default function MusicList({listData,loading=false,style,innerRef}) {
     //listData <==> [{ id or url, name, author },...]
+    // 添加fullName属性
+    var editedListData = useMemo(() => listData.map(elem=>({...elem, fullName: elem.author ? (`${elem.author} - ${elem.name}`) : elem.name})),[listData]);
+
     var undoSpecificListFn = undoFnContainer.value;
 
     var playMusic = useCallback(async (ev,elem) => {
@@ -21,11 +24,11 @@ export default function MusicList({listData,loading=false,style,innerRef}) {
     },[]);
 
     var addAllToAheadList = useCallback(() => {
-        var filterList = listData.map(elem => ({name: elem.name, id: elem.id, src: elem.url}));
+        var filterList = editedListData.map(elem => ({name: elem.fullName, id: elem.id, src: elem.url}));
         var oldList = webMusicManager.aheadList;
         webMusicManager.aheadList = webMusicManager.aheadList.concat(filterList);
         showTips.info(filterList.length+"项已加入“即将播放”。",() => webMusicManager.aheadList = oldList);
-    },[listData]);
+    },[editedListData]);
 
     var addMusic = useCallback((ev,elem) => {
         switch (webMusicManager.push(elem.name, elem.src, elem.id)) {
@@ -42,29 +45,29 @@ export default function MusicList({listData,loading=false,style,innerRef}) {
     },[]);
 
     var addAllMusic = useCallback(() => {
-        var { successCnt, existsCnt, failCnt } = webMusicManager.pushAll(listData.map(elem => ({ name: elem.name, src: elem.url, id: elem.id })));
+        var { successCnt, existsCnt, failCnt } = webMusicManager.pushAll(editedListData.map(elem => ({ name: elem.fullName, src: elem.url, id: elem.id })));
 
         var strs = [];
         strs.push(`${successCnt}项成功添加至播放列表`);
         if (existsCnt) strs.push(`${existsCnt}项已存在`);
         if (failCnt) strs.push(`${failCnt}项失败`);
         showTips.info(strs.join("，")+"。",undoSpecificListFn);
-    },[listData]);
+    },[editedListData]);
 
     return <>
-        {(listData.length==0 && loading) ? (
+        {(editedListData.length==0 && loading) ? (
             <p style={{textAlign: "center"}}>refreshing...</p>
         ) : (
             // 留MusicBar位置
             <BasicList innerRef={innerRef} style={{ paddingBottom: 'calc(var(--musicbar-height) + 10px)', ...style}}>
             {
-                listData
+                editedListData
                 .map(elem => ({
                     firstName: elem.name,
                     subName: elem.author,
-                    name: elem.author ? (`${elem.author} - ${elem.name}`) : elem.name,
                     key: elem.id||elem.url,
                     /*私货*/
+                    name: elem.fullName,
                     id: elem.id,
                     src: elem.url
                 }))
