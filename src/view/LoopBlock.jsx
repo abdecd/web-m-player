@@ -114,13 +114,13 @@ function BasicLoopBlock({style,needRemainSpace=false}) {
                     shown={!managing}
                     loading={musicListLoading}
                     setLoading={setMusicListLoading}
-                    listStyle={needRemainSpace ? {paddingBottom: 'calc(var(--musicbar-height) + 10px)'} : {}}
+                    listStyle={needRemainSpace ? {paddingBottom: 'calc(var(--musicbar-height) + 10px)'} : {paddingBottom: '10px'}}
                 />
                 <ListNameList
                     shown={managing}
                     setManaging={setManaging}
                     setMusicListLoading={setMusicListLoading}
-                    listStyle={needRemainSpace ? {paddingBottom: 'calc(var(--musicbar-height) + 10px)'} : {}}
+                    listStyle={needRemainSpace ? {paddingBottom: 'calc(var(--musicbar-height) + 10px)'} : {paddingBottom: '10px'}}
                 />
             </div>
         </div>

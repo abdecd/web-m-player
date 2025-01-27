@@ -78,7 +78,7 @@ export default function Lyric() {
 
     return (
         // 留MusicBar位置
-        <LoadingBlock innerRef={lyricElem} loading={loading} style={{textAlign: "center", height: "calc(100% - var(--musicbar-height))", paddingBottom: "60px", overflow: "auto"}}>
+        <LoadingBlock innerRef={lyricElem} loading={loading} style={{textAlign: "center", height: "calc(100% - var(--musicbar-height))", overflow: "auto"}}>
             <div style={{fontSize: "1.25em", margin: "16px"}}>{webMusicManager.name}</div>
             <div>
             {

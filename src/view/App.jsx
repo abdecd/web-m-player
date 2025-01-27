@@ -52,7 +52,7 @@ export default function App({children}) {
                 ) : (
                     <>
                         <StyledLoopBlockWrapper>
-                            <BasicLoopBlock needRemainSpace/>
+                            <BasicLoopBlock/>
                         </StyledLoopBlockWrapper>
                         <div style={{width: "1px", flex: "0 0 auto", height: "calc(100% - var(--musicbar-height))", backgroundColor: "#00000026", alignSelf: "start"}}></div>
                     </>
