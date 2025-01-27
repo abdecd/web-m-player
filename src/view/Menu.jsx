@@ -16,7 +16,7 @@ var SettingsBtn = React.memo(({style}) => {
 });
 
 const StyledMenu = styled.div`
-    height: 100%;
+    height: calc(100% - var(--musicbar-height));
     display: flex;
     flex-direction: column;
     > :nth-child(1) {

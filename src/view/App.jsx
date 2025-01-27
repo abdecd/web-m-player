@@ -27,7 +27,7 @@ const StyledContent = styled.div`
 `
 
 const StyledLoopBlockWrapper = styled.div`
-    height: 100%;
+    height: calc(100% - var(--musicbar-height));
     width: 35%;
 `
 
@@ -54,7 +54,7 @@ export default function App({children}) {
                         <StyledLoopBlockWrapper>
                             <BasicLoopBlock needRemainSpace/>
                         </StyledLoopBlockWrapper>
-                        <div style={{width: "1px", flex: "0 0 auto", height: "100vh", backgroundColor: "#00000026", alignSelf: "center"}}></div>
+                        <div style={{width: "1px", flex: "0 0 auto", height: "calc(100% - var(--musicbar-height))", backgroundColor: "#00000026", alignSelf: "start"}}></div>
                     </>
                 )}
                 {children}
