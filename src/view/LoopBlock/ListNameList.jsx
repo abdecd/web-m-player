@@ -4,7 +4,7 @@ import BasicList from '../../component/BasicList'
 import { LeftItem, RightBtn } from '../../component/ListButton'
 import Draggable from '../../js/utils/Draggable';
 import WebMusicList from '../../js/WebMusicList';
-import webMusicListStorage from '../../js/webMusicListStorage';
+import webMusicListStorage from '../../js/WebMusicListStorage';
 import webMusicManager from '../../js/webMusicManager';
 import showTips from '../../js/showTips'
 import useScrollRecoder from '../../js/reactHooks/useScrollRecoder';

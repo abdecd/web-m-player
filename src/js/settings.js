@@ -44,6 +44,20 @@ var settings = {
         if (type=="basic") {
             return { type, value: settingsStorage.getSetting("background") };
         } else {
+            var bgStr = settingsStorage.getSetting("background");
+            if (bgStr) {
+                if (window.go && window.go.main && window.go.main.App) {
+                    try {
+                        var base = await window.go.main.App.GetLocalListAbsolutePath();
+                        if (base) {
+                            var bgBase = base.replace(/\/file\/?$/, "/bg");
+                            var filename = bgStr.substring(bgStr.lastIndexOf('/') + 1);
+                            bgStr = bgBase + "/" + filename;
+                        }
+                    } catch (e) {}
+                }
+                return { type: type, value: bgStr };
+            }
             return await settingsStorage.getFromDb("backgroundData");
         }
     },
@@ -61,12 +75,18 @@ var settings = {
         } else if (type=="image" || type=="video") {
             settingsStorage.setSetting("backgroundType",type);
 
-            var url = URL.createObjectURL(value);
-            this.backgroundSub.publish(type,url);
-            setTimeout(() => URL.revokeObjectURL(url),5000);
+            if (typeof value === "string") {
+                this.backgroundSub.publish(type,value);
+                settingsStorage.setSetting("background",value);
+                await settingsStorage.setToDb("backgroundData",null);
+            } else {
+                var url = URL.createObjectURL(value);
+                this.backgroundSub.publish(type,url);
+                setTimeout(() => URL.revokeObjectURL(url),5000);
 
-            settingsStorage.setSetting("background",null);
-            await settingsStorage.setToDb("backgroundData",{type,value});
+                settingsStorage.setSetting("background",null);
+                await settingsStorage.setToDb("backgroundData",{type,value});
+            }
         }
     }
 };
@@ -74,11 +94,17 @@ var settings = {
 window.settingsStorage = settingsStorage;
 
 async function initSettings() {
-    var background = await settings.getBackground();
-    if (background.type=="basic") {
-        settings.setBackground("basic",settingsStorage.getSetting("background"));
-    } else {
-        settings.setBackground(background.type,background.value);
+    try {
+        var background = await settings.getBackground();
+        if (background) {
+            if (background.type=="basic") {
+                settings.setBackground("basic",settingsStorage.getSetting("background"));
+            } else {
+                settings.setBackground(background.type,background.value);
+            }
+        }
+    } catch (e) {
+        console.error("Failed to initialize settings:", e);
     }
 }
 

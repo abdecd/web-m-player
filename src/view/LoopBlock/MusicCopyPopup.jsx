@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import ListNameListPopup from "../../component/ListnameListPopup";
 import showTips from "../../js/showTips";
 import WebMusicList from "../../js/WebMusicList";
-import webMusicListStorage from "../../js/webMusicListStorage";
+import webMusicListStorage from "../../js/WebMusicListStorage";
 
 export default function MusicCopyPopup({shown,setShown,musicObjs}) {
     var copyToList = useCallback(listName => {

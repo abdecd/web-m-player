@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Button, Input } from '@mui/material'
 import webMusicManager from '../js/webMusicManager'
-import webMusicListStorage from '../js/webMusicListStorage'
+import webMusicListStorage from '../js/WebMusicListStorage'
 import WebMusicList from '../js/WebMusicList'
 import showTips from '../js/showTips'
 import MusicList from './LoopBlock/MusicList'

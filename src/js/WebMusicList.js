@@ -1,5 +1,5 @@
 import Subscription from './utils/Subscription'
-import webMusicListStorage from './webMusicListStorage';
+import webMusicListStorage from './WebMusicListStorage';
 
 class BasicWebMusicList {
     index = 0;
@@ -89,7 +89,7 @@ class WebMusicList extends BasicWebMusicList {
     push(obj,silent=false) {
         if (!WebMusicList.isValidItem(obj)) return WebMusicList.PUSH_STATE.FAILED;
         // real "id or src"
-        if (obj.src?.startsWith("http")) obj = { ...obj, src: undefined };
+        if (obj.src?.startsWith("http") && !obj.src.startsWith("http://127.0.0.1")) obj = { ...obj, src: undefined };
         if (obj.src) obj = { ...obj, id: undefined };
         if (this.arr.find(elem => WebMusicList.getIdOrSrc(elem)==WebMusicList.getIdOrSrc(obj))) return WebMusicList.PUSH_STATE.EXISTS;
         this.arr.push(obj);

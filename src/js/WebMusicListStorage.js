@@ -24,7 +24,7 @@ var webMusicListStorage = {
             if (src) newOne.src = src;
             // 不保存临时链接
             if (newOne.src) {
-                if (newOne.src.startsWith("http")) delete newOne.src;
+                if (newOne.src.startsWith("http") && !newOne.src.startsWith("http://127.0.0.1")) delete newOne.src;
             }
             // 不保存本地获取的临时id
             if (newOne.src) delete newOne.id;

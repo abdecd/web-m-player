@@ -2,7 +2,7 @@ import musicAjax from "./nativeBridge/musicAjax";
 import showTips from "./showTips";
 import Subscription from "./utils/Subscription";
 import WebMusicList from "./WebMusicList";
-import webMusicListStorage from "./webMusicListStorage";
+import webMusicListStorage from "./WebMusicListStorage";
 
 var webMusicManager = {
     get name() { return this.musicObj.name || ""; },

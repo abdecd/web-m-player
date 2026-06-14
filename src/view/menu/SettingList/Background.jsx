@@ -31,6 +31,20 @@ function BackgroundSettingBlock() {
 
     var setBackgroundFromFile = useCallback(() => {
     (async () => {
+        if (window.go) {
+            try {
+                var res = await window.go.main.App.SelectBackground();
+                if (res) {
+                    settings.setBackground(res.type, res.url);
+                }
+            } catch (e) {
+                if (e !== "Cancelled") {
+                    showTips.info("设置背景失败：" + e);
+                }
+            }
+            return;
+        }
+
         try {
             var { type, arrayBuffer } = await requestFile();
             if (!type) return;

@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react'
 import ListnameListPopup from '../../../component/ListnameListPopup';
 import requestFile from '../../../js/utils/fileRequestor';
 import showTips from '../../../js/showTips';
-import webMusicListStorage from '../../../js/webMusicListStorage';
+import webMusicListStorage from '../../../js/WebMusicListStorage';
 import musicAjax from '../../../js/nativeBridge/musicAjax';
 
 function CollapseBlock() {

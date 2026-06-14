@@ -88,10 +88,18 @@ function useBackgroundListerner() {
     const [backgroundType, setBackgroundType] = useState("image");
     const [backgroundSrc, setBackgroundSrc] = useState("");
 
-    useEffect(() => settings.backgroundSub.subscribe((newType,url) => {
-        setBackgroundType(newType);
-        setBackgroundSrc(url);
-    }),[]);
+    useEffect(() => {
+        settings.getBackground().then(background => {
+            if (background) {
+                setBackgroundType(background.type);
+                setBackgroundSrc(background.type == "basic" ? background.value : (background.value || ""));
+            }
+        });
+        return settings.backgroundSub.subscribe((newType,url) => {
+            setBackgroundType(newType);
+            setBackgroundSrc(url);
+        });
+    },[]);
 
     return [backgroundType, backgroundSrc];
 }
