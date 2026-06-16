@@ -41,7 +41,7 @@ function CollapseBlock() {
 
         var pathPerfix = await musicAjax.getLocalListAbsolutePath();
         if (pathPerfix) for (let obj of listObj.arr) {
-            if (obj.src && !obj.src.startsWith("http")) {
+            if (obj.src && obj.src.startsWith("http://127.0.0.1:")) {
                 obj.src = obj.src.replace(pathPerfix,"");
             }
         }

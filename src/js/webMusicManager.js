@@ -38,6 +38,14 @@ var webMusicManager = {
         if (!this.musicObj.src || forceRefreshOnline) {
             this.musicObj.src = await musicAjax.fetchSrc(this.musicObj.id).catch(e => "");
         }
+        if (this.musicObj.src && this.musicObj.src.startsWith("http://127.0.0.1:")) {
+            try {
+                var prefix = await musicAjax.getLocalListAbsolutePath();
+                if (prefix) {
+                    this.musicObj.src = this.musicObj.src.replace(/^http:\/\/127\.0\.0\.1(:\d+)?\/file/, prefix);
+                }
+            } catch (e) {}
+        }
         this.handler.src = this.musicObj.src;
 
         // canplay or err时return

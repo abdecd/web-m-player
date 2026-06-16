@@ -1,5 +1,6 @@
 import Subscription from './utils/Subscription'
 import webMusicListStorage from './WebMusicListStorage';
+import musicAjax from './nativeBridge/musicAjax';
 
 class BasicWebMusicList {
     index = 0;
@@ -40,6 +41,26 @@ class WebMusicList extends BasicWebMusicList {
         this.storage = storage;
         if (data?.index && data.index>=0) this.index = data.index;
         if (data?.arr) for (let i=0,L=data.arr.length;i<L;i++) if (WebMusicList.isValidItem(data.arr[i])) this.arr.push(data.arr[i]);
+        
+        // Asynchronously patch dynamic port for local music
+        musicAjax.getLocalListAbsolutePath().then(prefix => {
+            if (prefix) {
+                let changed = false;
+                for (let i = 0; i < this.arr.length; i++) {
+                    if (this.arr[i].src && this.arr[i].src.startsWith("http://127.0.0.1:")) {
+                        let newSrc = this.arr[i].src.replace(/^http:\/\/127\.0\.0\.1(:\d+)?\/file/, prefix);
+                        if (newSrc !== this.arr[i].src) {
+                            this.arr[i].src = newSrc;
+                            changed = true;
+                        }
+                    }
+                }
+                if (changed && this.storage) {
+                    webMusicListStorage.save(this.name, this);
+                }
+            }
+        }).catch(() => {});
+
         if (this.storage) webMusicListStorage.save(this.name,this);
     }
 
